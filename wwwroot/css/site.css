@@ -20,3 +20,22 @@ html {
 body {
   margin-bottom: 60px;
 }
+button {
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-size: contain;
+    background-position: center;
+    border: none;
+    width: 50px;
+    height: 25px;
+}
+.incluir {
+    background-image: url('../Imagens/Grandes/Adicionar.png');    
+}
+.excluir {
+    background-image: url('../Imagens/Grandes/Lixeira.png');    
+}
+.col{
+    border: solid;
+    border-color: black;
+}
