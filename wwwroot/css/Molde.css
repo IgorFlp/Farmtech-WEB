@@ -1,0 +1,6 @@
+﻿body {
+}
+/*Quando quiser estilizar algo por ID que definiu no elemento use #, quando for por classe (varios itens) use .   */
+#textoMolde{
+    color: red;
+}
