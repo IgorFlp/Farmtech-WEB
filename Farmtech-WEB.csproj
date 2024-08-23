@@ -8,6 +8,60 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Include="wwwroot\Imagens\Grandes\Adicionar.png" />
+    <None Include="wwwroot\Imagens\Grandes\Cancelar.png" />
+    <None Include="wwwroot\Imagens\Grandes\Cesta de frutas.png" />
+    <None Include="wwwroot\Imagens\Grandes\Clientes.png" />
+    <None Include="wwwroot\Imagens\Grandes\Confirmar.png" />
+    <None Include="wwwroot\Imagens\Grandes\forncedor.png" />
+    <None Include="wwwroot\Imagens\Grandes\Foto usuario.png" />
+    <None Include="wwwroot\Imagens\Grandes\Lixeira.png" />
+    <None Include="wwwroot\Imagens\Grandes\Logo farmtech.png" />
+    <None Include="wwwroot\Imagens\Grandes\menu.png" />
+    <None Include="wwwroot\Imagens\Grandes\printer.png" />
+    <None Include="wwwroot\Imagens\Grandes\Producao.png" />
+    <None Include="wwwroot\Imagens\Grandes\Produto.png" />
+    <None Include="wwwroot\Imagens\Grandes\Relatorios.png" />
+    <None Include="wwwroot\Imagens\Grandes\Remover.png" />
+    <None Include="wwwroot\Imagens\Grandes\usuario.png" />
+    <None Include="wwwroot\Imagens\Grandes\Vender.png" />
+    <None Include="wwwroot\Imagens\Pequenas\ICO\Adicionar.ico" />
+    <None Include="wwwroot\Imagens\Pequenas\ICO\Cancelar.ico" />
+    <None Include="wwwroot\Imagens\Pequenas\ICO\Cesta-de-frutas.ico" />
+    <None Include="wwwroot\Imagens\Pequenas\ICO\Clientes.ico" />
+    <None Include="wwwroot\Imagens\Pequenas\ICO\Confirmar.ico" />
+    <None Include="wwwroot\Imagens\Pequenas\ICO\Forncedor.ico" />
+    <None Include="wwwroot\Imagens\Pequenas\ICO\Foto-usuario.ico" />
+    <None Include="wwwroot\Imagens\Pequenas\ICO\Lixeira.ico" />
+    <None Include="wwwroot\Imagens\Pequenas\ICO\Logo-farmtech.ico" />
+    <None Include="wwwroot\Imagens\Pequenas\ICO\Menu.ico" />
+    <None Include="wwwroot\Imagens\Pequenas\ICO\Printer.ico" />
+    <None Include="wwwroot\Imagens\Pequenas\ICO\Producao.ico" />
+    <None Include="wwwroot\Imagens\Pequenas\ICO\Produto.ico" />
+    <None Include="wwwroot\Imagens\Pequenas\ICO\Relatorios.ico" />
+    <None Include="wwwroot\Imagens\Pequenas\ICO\Remover.ico" />
+    <None Include="wwwroot\Imagens\Pequenas\ICO\Usuario.ico" />
+    <None Include="wwwroot\Imagens\Pequenas\ICO\Vender.ico" />
+    <None Include="wwwroot\Imagens\Pequenas\PNG\Adicionar.png" />
+    <None Include="wwwroot\Imagens\Pequenas\PNG\Cancelar.png" />
+    <None Include="wwwroot\Imagens\Pequenas\PNG\Cesta de frutas.png" />
+    <None Include="wwwroot\Imagens\Pequenas\PNG\Clientes.png" />
+    <None Include="wwwroot\Imagens\Pequenas\PNG\Confirmar.png" />
+    <None Include="wwwroot\Imagens\Pequenas\PNG\Forncedor.png" />
+    <None Include="wwwroot\Imagens\Pequenas\PNG\Foto usuario.png" />
+    <None Include="wwwroot\Imagens\Pequenas\PNG\Lixeira.png" />
+    <None Include="wwwroot\Imagens\Pequenas\PNG\Logo farmtech.png" />
+    <None Include="wwwroot\Imagens\Pequenas\PNG\Menu.png" />
+    <None Include="wwwroot\Imagens\Pequenas\PNG\Printer.png" />
+    <None Include="wwwroot\Imagens\Pequenas\PNG\Producao.png" />
+    <None Include="wwwroot\Imagens\Pequenas\PNG\Produto.png" />
+    <None Include="wwwroot\Imagens\Pequenas\PNG\Relatorios.png" />
+    <None Include="wwwroot\Imagens\Pequenas\PNG\Remover.png" />
+    <None Include="wwwroot\Imagens\Pequenas\PNG\Usuario.png" />
+    <None Include="wwwroot\Imagens\Pequenas\PNG\Vender.png" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="8.0.4" />
   </ItemGroup>
 
