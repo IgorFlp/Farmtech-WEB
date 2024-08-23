@@ -15,13 +15,24 @@ namespace Farmtech_WEB.Controllers
 
         public IActionResult Index()
         {
-            return View();
+            return View();        
         }
-
         public IActionResult Privacy()
         {
             return View();
         }
+        public IActionResult Usuario()
+        {
+            return View();
+        }
+
+        //Inicio da copia do molde
+        public IActionResult Molde()
+        {
+            return View();
+        }
+        //Fim da copia do molde
+
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()
