@@ -1,0 +1,22 @@
+﻿body {
+}
+/*Quando quiser estilizar algo por ID que definiu no elemento use #, quando for por classe (varios itens) use .   */
+#textoMolde{
+    color: red;
+}
+.campos-vender{
+    min-width:60%;
+    width: 60%;
+    height: 5rem%;
+    padding-left:0;
+    margin-left: 10%;
+}
+.input{
+    padding-left: 5px;
+}
+.desconto{    
+    color: red;
+}
+.container {
+    height:35rem; 
+}
