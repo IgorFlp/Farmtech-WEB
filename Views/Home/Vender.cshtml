@@ -1,8 +1,8 @@
 ﻿@{
     ViewData["Title"] = "Vender";//Substituir molde por nome da tela
     <link href="~/css/Vender.css" rel="stylesheet" media="all">
+    <script src="~/js/Vender.js"></script>
 }
-
 <div>
     <h1>@ViewData["Title"]</h1>
 </div>
@@ -21,7 +21,7 @@
                 <option value="value">Ciliano</option>
             </select>
             <div class="justify-content-end" style="margin-top:4rem">
-                <button class="incluir"></button>
+                <button class="incluir" onclick="addItem()"></button>
                 <button class="excluir"></button>
             </div>            
         </div>        
@@ -58,9 +58,31 @@
         <div class="row align-items-lg-start mb-3" style="height: 77%; margin-top:0px;">
 
             <!--Esquerda-->
-            <div class="m-0 d-flex border border-success align-items-start flex-column col-9" style="height:100%;">
-                <p>itens</p>
-            </div>
+        <div id="lista-itens" class="m-0 d-flex border border-success align-items-start flex-column col-9"
+             style="height: 100%; overflow-y: scroll">
+
+            <span class="d-flex flex-row item-span mt-1">
+                <input class="check-item centralizar" style="margin-left: 1rem; margin-right: 0.5rem" type="checkbox"></input>
+                <label class="centralizar" style="margin-left:1%; width: 48%;">Nome do item</label>
+                <label class="centralizar texto-itens">Preço Un</label>
+                <input type="text"
+                       disabled
+                       value="R$ 4,98"
+                       class="centralizar campos-itens" />
+                <label class="centralizar texto-itens">Quant.</label>
+                <input type="text"
+                       disabled
+                       value="Kg 2,50"
+                       class="centralizar campos-itens" />
+                <label class="centralizar texto-itens">Total</label>
+
+                <input type="text"
+                       disabled
+                       value="R$ 30,00"
+                       class="centralizar campos-itens" />
+            </span>
+
+        </div>
             <!--Direita-->
                 <div class="p-2 border border-warning col-3 d-flex flex-column"style="height:80%;">
                     <!--Subtotal-->
@@ -85,5 +107,7 @@
                 </div>
         </div>
 </div> 
+<script src="~/js/Vender.js" asp-append-version="true"></script>
+
 
 
