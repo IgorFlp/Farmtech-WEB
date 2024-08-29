@@ -35,6 +35,14 @@ button {
 .excluir {
     background-image: url('../Imagens/Grandes/Lixeira.png');    
 }
+.confirmar{
+    background-color: limegreen;
+    background-image: url('../Imagens/Grandes/Confirmar.png')
+}
+.cancelar{
+    background-color: palevioletred;
+    background-image: url('../Imagens/Grandes/Cancelar.png')    
+}
 .col{
     border: solid;
     border-color: black;

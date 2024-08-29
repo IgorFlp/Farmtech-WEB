@@ -30,6 +30,10 @@ namespace Farmtech_WEB.Controllers
         {
             return View();
         }
+        public IActionResult Vender_addprod()
+        {
+            return View();
+        }
         //Inicio da copia do molde
         public IActionResult Molde()
         {

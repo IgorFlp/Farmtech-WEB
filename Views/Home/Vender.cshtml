@@ -27,7 +27,7 @@
         </div>        
         
         
-        <div class="border border-primary col-3 d-flex flex-column" style="padding-top:13px;padding-bottom: 4px">
+        <div class="border border-primary col-3 d-flex flex-column" style="height:100% ;padding-top:5px;padding-bottom: 4px">
             <!--ENTREGA-->
             <div class="d-flex flex-row justify-content-end mb-2 w-100">
                 <label>Entrega</label>
@@ -60,10 +60,15 @@
             <!--Esquerda-->
         <div id="lista-itens" class="m-0 d-flex border border-success align-items-start flex-column col-9"
              style="height: 100%; overflow-y: scroll">
-
+             <!--
             <span class="d-flex flex-row item-span mt-1">
                 <input class="check-item centralizar" style="margin-left: 1rem; margin-right: 0.5rem" type="checkbox"></input>
-                <label class="centralizar" style="margin-left:1%; width: 48%;">Nome do item</label>
+                <select class="centralizar" style="height: 80%; width:45%; border-radius:5px; margin-right: 5%;">
+                    <option value="value">Alface</option>
+                    <option value="value">Tomate</option>
+                    <option value="value">Beringela</option>
+                    
+                </select>
                 <label class="centralizar texto-itens">Preço Un</label>
                 <input type="text"
                        disabled
@@ -81,10 +86,10 @@
                        value="R$ 30,00"
                        class="centralizar campos-itens" />
             </span>
-
+            -->
         </div>
             <!--Direita-->
-                <div class="p-2 border border-warning col-3 d-flex flex-column"style="height:80%;">
+                <div class="p-2 border border-warning col-3 d-flex flex-column"style="height:100%;">
                     <!--Subtotal-->
                         <div class="d-flex flex-row justify-content-end mb-2 w-100">
                             <label class="mb-0 mr-2">Subtotal</label>
@@ -104,8 +109,16 @@
                             <label class="mb-0 mr-2">Total</label>
                             <input id="desconto" type="text" disabled value="R$ 55,00" class="input form-control campos-vender">
                         </div>
+                        <div style="font-size: 0.75rem">
+                            Vendedor
+                        <div style="border: 1px solid black; font-size: 1rem;"><img src="~/Imagens/Grandes/Foto usuario.png" style="height: 35px; width:35px; margin-right: 1rem;">Nome do usuario</div>
+                        <button class="confirmar"></button>
+                        <button class="cancelar"></button>
+                        </div>
+                        
+
                 </div>
-        </div>
+         </div>
 </div> 
 <script src="~/js/Vender.js" asp-append-version="true"></script>
 
