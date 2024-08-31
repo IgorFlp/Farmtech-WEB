@@ -11,9 +11,27 @@ function Produto(id, nome, unMedida, precoUn) {
 }
 
 function selecionaProduto() {
-    let produtoId = 
-    let spanId = this.parentElement.id;
-    console.log("ID: "+spanId)
+    //remover essa parte daqui
+    const prod = new Produto(1, "Alface", "Kg", 3.50);
+    const prod2 = new Produto(2, "Tomate", "Kg", 5.59);
+    const prod3 = new Produto(3, "Berinjela", "Un", 8.00);
+    let listaProdutos = [prod, prod2, prod3];
+    //
+
+    let span = this.parentElement;
+    let select = document.querySelector("#" + CSS.escape(span.id) + "> select");
+    var value = select.value;
+    var produtoNome = select.options[select.selectedIndex].text;
+    //let produtoNome = select.innerText;
+    console.log("Span ID: " + span.id + "Select: "+ select.className + "Produto: "+produtoNome)
+
+    const pos = listaProdutos.map(e => e.nome).indexOf(produtoNome);
+    console.log("Position: "+pos)
+    console.log("ID: " + listaProdutos[pos].id + " Nome: " + listaProdutos[pos].nome + " Unidade: " + listaProdutos[pos].unMedida + " PreçoUn: " + listaProdutos[pos].precoUn )
+   
+
+    
+    
 }
 
 function addItem() {
@@ -44,8 +62,8 @@ function addItem() {
 
     // Cria o select para o nome do item
     var selectNome = document.createElement('select');
-    selectNome.className = 'produto-select';
-    selectNome.className = 'centralizar';
+    selectNome.className = 'produto-select centralizar';
+    //selectNome.className = 'centralizar';
     selectNome.onchange = selecionaProduto;
     selectNome.style.marginRight = '5%';
     selectNome.style.borderRadius = '5px';
