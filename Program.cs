@@ -1,9 +1,16 @@
+using Farmtech_WEB.Models;
+
 var builder = WebApplication.CreateBuilder(args);
+
+// Adiciona o DbContext com a string de conexão
+builder.Services.AddDbContext<ApplicationDbContext>(options =>
+options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
 
 var app = builder.Build();
+
 
 // Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment())

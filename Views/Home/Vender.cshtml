@@ -3,35 +3,36 @@
     <link href="~/css/Vender.css" rel="stylesheet" media="all">
     
 }
-<div>
-    <h1>@ViewData["Title"]</h1>
+<div style="background-color: #99d080" class="d-flex flex-row">
+    <img src="~/Imagens/Grandes/Vender.png" style="width:40px; height:40px; margin: 5px; margin-right: 20px" alt="Alternate Text" /> <h2 style="margin-top:5px">Vender</h2>
 </div>
+
 <div class="container border border-secondary">
 
     <!--primeira fileira-->
     <div class="row align-items-lg-start" style="height: 23%; margin-bottom:0px;">
 
         <!--Esquerda-->
-        <div class="d-flex border border-primary align-items-start flex-column col-9" style="height:100%;">
-            <select class="w-50">
+        <div class="d-flex border border-dark align-items-start flex-column col-9" style="height:100%; background-color: #ebfce7">
+            <select class="w-50" style="margin-top: 10px">
                 <option value="value">-Escolha um cliente</option>
                 <option value="value">Jorge</option>
                 <option value="value">Abilio</option>
                 <option value="value">Noralma</option>
                 <option value="value">Ciliano</option>
             </select>
-            <div class="justify-content-end" style="margin-top:4rem">
-                <button class="incluir" onclick="addItem()"></button>
-                <button class="excluir"></button>
+            <div class="justify-content-end" style="margin-top: 3.5rem">
+                <button class="incluir border border-dark" onclick="addItem()" style="height: 2rem;width: 4rem; margin-right: 1rem%"></button>
+                <button class="excluir border border-dark" onclick="deleteItem()" style="height: 2rem;width: 4rem;"></button>
             </div>            
         </div>        
         
-        
-        <div class="border border-primary col-3 d-flex flex-column" style="height:100% ;padding-top:5px;padding-bottom: 4px">
+        <!--Direita-->
+        <div class="border border-dark col-3 d-flex flex-column" style="height:100% ;padding-top:5px;padding-bottom: 4px;background-color: #ebfce7">
             <!--ENTREGA-->
             <div class="d-flex flex-row justify-content-end mb-2 w-100">
                 <label>Entrega</label>
-                <select class="campos-vender">
+                <select id="select-frete"class="campos-vender" onchange="calcFrete()">
                     <option value="value">Retirada</option>
                     <option value="value">Entrega</option>
                 </select>
@@ -39,7 +40,7 @@
             <!--PAGAMENTO-->
             <div class="d-flex flex-row justify-content-end mb-2 w-100">
                 <label class= "mb-0 mr-2">Pagamento</label>
-                <select class="campos-vender">
+                <select id="select-pagto" class="campos-vender">
                     <option value="value">Credito</option>
                     <option value="value">Débito</option>
                     <option value="value">Dinheiro</option>
@@ -49,16 +50,16 @@
             </div>
             <div class="d-flex flex-row justify-content-end mb-2 w-100">
                 <label class="mb-0 mr-2">Cupom</label>
-                <input id="cupom" type="text" class="input form-control campos-vender">
+                <input id="cupom" type="text" class="input form-control campos-vender" onkeydown="validaCupom(this)">
             </div>             
         </div>         
     </div>
 
     <!--Segunda fileira-->
-        <div class="row align-items-lg-start mb-3" style="height: 77%; margin-top:0px;">
+    <div class="row align-items-lg-start mb-3" style="height: 77%; margin-top:0px;background-color:#f6fdf4;">
 
             <!--Esquerda-->
-        <div id="lista-itens" class="m-0 d-flex border border-success align-items-start flex-column col-9"
+        <div id="lista-itens" class="m-0 d-flex border border-dark align-items-start flex-column col-9"
              style="height: 100%; overflow-y: scroll">
              <!--
             <span class="d-flex flex-row item-span mt-1">
@@ -89,31 +90,34 @@
             -->
         </div>
             <!--Direita-->
-                <div class="p-2 border border-warning col-3 d-flex flex-column"style="height:100%;">
+        <div class="p-2 border border-dark col-3 d-flex flex-column" style="height:100%; background-color: #ebfce7">
                     <!--Subtotal-->
                         <div class="d-flex flex-row justify-content-end mb-2 w-100">
                             <label class="mb-0 mr-2">Subtotal</label>
-                            <input id="subtotal" type="text" disabled value="R$ 50,00" class="input form-control campos-vender">
+                            <input id="subtotal" value="00.00" type="number" disabled placeholder="00.00" class="input form-control campos-vender">
                         </div>
                     <!--Frete-->
                         <div class="d-flex flex-row justify-content-end mb-2 w-100">
                             <label class="mb-0 mr-2">Frete</label>
-                            <input id="frete" type="text" disabled value="R$ 10,00" class="input form-control campos-vender">
+                <input id="frete" value="00.00" type="number" disabled placeholder="00.00" class="input form-control campos-vender">
                         </div>
                     <!--Desconto-->
                         <div class="d-flex flex-row justify-content-end mb-2 w-100">
                             <label class="mb-0 mr-2">Desconto</label>
-                            <input id="desconto" type="text" disabled value="R$ 5,00" class="input desconto form-control campos-vender">
+                <input id="desconto" value="00.00" type="number" disabled placeholder="00.00" class="input desconto form-control campos-vender">
                         </div>
+                    <!--Total-->
                         <div class="d-flex flex-row justify-content-end mb-2 w-100">
                             <label class="mb-0 mr-2">Total</label>
-                            <input id="desconto" type="text" disabled value="R$ 55,00" class="input form-control campos-vender">
+                            <input id="total" type="number" disabled placeholder="00.00" class="input form-control campos-vender">
                         </div>
-                        <div style="font-size: 0.75rem">
+
+                        <div style="font-size: 1rem; margin-top: 45%;">
                             Vendedor
-                        <div style="border: 1px solid black; font-size: 1rem;"><img src="~/Imagens/Grandes/Foto usuario.png" style="height: 35px; width:35px; margin-right: 1rem;">Nome do usuario</div>
-                        <button class="confirmar"></button>
-                        <button class="cancelar"></button>
+                <div style="border: 1px solid black; font-size: 1rem; padding: 10px; background-color: white"><img src="~/Imagens/Grandes/Foto usuario.png" style="height: 35px; width:35px; margin-right: 1rem;">Nome do usuario</div>
+                        
+                        <button class="confirmar"style="height: 40px;width: 45%; margin-top: 10px; margin-right: 8%"></button>
+                <button class="cancelar" style="height: 40px;width: 45%; margin-top: 10px;"></button>
                         </div>
                         
 
