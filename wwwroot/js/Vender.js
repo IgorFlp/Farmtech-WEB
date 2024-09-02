@@ -1,13 +1,163 @@
 ﻿// Please see documentation at https://learn.microsoft.com/aspnet/core/client-side/bundling-and-minification
 // for details on configuring this project to bundle and minify static web assets.
 
-const { eventListeners } = require("@popperjs/core");
-const { each } = require("jquery");
-let listaProdutos = {};
-let listaClientes = {};
-window.addEventListener("load", function () {
+//const { eventListeners } = require("@popperjs/core");
+//const { each } = require("jquery");
+class Venda {
+    constructor(id, produtos, cupom, mtdPagto, entrega, userLogin, clCpf, dtVenda, subtotal, frete, desconto, total) {
+        this.id = id;        
+        this.cupom = cupom;
+        this.mtdPagto = mtdPagto;
+        this.entrega = entrega;
+        this.userLogin = userLogin;
+        this.clCpf = clCpf;
+        this.dtVenda = dtVenda;
+        this.subtotal = subtotal;
+        this.frete = frete;
+        this.desconto = desconto;
+        this.total = total;
+    }
 
+    addItem() {
+        //remover essa parte daqui
+        const prod = new Produto(1, "Alface", "Kg", 3.50);
+        const prod2 = new Produto(2, "Tomate", "Kg", 5.59);
+        const prod3 = new Produto(3, "Berinjela", "Un", 8.00);
+        let listaProdutos = [prod, prod2, prod3];
+        //
+
+        console.log("Entrou na função");
+        let contagem = document.querySelectorAll(".produto-span");
+        let Nomeid = contagem.length + 1;
+        console.log("Contagem: " + contagem + "ID: " + Nomeid);
+        var spanItem = document.createElement('span');
+        spanItem.className = 'd-flex flex-row item-span mt-1 produto-span bg-white';
+        spanItem.id = 'produto-' + Nomeid;
+        console.log("Criou span: " + spanItem);
+
+        // Cria o input checkbox
+        var checkbox = document.createElement('input');
+        checkbox.className = 'check-item centralizar';
+        checkbox.style.marginLeft = '1rem';
+        checkbox.style.marginRight = '0.5rem';
+        checkbox.type = 'checkbox';
+        spanItem.appendChild(checkbox);
+        console.log("Criou checkbox: " + checkbox);
+
+        // Cria o select para o nome do item
+        var selectNome = document.createElement('select');
+        selectNome.className = 'produto-select centralizar';
+        //selectNome.className = 'centralizar';
+        selectNome.onchange = selecionaProduto;
+        selectNome.style.marginRight = '5%';
+        selectNome.style.borderRadius = '5px';
+        selectNome.style.height = '80%';
+        selectNome.style.width = '45%';
+        //class="centralizar" style="height: 80%; width:45%; border-radius:5px; margin-right: 5%;
+
+        console.log("Criou select nome: " + selectNome);
+        var option = document.createElement('option');
+        option.innerText = "-Selecione um produto-";
+        selectNome.appendChild(option);
+
+        for (i = 0; i < listaProdutos.length; i++) {
+            var option = document.createElement('option');
+            option.innerText = listaProdutos[i].nome;
+            option.value = listaProdutos[i].id;
+            selectNome.appendChild(option);
+            console.log("Tentou criar option");
+        }
+        spanItem.appendChild(selectNome);
+
+        // Cria o label para o preço unitário
+        var labelPreco = document.createElement('label');
+        labelPreco.className = 'centralizar texto-itens';
+        labelPreco.textContent = 'Preço Un';
+        spanItem.appendChild(labelPreco);
+        console.log("Criou label preço un: " + labelPreco);
+
+        // Cria o input para o preço unitário
+        var inputPreco = document.createElement('input');
+        inputPreco.placeholder = '0,00';
+        inputPreco.type = 'number';
+        inputPreco.disabled = true;
+        inputPreco.className = 'precoUn-input centralizar campos-itens';
+        spanItem.appendChild(inputPreco);
+        console.log("criou input preço un: " + inputPreco);
+
+        // Cria o label para a quantidade
+        var labelQuantidade = document.createElement('label');
+        labelQuantidade.className = 'quant-label centralizar texto-itens';
+        labelQuantidade.textContent = 'Quantidade';
+
+        spanItem.appendChild(labelQuantidade);
+        console.log("criou label quant: " + labelQuantidade);
+
+        // Cria o input para a quantidade
+        var inputQuantidade = document.createElement('input');
+        inputQuantidade.type = 'number';
+        inputQuantidade.min = '0';
+        inputQuantidade.placeholder = '0,00';
+        inputQuantidade.onchange = calcTotalSpan;
+        //inputQuantidade.disabled = true;
+
+        inputQuantidade.className = 'quant-input centralizar campos-itens';
+        spanItem.appendChild(inputQuantidade);
+        console.log("Criou input quant: " + inputQuantidade);
+
+        // Cria o label para o total
+        var labelTotal = document.createElement('label');
+        labelTotal.className = 'total-label centralizar texto-itens';
+        labelTotal.textContent = 'Total';
+        spanItem.appendChild(labelTotal);
+        console.log("Criou label total: " + labelTotal);
+
+        // Cria o input para o total
+        var inputTotal = document.createElement('input');
+        inputTotal.type = 'number';
+        inputTotal.disabled = true;
+
+        inputTotal.className = 'total-input centralizar campos-itens';
+        spanItem.appendChild(inputTotal);
+        console.log("Criou input total:" + inputTotal);
+
+        // Adiciona o item à lista (substitua "idDaLista" pelo ID do elemento onde os itens devem ser adicionados)
+        console.log("Span item completo: " + spanItem);
+        document.getElementById('lista-itens').appendChild(spanItem);
+        console.log("Adicionou a lista item");
+
+    }
+
+    confirmaVenda() {
+
+        venda.id = 0;
+        venda.cupom = "Teste";
+        venda.mtdPagto = "Teste";
+        venda.entrega = "Teste";
+        venda.userLogin = "Teste";
+        venda.clCpf = "12345678911";
+        venda.dtVenda = Date.now();
+        venda.subtotal = 10.00;
+        venda.frete = 15.00;
+        venda.desconto = 5.00;
+        venda.total = 20.00;
+        console.log("Venda" + venda);
+    }
+
+}
+
+let venda = new Venda();
+window.addEventListener("load", function () {
+    document.querySelector("#btnIncluir").addEventListener('click', function () {
+        console.log('addItem chamado');
+        venda.addItem();  // Chama o método da instância venda
+    });
+    document.querySelector(".confirmar").addEventListener('click', function () {
+        console.log('Confirmar chamado');
+        venda.confirmaVenda();  // Chama o método da instância venda
+    });
 })
+
 function Produto(id, nome, unMedida, precoUn) {
     this.id = id;
     this.nome = nome;
@@ -28,14 +178,14 @@ function selecionaProduto() {
     var value = select.value;
     var produtoNome = select.options[select.selectedIndex].text;
     //let produtoNome = select.innerText;
-    console.log("Span ID: " + span.id + "Select: "+ select.className + "Produto: "+produtoNome)
+    console.log("Span ID: " + span.id + "Select: " + select.className + "Produto: " + produtoNome)
 
     const pos = listaProdutos.map(e => e.nome).indexOf(produtoNome);
-    console.log("Position: "+pos)
-    console.log("ID: " + listaProdutos[pos].id + " Nome: " + listaProdutos[pos].nome + " Unidade: " + listaProdutos[pos].unMedida + " PreçoUn: " + listaProdutos[pos].precoUn )
-   
+    console.log("Position: " + pos)
+    console.log("ID: " + listaProdutos[pos].id + " Nome: " + listaProdutos[pos].nome + " Unidade: " + listaProdutos[pos].unMedida + " PreçoUn: " + listaProdutos[pos].precoUn)
+
     let precoUn = document.querySelector("#" + CSS.escape(span.id) + "> .precoUn-input");
-    console.log("Elemento: "+precoUn.innerHTML);
+    console.log("Elemento: " + precoUn.innerHTML);
     precoUn.value = listaProdutos[pos].precoUn;
 
     let quantLbl = document.querySelector("#" + CSS.escape(span.id) + "> .quant-label");
@@ -76,7 +226,7 @@ function calcSubtotal() {
     atualizaTotal();
 }
 function calcFrete() {
-    let select = document.querySelector("#select-frete");     
+    let select = document.querySelector("#select-frete");
     let selecionado = select.options[select.selectedIndex].text;
     console.log("Selecionado: " + selecionado);
     let frete;
@@ -96,7 +246,7 @@ function validaCupom(elem) {
         if (cupom == "Sexta20") {
             let valor = 20.00;
             desconto.value = valor.toFixed(2);
-            console.log("Desconto: "+desconto);
+            console.log("Desconto: " + desconto);
         } else {
             alert("Cupom invalido");
         }
@@ -106,7 +256,7 @@ function validaCupom(elem) {
     atualizaTotal();
 }
 function atualizaTotal() {
-    
+
     let subtotal = document.querySelector("#subtotal").value;
     let desconto = document.querySelector("#desconto").value;
     let frete = document.querySelector("#frete").value;
@@ -127,7 +277,7 @@ function deleteItem() {
         if (el.checked == true) {
             console.log("Marcado: " + el)
             el.parentElement.remove();
-            
+
         } else {
             console.log("Desmarcado: " + el)
         }
@@ -141,7 +291,7 @@ function addItem() {
     const prod3 = new Produto(3, "Berinjela", "Un", 8.00);
     let listaProdutos = [prod, prod2, prod3];
     //
-    
+
     console.log("Entrou na função");
     let contagem = document.querySelectorAll(".produto-span");
     let Nomeid = contagem.length + 1;
@@ -149,7 +299,7 @@ function addItem() {
     var spanItem = document.createElement('span');
     spanItem.className = 'd-flex flex-row item-span mt-1 produto-span bg-white';
     spanItem.id = 'produto-' + Nomeid;
-    console.log("Criou span: "+spanItem);
+    console.log("Criou span: " + spanItem);
 
     // Cria o input checkbox
     var checkbox = document.createElement('input');
@@ -158,7 +308,7 @@ function addItem() {
     checkbox.style.marginRight = '0.5rem';
     checkbox.type = 'checkbox';
     spanItem.appendChild(checkbox);
-    console.log("Criou checkbox: "+checkbox);
+    console.log("Criou checkbox: " + checkbox);
 
     // Cria o select para o nome do item
     var selectNome = document.createElement('select');
@@ -170,10 +320,10 @@ function addItem() {
     selectNome.style.height = '80%';
     selectNome.style.width = '45%';
     //class="centralizar" style="height: 80%; width:45%; border-radius:5px; margin-right: 5%;
-    
+
     console.log("Criou select nome: " + selectNome);
     var option = document.createElement('option');
-    option.innerText = "-Selecione um produto-";    
+    option.innerText = "-Selecione um produto-";
     selectNome.appendChild(option);
 
     for (i = 0; i < listaProdutos.length; i++) {
@@ -190,16 +340,16 @@ function addItem() {
     labelPreco.className = 'centralizar texto-itens';
     labelPreco.textContent = 'Preço Un';
     spanItem.appendChild(labelPreco);
-    console.log("Criou label preço un: "+labelPreco);
+    console.log("Criou label preço un: " + labelPreco);
 
     // Cria o input para o preço unitário
     var inputPreco = document.createElement('input');
     inputPreco.placeholder = '0,00';
     inputPreco.type = 'number';
-    inputPreco.disabled = true;   
+    inputPreco.disabled = true;
     inputPreco.className = 'precoUn-input centralizar campos-itens';
     spanItem.appendChild(inputPreco);
-    console.log("criou input preço un: "+inputPreco);
+    console.log("criou input preço un: " + inputPreco);
 
     // Cria o label para a quantidade
     var labelQuantidade = document.createElement('label');
@@ -207,7 +357,7 @@ function addItem() {
     labelQuantidade.textContent = 'Quantidade';
 
     spanItem.appendChild(labelQuantidade);
-    console.log("criou label quant: "+labelQuantidade);
+    console.log("criou label quant: " + labelQuantidade);
 
     // Cria o input para a quantidade
     var inputQuantidade = document.createElement('input');
@@ -216,30 +366,31 @@ function addItem() {
     inputQuantidade.placeholder = '0,00';
     inputQuantidade.onchange = calcTotalSpan;
     //inputQuantidade.disabled = true;
-    
+
     inputQuantidade.className = 'quant-input centralizar campos-itens';
     spanItem.appendChild(inputQuantidade);
-    console.log("Criou input quant: "+inputQuantidade);
+    console.log("Criou input quant: " + inputQuantidade);
 
     // Cria o label para o total
     var labelTotal = document.createElement('label');
     labelTotal.className = 'total-label centralizar texto-itens';
     labelTotal.textContent = 'Total';
     spanItem.appendChild(labelTotal);
-    console.log("Criou label total: "+labelTotal);
+    console.log("Criou label total: " + labelTotal);
 
     // Cria o input para o total
     var inputTotal = document.createElement('input');
     inputTotal.type = 'number';
     inputTotal.disabled = true;
-    
+
     inputTotal.className = 'total-input centralizar campos-itens';
     spanItem.appendChild(inputTotal);
-    console.log("Criou input total:"+inputTotal);
+    console.log("Criou input total:" + inputTotal);
 
     // Adiciona o item à lista (substitua "idDaLista" pelo ID do elemento onde os itens devem ser adicionados)
-    console.log("Span item completo: "+spanItem);
+    console.log("Span item completo: " + spanItem);
     document.getElementById('lista-itens').appendChild(spanItem);
     console.log("Adicionou a lista item");
+
 }
 

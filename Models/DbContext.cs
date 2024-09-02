@@ -10,14 +10,11 @@ namespace Farmtech_WEB.Models
         }
 
         // Defina as tabelas do banco de dados como DbSet<>
-        public DbSet<Cliente> Clientes { get; set; }
-        public DbSet<Produto> Produtos { get; set; }
+        public DbSet<Venda> Vendas { get; set; }
+        public DbSet<VendaProdutos> VendaProdutos { get; set; }
 
-        // Exemplo:
-        public class Cliente
-        {
-            public int Id { get; set; }
-            public string Nome { get; set; }
-        }
+
+
+
     }
 }

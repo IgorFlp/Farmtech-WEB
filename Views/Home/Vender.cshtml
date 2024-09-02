@@ -1,6 +1,8 @@
 ﻿@{
     ViewData["Title"] = "Vender";//Substituir molde por nome da tela
     <link href="~/css/Vender.css" rel="stylesheet" media="all">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/2.11.6/umd/popper.min.js"></script>
     
 }
 <div style="background-color: #99d080" class="d-flex flex-row">
@@ -22,7 +24,7 @@
                 <option value="value">Ciliano</option>
             </select>
             <div class="justify-content-end" style="margin-top: 3.5rem">
-                <button class="incluir border border-dark" onclick="addItem()" style="height: 2rem;width: 4rem; margin-right: 1rem%"></button>
+                <button id="btnIncluir" class="incluir border border-dark" style="height: 2rem;width: 4rem; margin-right: 1rem"></button>
                 <button class="excluir border border-dark" onclick="deleteItem()" style="height: 2rem;width: 4rem;"></button>
             </div>            
         </div>        

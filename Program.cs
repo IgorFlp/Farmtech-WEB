@@ -1,4 +1,5 @@
 using Farmtech_WEB.Models;
+using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
