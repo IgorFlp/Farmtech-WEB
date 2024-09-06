@@ -1,7 +1,12 @@
 using Farmtech_WEB.Models;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.SqlServer;
+using Microsoft.Extensions.Logging;
 
 var builder = WebApplication.CreateBuilder(args);
+builder.Logging.ClearProviders(); // Remove os provedores de log padrão
+builder.Logging.AddConsole(); // Adiciona logging para o console
+builder.Logging.AddDebug();   // Adiciona logging para o Debug
 
 // Adiciona o DbContext com a string de conexão
 builder.Services.AddDbContext<ApplicationDbContext>(options =>

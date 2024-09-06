@@ -197,19 +197,22 @@ class Venda {
 
     confirmaVenda() {
 
-        venda.id = 0;
+        //venda.id = 0;
         venda.cupom = document.querySelector("#cupom").value;
         venda.mtdPagto = document.querySelector("#select-pagto").options[document.querySelector("#select-pagto").selectedIndex].text;
         venda.entrega = document.querySelector("#select-frete").options[document.querySelector("#select-frete").selectedIndex].text;
         venda.userLogin = document.querySelector("#usuario").text;
-        venda.clCpf = document.querySelector("#select-cliente").options[document.querySelector("#select-cliente").selectedIndex].text;
+        venda.clCpf =  "23456789012"//document.querySelector("#select-cliente").options[document.querySelector("#select-cliente").selectedIndex].text;
         venda.dtVenda = Date.now();
+        venda.dtVenda = new Date(venda.dtVenda).toISOString().split('T')[0]
         venda.subtotal = document.querySelector("#subtotal").value;
         venda.frete = document.querySelector("#frete").value;
         venda.desconto = document.querySelector("#desconto").value;
         venda.total = document.querySelector("#total").value;
+        venda.userLogin = 5;
 
         console.log("Venda" + venda);
+        console.log(JSON.stringify(venda)); // Verifica os dados que estão sendo enviados
 
         const url = '/Vender/Criar';
         // Faz a requisição POST usando fetch
@@ -219,6 +222,8 @@ class Venda {
                 'Content-Type': 'application/json', // Define o tipo de conteúdo como JSON
             },
             body: JSON.stringify(venda) // Envia o objeto venda como JSON
+             // Verifica os dados que estão sendo enviados
+
         })
             .then(response => {
                 if (response.ok) {
@@ -244,9 +249,7 @@ class Venda {
             console.log(el);
             let value = parseFloat(el.value);
             soma += value;
-        });
-
-        // ENCONTRAR O ERRO DAQUI, NÃO CONSEGUE ACESSAR ITENS[I].VALUE
+        });        
         subtotal.value = soma.toFixed(2);
         venda.atualizaTotal();
     }
@@ -317,19 +320,20 @@ window.addEventListener("load", function () {
     document.querySelector("#lista-itens").addEventListener("change", (event) => {
         if (event.target && event.target.matches(".quant-input")) {
             console.log("Seleciona quantidade chamado");
-            venda.calcTotalSpan(event.target.parentElement);  
+            venda.calcTotalSpan(event.target.parentElement);
         }
     });
-    document.querySelector("#select-frete").addEventListener("change", (event) => {       
-            console.log("Seleciona frete chamado");
-            venda.calcFrete();          
-    });    
-    document.querySelector("#cupom").addEventListener("keydown", (event) => {        
-            //console.log("Seleciona cupom chamado");
-            venda.validaCupom(event.target);        
-    });    
+    document.querySelector("#select-frete").addEventListener("change", (event) => {
+        console.log("Seleciona frete quantidade chamado");
+        venda.calcFrete();
+    });
+    document.querySelector("#cupom").addEventListener("keydown", (event) => {
+        //console.log("Seleciona cupom chamado");
+        venda.validaCupom(event.target);
+    });
     document.querySelector(".confirmar").addEventListener('click', function () {
         console.log('Confirmar chamado');
         venda.confirmaVenda();  // Chama o método da instância venda
     });
-})    
+    //calcSubtotal();
+})

@@ -7,22 +7,26 @@ namespace Farmtech_WEB.Controllers
     public class VenderController : Controller
     {
         private readonly ApplicationDbContext _context;
+        private readonly ILogger<VenderController> _logger;
 
         // Construtor que injeta o DbContext
-        public VenderController(ApplicationDbContext context)
+        public VenderController(ApplicationDbContext context, ILogger<VenderController> logger)
         {
             _context = context;
+            _logger = logger;
+            _logger = logger;
         }
         public IActionResult Create()
         {
             return View();
         }
 
-        // POST: Venda/Create
+        //POST: Vender/Create
         [HttpPost]
-        [ValidateAntiForgeryToken]
+        //[ValidateAntiForgeryToken]
         public async Task<IActionResult> Criar([FromBody] Venda venda)
         {
+            try { 
             if (ModelState.IsValid)
             {
                 _context.Add(venda);
@@ -30,6 +34,13 @@ namespace Farmtech_WEB.Controllers
                 return Ok(venda);
             }
             return BadRequest(ModelState); ;
+            } catch (Exception ex)
+            {
+                // Log the exception and return a 500 status co de
+                // Logging can be done using a logging library or simply console
+                Console.WriteLine(ex.Message);
+                return StatusCode(500, "Internal server error");
+            }
         }
 
 

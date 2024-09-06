@@ -14,37 +14,37 @@
         <nav class="navbar navbar-light border-right box-shadow" style="width: 200px;background:#5fdc57; min-height: 100vh;">
 
             <div class="container-fluid flex-column">
-                <a class="navbar-brand mb-4" asp-area="" asp-controller="Home" asp-action="Index">Farmtech_WEB</a>
+                <!--<a class="navbar-brand mb-4" asp-area="" asp-controller="Home" asp-action="Index">Farmtech_WEB</a>-->
                 <ul class="navbar-nav flex-column">
                     <!--Ul significa lista não ordenada (sem numero antes do item)-->
                     <img src="~/Imagens/Grandes/Logo farmtech.png" width="100"  height="100">
                     <li class="nav-item">
                         <b>Cadastro</b>
                     <li class="nav-item">
-                        <a class="nav-link text-dark" asp-area="" asp-controller="Cliente" asp-action="Cliente"><img src="~/Imagens/Grandes/Clientes.png" style=" width: 29px; height: 29px">Cliente</a>
+                        <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Clientes"><img src="~/Imagens/Grandes/Clientes.png" style=" width: 29px; height: 29px">Clientes</a>
                     </li>
 
                     <li class="nav-item">
-                        <a class="nav-link text-dark" asp-area="" asp-controller="Fornecedores" asp-action="Fornecedores"><img src="~/Imagens/Grandes/forncedor.png" style=" width: 29px; height: 29px">Fornecedor</a>
+                        <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Fornecedores"><img src="~/Imagens/Grandes/forncedor.png" style=" width: 29px; height: 29px">Fornecedores</a>
                     </li>
-                    <a class="nav-link text-dark" asp-area="" asp-controller="Produtos" asp-action="Produtos"><img src="~/Imagens/Grandes/Produto.png" style=" width: 29px; height: 29px">Produto</a>
+                    <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Produtos"><img src="~/Imagens/Grandes/Produto.png" style=" width: 29px; height: 29px">Produtos</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link text-dark" asp-area="" asp-controller="Usuario" asp-action="Usuario"><img src="~/Imagens/Grandes/usuario.png" style=" width: 29px; height: 29px">Usuario</a>
+                        <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Usuarios"><img src="~/Imagens/Grandes/usuario.png" style=" width: 29px; height: 29px">Usuarios</a>
                     </li> <!--li significa list item, item de uma lista ul-->
                     <li class="nav-item">
                         <b>Movimentações</b>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link text-dark" asp-area="" asp-controller="Vender" asp-action="Vender"><img src="~/Imagens/Grandes/Vender.png" style=" width: 29px; height: 29px">Vender</a>
+                        <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Vender"><img src="~/Imagens/Grandes/Vender.png" style=" width: 29px; height: 29px">Vender</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link text-dark" asp-area="" asp-controller="Relatório" asp-action="Relatório"><img src="~/Imagens/Grandes/Relatorios.png" style=" width: 29px; height: 29px">Vender</a>
+                        <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Relatorios"><img src="~/Imagens/Grandes/Relatorios.png" style=" width: 29px; height: 29px">Relatórios</a>
                     </li>
                     <!--Inicio da copia do molde-->
 
                     <li class="nav-item">
-                        <a class="nav-link text-dark" asp-area="" asp-controller="Produção" asp-action="Produção"><img src="~/Imagens/Grandes/Producao.png" style=" width: 29px; height: 29px">Producao</a>
+                        <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Producao"><img src="~/Imagens/Grandes/Producao.png" style=" width: 29px; height: 29px">Produção</a>
                     </li>
                     <!--Fim da copia do molde-->
 
@@ -53,8 +53,8 @@
         </nav>
 
         <!-- Conteúdo da Página -->
-        <div class="container-fluid" style="flex-grow: 1; padding-left: 20px;">
-            <main role="main" class="pb-3">
+        <div class="container-fluid" style="width:stretch;height:stretch; padding:0px;">
+            <main role="main" style="padding:0px; margin:0px;">
                 @RenderBody()
             </main>
         </div>
