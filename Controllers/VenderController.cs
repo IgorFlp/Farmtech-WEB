@@ -27,7 +27,7 @@ namespace Farmtech_WEB.Controllers
             {
                 _context.Add(venda);
                 await _context.SaveChangesAsync();
-                return Ok(venda);
+                return Ok();//(venda);
             }
             return BadRequest(ModelState); ;
         }
