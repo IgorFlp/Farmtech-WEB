@@ -3,6 +3,7 @@
 
 //const { eventListeners } = require("@popperjs/core");
 //const { each } = require("jquery");
+
 class Produto{
     constructor(id, nome, unMedida, precoUn) {
         this.id = id;
@@ -11,8 +12,26 @@ class Produto{
         this.precoUn = precoUn;
     }
 }
+class Cliente {
+    constructor(cpf, nome, telefone, email, dataNasc, genero) {
+        this.cpf = cpf;
+        this.nome = nome;
+        this.telefone = telefone;
+        this.email = email;
+        this.dataNasc = dataNasc;
+        this.genero = genero;
+    }
+}
+class VendaProdutos {
+    constructor(ven_id, produtosVenda, quantidadesProd) {
+        this.ven_id = ven_id;
+        this.produtosVenda = produtosVenda || [];
+        this.quantidadesProd = quantidadesProd || [];;
+    }
+}
 class Venda {
-    constructor(id, produtos, cupom, mtdPagto, entrega, userLogin, clCpf, dtVenda, subtotal, frete, desconto, total) {
+    
+    constructor(id, produtos, cupom, mtdPagto, entrega, userLogin, clCpf, dtVenda, subtotal, frete, desconto, total,listaClientesDB, listaProdutosDB) {
         this.id = id;        
         this.cupom = cupom;
         this.mtdPagto = mtdPagto;
@@ -24,15 +43,14 @@ class Venda {
         this.frete = frete;
         this.desconto = desconto;
         this.total = total;
-    }
 
-    addItem() {
-        //remover essa parte daqui
-        const prod = new Produto(1, "Alface", "Kg", 3.50);
-        const prod2 = new Produto(2, "Tomate", "Kg", 5.59);
-        const prod3 = new Produto(3, "Berinjela", "Un", 8.00);
-        let listaProdutos = [prod, prod2, prod3];
-        //
+        this.listaClientesDB = listaClientesDB || [];
+        this.listaProdutosDB = listaProdutosDB || [];
+        
+    }
+   
+
+    async addItem() {       
 
         console.log("Entrou na função");
         let contagem = document.querySelectorAll(".produto-span");
@@ -68,13 +86,49 @@ class Venda {
         option.innerText = "-Selecione um produto-";
         selectNome.appendChild(option);
         let i = 0;
-        for (i = 0; i < listaProdutos.length; i++) {
-            var option = document.createElement('option');
-            option.innerText = listaProdutos[i].nome;
-            option.value = listaProdutos[i].id;
-            selectNome.appendChild(option);
-            console.log("Tentou criar option");
-        }
+        /*
+        if (!selectNome) {
+            console.error('Elemento selectNome não encontrado');
+        } else {
+            var listaProdutosDB = this.consultarProdutos();
+
+            listaProdutosDB.then((listaProdutosDB) => {
+                // Verifique se listaProdutosDB é um array
+                if (Array.isArray(listaProdutosDB)) {
+                    console.log("Lista produtos length: " + listaProdutosDB.length);
+
+                    for (let i = 0; i < listaProdutosDB.length; i++) {
+                        const produto = listaProdutosDB[i];
+                        const option = document.createElement('option');
+                        option.innerText = produto.nome;
+                        option.value = produto.id;
+                        selectNome.appendChild(option);
+                        console.log("Criou option para:", produto.nome);
+                    }
+                } else {
+                    console.error('Lista de produtos não é um array ou está indefinida.');
+                }
+            }).catch((error) => {
+                console.error('Erro ao consultar produtos:', error);
+            });
+        }*/
+        
+        /*var listaProdutosDB = this.consultarProdutos()
+            listaProdutosDB.then((listaProdutosDB) => {
+            */
+            console.log("Lista produtos length: " + this.listaProdutosDB.length)
+            for (i = 0; i < this.listaProdutosDB.length; i++) {
+                var option = document.createElement('option');
+                option.innerText = this.listaProdutosDB[i].nome;
+                option.value = this.listaProdutosDB[i].id;
+                selectNome.appendChild(option);
+                console.log("Tentou criar option");
+            }
+            
+        
+        
+        
+        
         spanItem.appendChild(selectNome);
 
         // Cria o label para o preço unitário
@@ -88,7 +142,7 @@ class Venda {
         var inputPreco = document.createElement('input');
         inputPreco.placeholder = '0,00';
         inputPreco.type = 'number';
-        inputPreco.disabled = true;
+        inputPreco.disabled = true;        
         inputPreco.className = 'precoUn-input centralizar campos-itens';
         spanItem.appendChild(inputPreco);
         console.log("criou input preço un: " + inputPreco);
@@ -150,10 +204,7 @@ class Venda {
     }
     selecionaProduto(span) {
         //remover essa parte daqui
-        const prod = new Produto(1, "Alface", "Kg", 3.50);
-        const prod2 = new Produto(2, "Tomate", "Kg", 5.59);
-        const prod3 = new Produto(3, "Berinjela", "Un", 8.00);
-        let listaProdutos = [prod, prod2, prod3];
+        
         //
 
         //let span = this.parentElement;
@@ -164,21 +215,21 @@ class Venda {
         //let produtoNome = select.innerText;
         console.log("Span ID: " + span.id + "Select: " + select.className + "Produto: " + produtoNome)
 
-        const pos = listaProdutos.map(e => e.nome).indexOf(produtoNome);
+        const pos = this.listaProdutosDB.map(e => e.nome).indexOf(produtoNome);
         console.log("Position: " + pos)
-        console.log("ID: " + listaProdutos[pos].id + " Nome: " + listaProdutos[pos].nome + " Unidade: " + listaProdutos[pos].unMedida + " PreçoUn: " + listaProdutos[pos].precoUn)
+        console.log("ID: " + this.listaProdutosDB[pos].id + " Nome: " + this.listaProdutosDB[pos].nome + " Unidade: " + this.listaProdutosDB[pos].unMedida + " PreçoUn: " + this.listaProdutosDB[pos].precoUn)
 
         let precoUn = document.querySelector("#" + CSS.escape(span.id) + "> .precoUn-input");
         console.log("Elemento: " + precoUn.innerHTML);
-        precoUn.value = listaProdutos[pos].precoUn;
+        precoUn.value = this.listaProdutosDB[pos].precoUn;
 
         let quantLbl = document.querySelector("#" + CSS.escape(span.id) + "> .quant-label");
         console.log("Elemento: " + quantLbl.innerHTML);
-        quantLbl.innerHTML = "Quantidade " + listaProdutos[pos].unMedida;
+        quantLbl.innerHTML = "Quantidade " + this.listaProdutosDB[pos].unMedida;
 
         let quantInput = document.querySelector("#" + CSS.escape(span.id) + "> .quant-input");
         quantInput.value = 0;
-        if (listaProdutos[pos].unMedida == "Un") {
+        if (this.listaProdutosDB[pos].unMedida == "Un") {
             quantInput.step = '0';
         } else {
             quantInput.step = '.10';
@@ -192,7 +243,9 @@ class Venda {
         let valor = quant.value * precoUn.value;
         totalInput.value = valor.toFixed(2);
         console.log("Valor total: " + totalInput.value);
-        venda.calcSubtotal();
+        venda.calcSubtotal();             
+        
+        
     }
 
     confirmaVenda() {
@@ -210,7 +263,11 @@ class Venda {
         venda.desconto = document.querySelector("#desconto").value;
         venda.total = document.querySelector("#total").value;
         venda.userLogin = 5;
+        //                                                                                                           _/\_    _/\_
+        // FAZER FOR PRA PEGAR OS SPANS, PEGAR OS VALUES SELECIONADOS E DEFINIR, PEGAR OS VALUES DE QUANT E DEFINIR (/^-^)/\(^-^\) 
+        vendaProdutos.
 
+        
         console.log("Venda" + venda);
         console.log(JSON.stringify(venda)); // Verifica os dados que estão sendo enviados
 
@@ -234,6 +291,40 @@ class Venda {
             })
             .then(data => {
                 console.log('Venda criada com sucesso:', data);
+                const vendaId = data.id;
+                if (vendaId) {
+                    // Agora chama o método para criar os itens na tabela VendaProdutos
+                    vendaProdutos.ven_id = vendaId;
+                    criarVendaProdutos();
+                } else {
+                    console.error('ID da venda não retornado.');
+                }
+            })
+            .catch(error => {
+                console.error('Erro:', error);
+            });
+    }
+    criaProdutosVendas() {
+        const url = '/Vender/AddProdutosVenda';
+        // Faz a requisição POST usando fetch
+        fetch(url, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json', // Define o tipo de conteúdo como JSON
+            },
+            body: JSON.stringify(vendaProdutos) // Envia o objeto venda como JSON
+            // Verifica os dados que estão sendo enviados
+
+        })
+            .then(response => {
+                if (response.ok) {
+                    return response.json(); // Se a resposta for OK, converte para JSON
+                } else {
+                    throw new Error('Erro ao enviar a venda.');
+                }
+            })
+            .then(data => {
+                console.log('Produtos da venda adicionados:', data);                          
             })
             .catch(error => {
                 console.error('Erro:', error);
@@ -299,10 +390,75 @@ class Venda {
         total.value = calc.toFixed(2);
 
     }
+    consultarClientes() {
+        const url = '/Cliente/Consultar';
+        // Faz a requisição POST usando fetch
+        fetch(url, {
+            method: 'GET',
+            headers: {  
+                'Content-Type': 'application/json'         
+            }          
+        })
+            .then(response => {
+                if (response.ok) {                    
+                    return response.json(); // Se a resposta for OK, converte para JSON
+                    
+                } else {
+                    throw new Error('Erro ao Consultar clientes.');
+                }
+            })
+            .then(data => {
+                console.log('Consulta realisada com sucesso:', data);
+                data.forEach(item => {
+                    this.addClientes(item); // Chama a função addClientes para cada cliente
+                });
+                return data;
+            })
+            .catch(error => {
+                console.error('Erro:', error);
+            });
+    }
+    addClientes(item) {           
+        
+            var optionCliente = document.createElement('option');
+            optionCliente.value = item.nome;
+            optionCliente.textContent = item.nome;
+            document.querySelector("#select-cliente").appendChild(optionCliente);
+            console.log("Criou a option total: " + optionCliente.text);             
+    
+    }
+    consultarProdutos() {
+        const url = '/Produto/Consultar';
+        // Faz a requisição POST usando fetch
+        return fetch(url, {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        })
+            .then(response => {
+                if (response.ok) {
+                    return response.json(); // Se a resposta for OK, converte para JSON
+
+                } else {
+                    throw new Error('Erro ao Consultar clientes.');
+                }
+            })
+            .then(data => {
+                console.log('Consulta de produtos realisada com sucesso:', data);                
+                return data;
+            })
+            .catch(error => {
+                console.error('Erro:', error);
+            });
+    }  
 }
 
 let venda = new Venda();
-window.addEventListener("load", function () {
+var vendaProdutos = new VendaProdutos();
+window.addEventListener("load", async function () {
+    venda.listaClientesDB = await venda.consultarClientes();   
+    venda.listaProdutosDB = await venda.consultarProdutos();
     document.querySelector("#btnIncluir").addEventListener('click', function () {
         console.log('addItem chamado');
         venda.addItem();  // Chama o método da instância venda
@@ -335,5 +491,6 @@ window.addEventListener("load", function () {
         console.log('Confirmar chamado');
         venda.confirmaVenda();  // Chama o método da instância venda
     });
+    
     //calcSubtotal();
 })

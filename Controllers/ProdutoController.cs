@@ -1,16 +1,17 @@
 using Farmtech_WEB.Models;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using System.Diagnostics;
 
 namespace Farmtech_WEB.Controllers
 {
-    public class VenderController : Controller
+    public class ProdutoController : Controller
     {
         private readonly ApplicationDbContext _context;
-        private readonly ILogger<VenderController> _logger;
+        private readonly ILogger<ProdutoController> _logger;
 
         // Construtor que injeta o DbContext
-        public VenderController(ApplicationDbContext context, ILogger<VenderController> logger)
+        public ProdutoController(ApplicationDbContext context, ILogger<ProdutoController> logger)
         {
             _context = context;
             _logger = logger;
@@ -21,17 +22,17 @@ namespace Farmtech_WEB.Controllers
             return View();
         }
 
-        //POST: Vender/Create
+        //POST: Produto/Create
         [HttpPost]
         //[ValidateAntiForgeryToken]
-        public async Task<IActionResult> Criar([FromBody] Venda venda)
+        public async Task<IActionResult> Criar([FromBody] Produto produto)
         {
             try { 
             if (ModelState.IsValid)
             {
-                _context.Add(venda);
+                _context.Add(produto);
                 await _context.SaveChangesAsync();
-                return Ok(new { id = venda.Id });
+                return Ok(produto);
             }
             return BadRequest(ModelState); ;
             } catch (Exception ex)
@@ -42,17 +43,15 @@ namespace Farmtech_WEB.Controllers
                 return StatusCode(500, "Internal server error");
             }
         }
-        [HttpPost]
-        //[ValidateAntiForgeryToken]
-        public async Task<IActionResult> AddProdutosVenda([FromBody] VendaProdutos vendaProdutos)
+        [HttpGet]
+        public async Task<IActionResult> Consultar()
         {
             try
             {
                 if (ModelState.IsValid)
                 {
-                    _context.Add(vendaProdutos);
-                    await _context.SaveChangesAsync();
-                    return Ok(vendaProdutos);
+                    var produtos = await _context.Produto.ToListAsync();            
+                    return Ok(produtos);
                 }
                 return BadRequest(ModelState); ;
             }

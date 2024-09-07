@@ -1,5 +1,7 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.SqlServer.Server;
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Data.SqlClient;
 
 
@@ -39,13 +41,11 @@ namespace Farmtech_WEB.Models
     public class VendaProdutos
     {
         // Construir classe com base no banco
-        private int id;
-        private int vendaId;
-        private int produtoId;
-        private decimal quant;
-
-        public int VendaId { get => vendaId; set => vendaId = value; }
-        public int ProdutoId { get => produtoId; set => produtoId = value; }
-        public decimal Quant { get => quant; set => quant = value; }
+        [Key]
+        public int Id { get; set; }
+        public int Ven_id { get; set;}
+        
+        public int Pdt_id { get; set; }
+        public decimal Quant { get; set; }
     }
 }

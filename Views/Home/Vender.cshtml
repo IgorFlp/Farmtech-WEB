@@ -17,11 +17,7 @@
         <!--Esquerda-->
         <div class="d-flex border border-dark align-items-start flex-column col-9" style="height:100%; background-color: #ebfce7">
             <select id="select-cliente" class="w-50" style="margin-top: 10px">
-                <option value="value">-Escolha um cliente</option>
-                <option value="value">Jorge</option>
-                <option value="value">Abilio</option>
-                <option value="value">Noralma</option>
-                <option value="value">Ciliano</option>
+                <option value="" selected disabled>Selecione um cliente</option>
             </select>
             <div class="justify-content-end" style="margin-top: 3.5rem">
                 <button id="btnIncluir" class="incluir border border-dark" style="height: 2rem;width: 4rem; margin-right: 1rem"></button>
@@ -35,6 +31,7 @@
             <div class="d-flex flex-row justify-content-end mb-2 w-100">
                 <label>Entrega</label>
                 <select id="select-frete"class="campos-vender">
+                    <option value="" selected disabled></option>
                     <option value="value">Retirada</option>
                     <option value="value">Entrega</option>
                 </select>
@@ -43,6 +40,7 @@
             <div class="d-flex flex-row justify-content-end mb-2 w-100">
                 <label class= "mb-0 mr-2">Pagamento</label>
                 <select id="select-pagto" class="campos-vender">
+                    <option value="" selected disabled></option>
                     <option value="value">Credito</option>
                     <option value="value">Débito</option>
                     <option value="value">Dinheiro</option>

@@ -10,12 +10,19 @@ namespace Farmtech_WEB.Models
         }
 
         // Defina as tabelas do banco de dados como DbSet<>
+        public DbSet<Cliente> Cliente { get; set; }
+        public DbSet<Produto> Produto { get; set; }
         public DbSet<Venda> Vendas { get; set; }
-        //public DbSet<VendaProdutos> VendaProdutos { get; set; }
+        public DbSet<VendaProdutos> VendaProdutos { get; set; }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
 
+            modelBuilder.Entity<Cliente>().ToTable("Tb_cliente");
+            modelBuilder.Entity<Produto>().ToTable("Tb_produto");
+            modelBuilder.Entity<VendaProdutos>().ToTable("Tb_ven_produtos");
+
+            //VENDER
             modelBuilder.Entity<Venda>().ToTable("Tb_venda");
             // Configura a precisão e escala para os campos decimal na entidade Venda
             modelBuilder.Entity<Venda>(entity =>
