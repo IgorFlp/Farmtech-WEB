@@ -21,6 +21,14 @@ namespace Farmtech_WEB.Controllers
         {
             return View();
         }
+        public IActionResult ClientesNovo()
+        {
+            return View();
+        }
+        public IActionResult ClientesAlterar()
+        {
+            return View();
+        }
         public IActionResult Fornecedores()
         {
             return View();

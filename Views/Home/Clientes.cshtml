@@ -1,134 +1,36 @@
 ﻿@{
-    ViewData["Title"] = "Cliente";//Substituir molde por nome da tela
-        <link href="~/css/Cliente.css" rel="stylesheet" media="all">
-        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+    ViewData["Title"] = "Clientes";//Substituir molde por nome da tela
+    <link href="~/css/Cliente.css" rel="stylesheet" media="all">
+    <link href="~/css/site.css" rel="stylesheet" media="all">
 }
 
-    <div class="container mt-4">
-        <div class="card">
-            <div class="card-header bg-success text-white">
-                <div class="d-flex align-items-center">
-                    <img src="https://cdn-icons-png.flaticon.com/512/747/747376.png"
-                         alt="Ícone de Cadastro"
-                         width="30"
-                         height="30"
-                         class="me-2" />
-                    <h4 class="mb-0">Cadastro de clientes</h4>
-                </div>
-            </div>
-            <div class="card-body">
-                <form>
-                    <div class="row">
-                        <div class="col-md-4 mb-3">
-                            <label for="nome" class="form-label">Nome</label>
-                            <input type="text"
-                                   class="form-control"
-                                   id="nome"
-                                   placeholder="Nome do cliente"
-                                   value="" />
-                        </div>
-                        <div class="col-md-4 mb-3">
-                            <label for="email" class="form-label">Email</label>
-                            <input type="email"
-                                   class="form-control"
-                                   id="email"
-                                   placeholder="email@exemplo.com"
-                                   value="" />
-                        </div>
-                        <div class="col-md-4 mb-3">
-                            <label for="telefone" class="form-label">Telefone</label>
-                            <input type="text"
-                                   class="form-control"
-                                   id="telefone"
-                                   maxlength= "11"
-                                   placeholder="(18) 99735-2165"                               
-                                   value="" />                        
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-md-4 mb-3">
-                            <label for="cpf-cnpj" class="form-label">CPF</label>
-                            <input type="text"
-                                   class="form-control"
-                                   id="cpf"
-                                   placeholder="123.456.789-11"
-                                   value="" />
-                        </div>
-                        <div class="col-md-4 mb-3">
-                            <label for="data-nascimento" class="form-label">Data de nascimento</label>
-                            <input type="date"
-                                   class="form-control"
-                                   id="data-nascimento"
-                                   placeholder="@DateOnly.FromDateTime(DateTime.Now)"
-                                   value="" />
-                        </div>
-                        <div class="col-md-4 mb-3">
-                            <label for="genero" class="form-label">Gênero</label>
-                            <select class="form-select" id="genero">
-                                <option selected disabled>Selecione o genero</option>
-                                <option value="M">Masculino</option>
-                                <option value="F">Feminino</option>
-                                <option value="O">Outro</option>
-                            </select>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-md-8 mb-3">
-                            <label for="rua" class="form-label">Rua</label>
-                            <input type="text"
-                                   class="form-control"
-                                   id="rua"
-                                   placeholder="Rua Barão do rio branco, 786"
-                                   value="" />
-                        </div>
-                        <div class="col-md-4 mb-3">
-                            <label for="bairro" class="form-label">Bairro</label>
-                            <input type="text"
-                                   class="form-control"
-                                   id="bairro"
-                                   placeholder="Centro"
-                                   value="" />
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-md-4 mb-3">
-                            <label for="estado" class="form-label">Estado</label>
-                            <select class="form-select" id="estado">
-                                <option selected disabled>Selecione o estado</option>
-                                <option>RJ</option>
-                                <option>MG</option>
-                            </select>
-                        </div>
-                        <div class="col-md-4 mb-3">
-                            <label for="cidade" class="form-label">Cidade</label>
-                            <input type="text"
-                                   class="form-control"
-                                   id="cidade"
-                                   placeholder="Assis"
-                                   value="" />
-                        </div>
-                        <div class="col-md-4 mb-3">
-                            <label for="cep" class="form-label">CEP</label>
-                            <input type="text"
-                                   class="form-control"
-                                   id="cep"
-                                   placeholder="19802-385"
-                                   value="" />
-                        </div>
-                    </div>
-                    <div class="d-flex justify-content-center">
-                        <button id="confirmar" type="submit" class="btn btn-success confirmar me-2">
-                            <i class="bi bi-check-lg"></i>
-                        </button>
-                        <button id="cancelar" type="reset" class="btn cancelar btn-danger">
-                            <i class="bi bi-x-lg"></i>
-                        </button>
-                        
-                    </div>
-                </form>
-            </div>
-        </div>
-    </div>
-    <script src ="~/js/Cliente.js"></script>
+<h2 style="margin-left:1.5rem;">@ViewData["Title"]</h2>
 
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<button class="incluir btn btn-light border border-dark" style="margin-left:1.5rem;" onclick="window.location.href='@Url.Action("ClientesNovo", "Home")'"></button>
+<button class="excluir btn btn-light border border-dark" style="margin-left:1.5rem;"></button>
+<button class="alterar btn btn-light border border-dark" style="margin-left:1.5rem;" onclick="window.location.href='@Url.Action("ClientesAlterar", "Home")'"></button>
+<div id="tbContainer" class="container border border-dark " style="width:auto; height:100%;margin:1.5rem; padding: 0px; border-radius:10px;">
+<table id="clienteTabela"  class="table table-striped table-hover">
+    <thead>
+        <tr>
+            <th></th>
+            <th>CPF</th>
+            <th>Nome</th>
+            <th>Telefone</th>
+            <th>Email</th>
+            <th>Nascimento</th>
+            <th>Genero</th>
+            <th>Rua</th>
+            <th>Bairro</th>
+            <th>Cidade</th>
+            <th>Estado</th>
+            <th>CEP</th>
+        </tr>
+    </thead>
+    <tbody>
+        <!-- Linhas serão adicionadas via JS -->
+    </tbody>
+</table>
+</div>
+<script src="~/js/Cliente.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>

@@ -40,6 +40,9 @@ button {
     background-color: #ea8686;
     background-image: url('../Imagens/Grandes/Cancelar.png')
 }
+.alterar {
+    background-image: url('../Imagens/Grandes/Alterar.png');
+}
 .col{
     border: solid;
     border-color: black;
