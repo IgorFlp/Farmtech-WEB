@@ -21,5 +21,20 @@ namespace Farmtech_WEB.Models
         public DateOnly DataNasc {  get; set; }
         public char Genero { get; set; }        
     }
-    
+
+    public class ClienteEndereco
+    {
+        // Construir classe com base no banco
+        [Key]
+        public string Cl_cpf { get; set; }
+
+        public string Rua { get; set; }
+        public string Bairro { get; set; }
+        public string Cidade { get; set; }
+        public string Estado { get; set; }
+        public string Cep { get; set; }
+
+
+    }
+
 }

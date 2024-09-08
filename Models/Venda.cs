@@ -43,9 +43,18 @@ namespace Farmtech_WEB.Models
         // Construir classe com base no banco
         [Key]
         public int Id { get; set; }
+
+        [Required]
         public int Ven_id { get; set;}
-        
+        [Required]
         public int Pdt_id { get; set; }
+        // Navegação para Produto
+        [ForeignKey("Pdt_id")]
+        public Produto Produto{ get; set; }
+
+        // Navegação para Venda
+        [ForeignKey("Ven_id")]
+        public Venda Venda { get; set; }
         public decimal Quant { get; set; }
     }
 }

@@ -43,6 +43,29 @@ namespace Farmtech_WEB.Controllers
                 return StatusCode(500, "Internal server error");
             }
         }
+
+        [HttpPost]
+        //[ValidateAntiForgeryToken]
+        public async Task<IActionResult> CriarEndereco([FromBody] ClienteEndereco clienteEndereco)
+        {
+            try
+            {
+                if (ModelState.IsValid)
+                {
+                    _context.Add(clienteEndereco);
+                    await _context.SaveChangesAsync();
+                    return Ok(clienteEndereco);
+                }
+                return BadRequest(ModelState); ;
+            }
+            catch (Exception ex)
+            {
+                // Log the exception and return a 500 status co de
+                // Logging can be done using a logging library or simply console
+                Console.WriteLine(ex.Message);
+                return StatusCode(500, "Internal server error");
+            }
+        }
         [HttpGet]
         public async Task<IActionResult> Consultar()
         {

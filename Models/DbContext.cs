@@ -11,16 +11,21 @@ namespace Farmtech_WEB.Models
 
         // Defina as tabelas do banco de dados como DbSet<>
         public DbSet<Cliente> Cliente { get; set; }
+        public DbSet<ClienteEndereco> ClienteEndereco { get; set; }
         public DbSet<Produto> Produto { get; set; }
         public DbSet<Venda> Vendas { get; set; }
+        public DbSet<Cupom> Cupom {  get; set; }    
         public DbSet<VendaProdutos> VendaProdutos { get; set; }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
 
             modelBuilder.Entity<Cliente>().ToTable("Tb_cliente");
+            modelBuilder.Entity<ClienteEndereco>().ToTable("Tb_cl_endereco");
             modelBuilder.Entity<Produto>().ToTable("Tb_produto");
             modelBuilder.Entity<VendaProdutos>().ToTable("Tb_ven_produtos");
+            modelBuilder.Entity<Cupom>().ToTable("Tb_cupom");
+
 
             //VENDER
             modelBuilder.Entity<Venda>().ToTable("Tb_venda");

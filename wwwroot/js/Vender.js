@@ -29,6 +29,13 @@ class VendaProdutos {
         this.quantidadesProd = quantidadesProd || [];;
     }
 }
+class Cupom {
+    constructor(nome, dtValid,valor) {
+        this.nome = nome;
+        this.dtValid = dtValid;
+        this.valor = valor;
+    }
+}
 class Venda {
     
     constructor(id, produtos, cupom, mtdPagto, entrega, userLogin, clCpf, dtVenda, subtotal, frete, desconto, total,listaClientesDB, listaProdutosDB) {
@@ -255,7 +262,24 @@ class Venda {
         venda.mtdPagto = document.querySelector("#select-pagto").options[document.querySelector("#select-pagto").selectedIndex].text;
         venda.entrega = document.querySelector("#select-frete").options[document.querySelector("#select-frete").selectedIndex].text;
         venda.userLogin = document.querySelector("#usuario").text;
-        venda.clCpf =  "23456789012"//document.querySelector("#select-cliente").options[document.querySelector("#select-cliente").selectedIndex].text;
+
+        var cpf;
+        var clienteNome = document.querySelector("#select-cliente").options[document.querySelector("#select-cliente").selectedIndex].text;
+        if (this.listaClientesDB && Array.isArray(this.listaClientesDB)) {
+            // Mapeia os nomes para buscar a posição
+            const pos = this.listaClientesDB.map(e => e.nome).indexOf(clienteNome);
+
+            if (pos !== -1) { // Verifica se o cliente foi encontrado
+                cpf = this.listaClientesDB[pos].cpf;
+                console.log("CPF: " + cpf);
+            } else {
+                console.error("Cliente não encontrado na lista.");
+            }
+        } else {
+            console.error("listaClientesDB não está definida ou não é um array.");
+        }
+        
+        venda.clCpf = cpf;
         venda.dtVenda = Date.now();
         venda.dtVenda = new Date(venda.dtVenda).toISOString().split('T')[0]
         venda.subtotal = document.querySelector("#subtotal").value;
@@ -265,11 +289,10 @@ class Venda {
         venda.userLogin = 5;
         //                                                                                                           _/\_    _/\_
         // FAZER FOR PRA PEGAR OS SPANS, PEGAR OS VALUES SELECIONADOS E DEFINIR, PEGAR OS VALUES DE QUANT E DEFINIR (/^-^)/\(^-^\) 
-        vendaProdutos.
-
         
-        console.log("Venda" + venda);
-        console.log(JSON.stringify(venda)); // Verifica os dados que estão sendo enviados
+        
+        //console.log(JSON.stringify(venda));
+        
 
         const url = '/Vender/Criar';
         // Faz a requisição POST usando fetch
@@ -295,7 +318,23 @@ class Venda {
                 if (vendaId) {
                     // Agora chama o método para criar os itens na tabela VendaProdutos
                     vendaProdutos.ven_id = vendaId;
-                    criarVendaProdutos();
+
+                    let spans = document.querySelectorAll(".produto-span");
+                    let listaVendaProdutos = []; // Inicializa uma lista para armazenar os objetos VendaProdutos
+
+                    for (let i = 0; i < spans.length; i++) {
+                        // Cria um objeto VendaProdutos para cada produto selecionado
+                        let vendaProduto = {
+                            ven_id: vendaId,
+                            pdt_id: parseInt(document.querySelector("#" + CSS.escape(spans[i].id) + " > .produto-select").options[document.querySelector("#" + CSS.escape(spans[i].id) + " > .produto-select").selectedIndex].value),
+                            quant: parseFloat(document.querySelector("#" + CSS.escape(spans[i].id) + " > .quant-input").value)
+                        };
+
+                        // Adiciona o objeto criado à lista de vendaProdutos
+                        listaVendaProdutos.push(vendaProduto);
+                    }
+                    console.log("Venda Produtos Stringfy: " + JSON.stringify(listaVendaProdutos));
+                    this.criarProdutosVenda(listaVendaProdutos);
                 } else {
                     console.error('ID da venda não retornado.');
                 }
@@ -304,15 +343,16 @@ class Venda {
                 console.error('Erro:', error);
             });
     }
-    criaProdutosVendas() {
+    criarProdutosVenda(listaVendaProdutos) {
         const url = '/Vender/AddProdutosVenda';
+        console.log(JSON.stringify(listaVendaProdutos));
         // Faz a requisição POST usando fetch
         fetch(url, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json', // Define o tipo de conteúdo como JSON
             },
-            body: JSON.stringify(vendaProdutos) // Envia o objeto venda como JSON
+            body: JSON.stringify(listaVendaProdutos) // Envia o objeto venda como JSON
             // Verifica os dados que estão sendo enviados
 
         })
@@ -320,14 +360,16 @@ class Venda {
                 if (response.ok) {
                     return response.json(); // Se a resposta for OK, converte para JSON
                 } else {
-                    throw new Error('Erro ao enviar a venda.');
+                    throw new Error('Erro ao cadastrar produtos venda a venda.');
                 }
             })
             .then(data => {
-                console.log('Produtos da venda adicionados:', data);                          
+                console.log('Produtos da venda adicionados:', data);
+                return data;
             })
             .catch(error => {
                 console.error('Erro:', error);
+                throw error;
             });
     }
     
@@ -359,20 +401,42 @@ class Venda {
     }
     validaCupom(elem) {
         if (event.key === 'Enter') {
-           console.log("Com enter");
-            let cupom = document.querySelector("#cupom").value;
-            let desconto = document.querySelector("#desconto");
-            if (cupom == "Sexta20") {
-                let valor = 20.00;
-                desconto.value = valor.toFixed(2);
-                //console.log("Desconto: " + desconto);
-            } else {
-               alert("Cupom invalido");
-            }
+            console.log("Com enter");
+            let cupomNome = document.querySelector("#cupom").value;
+            const url = '/Vender/ConsultarCupom?nome='+ encodeURIComponent(cupomNome);
+            // Faz a requisição POST usando fetch
+            fetch(url, {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            })
+                .then(response => {
+                    if (response.ok) {                  
+                        
+                         
+                        return response.json();                       
+                        
+                        } else {
+                            alert("Cupom invalido");
+                        }            
+                    
+                })
+                .then(data => {
+                    console.log('Consulta realisada com sucesso:', data); 
+                    let desconto = document.querySelector("#desconto");
+                    venda.cupom = data.nome;
+                    desconto.value = data.valor.toFixed(2);
+                    venda.atualizaTotal()
+                    return data;
+                })
+                .catch(error => {
+                    console.error('Erro:', error);
+                });            
         } else {
             //console.log("Fora do enter");
         }
-        venda.atualizaTotal();
+        
     }
     atualizaTotal() {
 
@@ -393,7 +457,7 @@ class Venda {
     consultarClientes() {
         const url = '/Cliente/Consultar';
         // Faz a requisição POST usando fetch
-        fetch(url, {
+        return fetch(url, {
             method: 'GET',
             headers: {  
                 'Content-Type': 'application/json'         
@@ -455,7 +519,11 @@ class Venda {
 }
 
 let venda = new Venda();
-var vendaProdutos = new VendaProdutos();
+let vendaProdutos = {
+    produtosVenda: [],
+    quantidadesProd: []
+};
+let cupom = new Cupom();
 window.addEventListener("load", async function () {
     venda.listaClientesDB = await venda.consultarClientes();   
     venda.listaProdutosDB = await venda.consultarProdutos();
