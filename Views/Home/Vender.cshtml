@@ -5,11 +5,11 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/2.11.6/umd/popper.min.js"></script>
     
 }
-<div style="background-color: #99d080" class="d-flex flex-row">
+<div style="background-color: #99d080; margin-left:0px; width:stretch" class="d-flex flex-row">
     <img src="~/Imagens/Grandes/Vender.png" style="width:40px; height:40px; margin: 5px; margin-right: 20px" alt="Alternate Text" /> <h2 style="margin-top:5px">Vender</h2>
 </div>
 
-<div class="container border border-secondary">
+<div style="margin-left:0px; width:stretch "class=" container border border-secondary">
 
     <!--primeira fileira-->
     <div class="row align-items-lg-start" style="height: 23%; margin-bottom:0px;">
@@ -17,11 +17,7 @@
         <!--Esquerda-->
         <div class="d-flex border border-dark align-items-start flex-column col-9" style="height:100%; background-color: #ebfce7">
             <select id="select-cliente" class="w-50" style="margin-top: 10px">
-                <option value="value">-Escolha um cliente</option>
-                <option value="value">Jorge</option>
-                <option value="value">Abilio</option>
-                <option value="value">Noralma</option>
-                <option value="value">Ciliano</option>
+                <option value="" selected disabled>Selecione um cliente</option>
             </select>
             <div class="justify-content-end" style="margin-top: 3.5rem">
                 <button id="btnIncluir" class="incluir border border-dark" style="height: 2rem;width: 4rem; margin-right: 1rem"></button>
@@ -35,6 +31,7 @@
             <div class="d-flex flex-row justify-content-end mb-2 w-100">
                 <label>Entrega</label>
                 <select id="select-frete"class="campos-vender">
+                    <option value="" selected disabled></option>
                     <option value="value">Retirada</option>
                     <option value="value">Entrega</option>
                 </select>
@@ -43,6 +40,7 @@
             <div class="d-flex flex-row justify-content-end mb-2 w-100">
                 <label class= "mb-0 mr-2">Pagamento</label>
                 <select id="select-pagto" class="campos-vender">
+                    <option value="" selected disabled></option>
                     <option value="value">Credito</option>
                     <option value="value">Débito</option>
                     <option value="value">Dinheiro</option>
@@ -62,34 +60,7 @@
 
             <!--Esquerda-->
         <div id="lista-itens" class="m-0 d-flex border border-dark align-items-start flex-column col-9"
-             style="height: 100%; overflow-y: scroll">
-             <!--
-            <span class="d-flex flex-row item-span mt-1">
-                <input class="check-item centralizar" style="margin-left: 1rem; margin-right: 0.5rem" type="checkbox"></input>
-                <select class="centralizar" style="height: 80%; width:45%; border-radius:5px; margin-right: 5%;">
-                    <option value="value">Alface</option>
-                    <option value="value">Tomate</option>
-                    <option value="value">Beringela</option>
-                    
-                </select>
-                <label class="centralizar texto-itens">Preço Un</label>
-                <input type="text"
-                       disabled
-                       value="R$ 4,98"
-                       class="centralizar campos-itens" />
-                <label class="centralizar texto-itens">Quant.</label>
-                <input type="text"
-                       disabled
-                       value="Kg 2,50"
-                       class="centralizar campos-itens" />
-                <label class="centralizar texto-itens">Total</label>
-
-                <input type="text"
-                       disabled
-                       value="R$ 30,00"
-                       class="centralizar campos-itens" />
-            </span>
-            -->
+             style="height: 100%; overflow-y: scroll">            
         </div>
             <!--Direita-->
         <div class="p-2 border border-dark col-3 d-flex flex-column" style="height:100%; background-color: #ebfce7">

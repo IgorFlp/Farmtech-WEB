@@ -3,6 +3,7 @@
 
 //const { eventListeners } = require("@popperjs/core");
 //const { each } = require("jquery");
+
 class Produto{
     constructor(id, nome, unMedida, precoUn) {
         this.id = id;
@@ -11,8 +12,33 @@ class Produto{
         this.precoUn = precoUn;
     }
 }
+class Cliente {
+    constructor(cpf, nome, telefone, email, dataNasc, genero) {
+        this.cpf = cpf;
+        this.nome = nome;
+        this.telefone = telefone;
+        this.email = email;
+        this.dataNasc = dataNasc;
+        this.genero = genero;
+    }
+}
+class VendaProdutos {
+    constructor(ven_id, produtosVenda, quantidadesProd) {
+        this.ven_id = ven_id;
+        this.produtosVenda = produtosVenda || [];
+        this.quantidadesProd = quantidadesProd || [];;
+    }
+}
+class Cupom {
+    constructor(nome, dtValid,valor) {
+        this.nome = nome;
+        this.dtValid = dtValid;
+        this.valor = valor;
+    }
+}
 class Venda {
-    constructor(id, produtos, cupom, mtdPagto, entrega, userLogin, clCpf, dtVenda, subtotal, frete, desconto, total) {
+    
+    constructor(id, produtos, cupom, mtdPagto, entrega, userLogin, clCpf, dtVenda, subtotal, frete, desconto, total,listaClientesDB, listaProdutosDB) {
         this.id = id;        
         this.cupom = cupom;
         this.mtdPagto = mtdPagto;
@@ -24,15 +50,14 @@ class Venda {
         this.frete = frete;
         this.desconto = desconto;
         this.total = total;
-    }
 
-    addItem() {
-        //remover essa parte daqui
-        const prod = new Produto(1, "Alface", "Kg", 3.50);
-        const prod2 = new Produto(2, "Tomate", "Kg", 5.59);
-        const prod3 = new Produto(3, "Berinjela", "Un", 8.00);
-        let listaProdutos = [prod, prod2, prod3];
-        //
+        this.listaClientesDB = listaClientesDB || [];
+        this.listaProdutosDB = listaProdutosDB || [];
+        
+    }
+   
+
+    async addItem() {       
 
         console.log("Entrou na função");
         let contagem = document.querySelectorAll(".produto-span");
@@ -68,13 +93,49 @@ class Venda {
         option.innerText = "-Selecione um produto-";
         selectNome.appendChild(option);
         let i = 0;
-        for (i = 0; i < listaProdutos.length; i++) {
-            var option = document.createElement('option');
-            option.innerText = listaProdutos[i].nome;
-            option.value = listaProdutos[i].id;
-            selectNome.appendChild(option);
-            console.log("Tentou criar option");
-        }
+        /*
+        if (!selectNome) {
+            console.error('Elemento selectNome não encontrado');
+        } else {
+            var listaProdutosDB = this.consultarProdutos();
+
+            listaProdutosDB.then((listaProdutosDB) => {
+                // Verifique se listaProdutosDB é um array
+                if (Array.isArray(listaProdutosDB)) {
+                    console.log("Lista produtos length: " + listaProdutosDB.length);
+
+                    for (let i = 0; i < listaProdutosDB.length; i++) {
+                        const produto = listaProdutosDB[i];
+                        const option = document.createElement('option');
+                        option.innerText = produto.nome;
+                        option.value = produto.id;
+                        selectNome.appendChild(option);
+                        console.log("Criou option para:", produto.nome);
+                    }
+                } else {
+                    console.error('Lista de produtos não é um array ou está indefinida.');
+                }
+            }).catch((error) => {
+                console.error('Erro ao consultar produtos:', error);
+            });
+        }*/
+        
+        /*var listaProdutosDB = this.consultarProdutos()
+            listaProdutosDB.then((listaProdutosDB) => {
+            */
+            console.log("Lista produtos length: " + this.listaProdutosDB.length)
+            for (i = 0; i < this.listaProdutosDB.length; i++) {
+                var option = document.createElement('option');
+                option.innerText = this.listaProdutosDB[i].nome;
+                option.value = this.listaProdutosDB[i].id;
+                selectNome.appendChild(option);
+                console.log("Tentou criar option");
+            }
+            
+        
+        
+        
+        
         spanItem.appendChild(selectNome);
 
         // Cria o label para o preço unitário
@@ -88,7 +149,7 @@ class Venda {
         var inputPreco = document.createElement('input');
         inputPreco.placeholder = '0,00';
         inputPreco.type = 'number';
-        inputPreco.disabled = true;
+        inputPreco.disabled = true;        
         inputPreco.className = 'precoUn-input centralizar campos-itens';
         spanItem.appendChild(inputPreco);
         console.log("criou input preço un: " + inputPreco);
@@ -150,10 +211,7 @@ class Venda {
     }
     selecionaProduto(span) {
         //remover essa parte daqui
-        const prod = new Produto(1, "Alface", "Kg", 3.50);
-        const prod2 = new Produto(2, "Tomate", "Kg", 5.59);
-        const prod3 = new Produto(3, "Berinjela", "Un", 8.00);
-        let listaProdutos = [prod, prod2, prod3];
+        
         //
 
         //let span = this.parentElement;
@@ -164,21 +222,21 @@ class Venda {
         //let produtoNome = select.innerText;
         console.log("Span ID: " + span.id + "Select: " + select.className + "Produto: " + produtoNome)
 
-        const pos = listaProdutos.map(e => e.nome).indexOf(produtoNome);
+        const pos = this.listaProdutosDB.map(e => e.nome).indexOf(produtoNome);
         console.log("Position: " + pos)
-        console.log("ID: " + listaProdutos[pos].id + " Nome: " + listaProdutos[pos].nome + " Unidade: " + listaProdutos[pos].unMedida + " PreçoUn: " + listaProdutos[pos].precoUn)
+        console.log("ID: " + this.listaProdutosDB[pos].id + " Nome: " + this.listaProdutosDB[pos].nome + " Unidade: " + this.listaProdutosDB[pos].unMedida + " PreçoUn: " + this.listaProdutosDB[pos].precoUn)
 
         let precoUn = document.querySelector("#" + CSS.escape(span.id) + "> .precoUn-input");
         console.log("Elemento: " + precoUn.innerHTML);
-        precoUn.value = listaProdutos[pos].precoUn;
+        precoUn.value = this.listaProdutosDB[pos].precoUn;
 
         let quantLbl = document.querySelector("#" + CSS.escape(span.id) + "> .quant-label");
         console.log("Elemento: " + quantLbl.innerHTML);
-        quantLbl.innerHTML = "Quantidade " + listaProdutos[pos].unMedida;
+        quantLbl.innerHTML = "Quantidade " + this.listaProdutosDB[pos].unMedida;
 
         let quantInput = document.querySelector("#" + CSS.escape(span.id) + "> .quant-input");
         quantInput.value = 0;
-        if (listaProdutos[pos].unMedida == "Un") {
+        if (this.listaProdutosDB[pos].unMedida == "Un") {
             quantInput.step = '0';
         } else {
             quantInput.step = '.10';
@@ -192,24 +250,49 @@ class Venda {
         let valor = quant.value * precoUn.value;
         totalInput.value = valor.toFixed(2);
         console.log("Valor total: " + totalInput.value);
-        venda.calcSubtotal();
+        venda.calcSubtotal();             
+        
+        
     }
 
     confirmaVenda() {
 
-        venda.id = 0;
+        //venda.id = 0;
         venda.cupom = document.querySelector("#cupom").value;
         venda.mtdPagto = document.querySelector("#select-pagto").options[document.querySelector("#select-pagto").selectedIndex].text;
         venda.entrega = document.querySelector("#select-frete").options[document.querySelector("#select-frete").selectedIndex].text;
         venda.userLogin = document.querySelector("#usuario").text;
-        venda.clCpf = document.querySelector("#select-cliente").options[document.querySelector("#select-cliente").selectedIndex].text;
+
+        var cpf;
+        var clienteNome = document.querySelector("#select-cliente").options[document.querySelector("#select-cliente").selectedIndex].text;
+        if (this.listaClientesDB && Array.isArray(this.listaClientesDB)) {
+            // Mapeia os nomes para buscar a posição
+            const pos = this.listaClientesDB.map(e => e.nome).indexOf(clienteNome);
+
+            if (pos !== -1) { // Verifica se o cliente foi encontrado
+                cpf = this.listaClientesDB[pos].cpf;
+                console.log("CPF: " + cpf);
+            } else {
+                console.error("Cliente não encontrado na lista.");
+            }
+        } else {
+            console.error("listaClientesDB não está definida ou não é um array.");
+        }
+        
+        venda.clCpf = cpf;
         venda.dtVenda = Date.now();
+        venda.dtVenda = new Date(venda.dtVenda).toISOString().split('T')[0]
         venda.subtotal = document.querySelector("#subtotal").value;
         venda.frete = document.querySelector("#frete").value;
         venda.desconto = document.querySelector("#desconto").value;
         venda.total = document.querySelector("#total").value;
-
-        console.log("Venda" + venda);
+        venda.userLogin = 5;
+        //                                                                                                           _/\_    _/\_
+        // FAZER FOR PRA PEGAR OS SPANS, PEGAR OS VALUES SELECIONADOS E DEFINIR, PEGAR OS VALUES DE QUANT E DEFINIR (/^-^)/\(^-^\) 
+        
+        
+        //console.log(JSON.stringify(venda));
+        
 
         const url = '/Vender/Criar';
         // Faz a requisição POST usando fetch
@@ -219,6 +302,8 @@ class Venda {
                 'Content-Type': 'application/json', // Define o tipo de conteúdo como JSON
             },
             body: JSON.stringify(venda) // Envia o objeto venda como JSON
+             // Verifica os dados que estão sendo enviados
+
         })
             .then(response => {
                 if (response.ok) {
@@ -229,9 +314,62 @@ class Venda {
             })
             .then(data => {
                 console.log('Venda criada com sucesso:', data);
+                const vendaId = data.id;
+                if (vendaId) {
+                    // Agora chama o método para criar os itens na tabela VendaProdutos
+                    vendaProdutos.ven_id = vendaId;
+
+                    let spans = document.querySelectorAll(".produto-span");
+                    let listaVendaProdutos = []; // Inicializa uma lista para armazenar os objetos VendaProdutos
+
+                    for (let i = 0; i < spans.length; i++) {
+                        // Cria um objeto VendaProdutos para cada produto selecionado
+                        let vendaProduto = {
+                            ven_id: vendaId,
+                            pdt_id: parseInt(document.querySelector("#" + CSS.escape(spans[i].id) + " > .produto-select").options[document.querySelector("#" + CSS.escape(spans[i].id) + " > .produto-select").selectedIndex].value),
+                            quant: parseFloat(document.querySelector("#" + CSS.escape(spans[i].id) + " > .quant-input").value)
+                        };
+
+                        // Adiciona o objeto criado à lista de vendaProdutos
+                        listaVendaProdutos.push(vendaProduto);
+                    }
+                    console.log("Venda Produtos Stringfy: " + JSON.stringify(listaVendaProdutos));
+                    this.criarProdutosVenda(listaVendaProdutos);
+                } else {
+                    console.error('ID da venda não retornado.');
+                }
             })
             .catch(error => {
                 console.error('Erro:', error);
+            });
+    }
+    criarProdutosVenda(listaVendaProdutos) {
+        const url = '/Vender/AddProdutosVenda';
+        console.log(JSON.stringify(listaVendaProdutos));
+        // Faz a requisição POST usando fetch
+        fetch(url, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json', // Define o tipo de conteúdo como JSON
+            },
+            body: JSON.stringify(listaVendaProdutos) // Envia o objeto venda como JSON
+            // Verifica os dados que estão sendo enviados
+
+        })
+            .then(response => {
+                if (response.ok) {
+                    return response.json(); // Se a resposta for OK, converte para JSON
+                } else {
+                    throw new Error('Erro ao cadastrar produtos venda a venda.');
+                }
+            })
+            .then(data => {
+                console.log('Produtos da venda adicionados:', data);
+                return data;
+            })
+            .catch(error => {
+                console.error('Erro:', error);
+                throw error;
             });
     }
     
@@ -244,9 +382,7 @@ class Venda {
             console.log(el);
             let value = parseFloat(el.value);
             soma += value;
-        });
-
-        // ENCONTRAR O ERRO DAQUI, NÃO CONSEGUE ACESSAR ITENS[I].VALUE
+        });        
         subtotal.value = soma.toFixed(2);
         venda.atualizaTotal();
     }
@@ -265,20 +401,42 @@ class Venda {
     }
     validaCupom(elem) {
         if (event.key === 'Enter') {
-           console.log("Com enter");
-            let cupom = document.querySelector("#cupom").value;
-            let desconto = document.querySelector("#desconto");
-            if (cupom == "Sexta20") {
-                let valor = 20.00;
-                desconto.value = valor.toFixed(2);
-                //console.log("Desconto: " + desconto);
-            } else {
-               alert("Cupom invalido");
-            }
+            console.log("Com enter");
+            let cupomNome = document.querySelector("#cupom").value;
+            const url = '/Vender/ConsultarCupom?nome='+ encodeURIComponent(cupomNome);
+            // Faz a requisição POST usando fetch
+            fetch(url, {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            })
+                .then(response => {
+                    if (response.ok) {                  
+                        
+                         
+                        return response.json();                       
+                        
+                        } else {
+                            alert("Cupom invalido");
+                        }            
+                    
+                })
+                .then(data => {
+                    console.log('Consulta realisada com sucesso:', data); 
+                    let desconto = document.querySelector("#desconto");
+                    venda.cupom = data.nome;
+                    desconto.value = data.valor.toFixed(2);
+                    venda.atualizaTotal()
+                    return data;
+                })
+                .catch(error => {
+                    console.error('Erro:', error);
+                });            
         } else {
             //console.log("Fora do enter");
         }
-        venda.atualizaTotal();
+        
     }
     atualizaTotal() {
 
@@ -296,10 +454,79 @@ class Venda {
         total.value = calc.toFixed(2);
 
     }
+    consultarClientes() {
+        const url = '/Cliente/Consultar';
+        // Faz a requisição POST usando fetch
+        return fetch(url, {
+            method: 'GET',
+            headers: {  
+                'Content-Type': 'application/json'         
+            }          
+        })
+            .then(response => {
+                if (response.ok) {                    
+                    return response.json(); // Se a resposta for OK, converte para JSON
+                    
+                } else {
+                    throw new Error('Erro ao Consultar clientes.');
+                }
+            })
+            .then(data => {
+                console.log('Consulta realisada com sucesso:', data);
+                data.forEach(item => {
+                    this.addClientes(item); // Chama a função addClientes para cada cliente
+                });
+                return data;
+            })
+            .catch(error => {
+                console.error('Erro:', error);
+            });
+    }
+    addClientes(item) {           
+        
+            var optionCliente = document.createElement('option');
+            optionCliente.value = item.nome;
+            optionCliente.textContent = item.nome;
+            document.querySelector("#select-cliente").appendChild(optionCliente);
+            console.log("Criou a option total: " + optionCliente.text);             
+    
+    }
+    consultarProdutos() {
+        const url = '/Produto/Consultar';
+        // Faz a requisição POST usando fetch
+        return fetch(url, {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        })
+            .then(response => {
+                if (response.ok) {
+                    return response.json(); // Se a resposta for OK, converte para JSON
+
+                } else {
+                    throw new Error('Erro ao Consultar clientes.');
+                }
+            })
+            .then(data => {
+                console.log('Consulta de produtos realisada com sucesso:', data);                
+                return data;
+            })
+            .catch(error => {
+                console.error('Erro:', error);
+            });
+    }  
 }
 
 let venda = new Venda();
-window.addEventListener("load", function () {
+let vendaProdutos = {
+    produtosVenda: [],
+    quantidadesProd: []
+};
+let cupom = new Cupom();
+window.addEventListener("load", async function () {
+    venda.listaClientesDB = await venda.consultarClientes();   
+    venda.listaProdutosDB = await venda.consultarProdutos();
     document.querySelector("#btnIncluir").addEventListener('click', function () {
         console.log('addItem chamado');
         venda.addItem();  // Chama o método da instância venda
@@ -317,19 +544,21 @@ window.addEventListener("load", function () {
     document.querySelector("#lista-itens").addEventListener("change", (event) => {
         if (event.target && event.target.matches(".quant-input")) {
             console.log("Seleciona quantidade chamado");
-            venda.calcTotalSpan(event.target.parentElement);  
+            venda.calcTotalSpan(event.target.parentElement);
         }
     });
-    document.querySelector("#select-frete").addEventListener("change", (event) => {       
-            console.log("Seleciona frete chamado");
-            venda.calcFrete();          
-    });    
-    document.querySelector("#cupom").addEventListener("keydown", (event) => {        
-            //console.log("Seleciona cupom chamado");
-            venda.validaCupom(event.target);        
-    });    
+    document.querySelector("#select-frete").addEventListener("change", (event) => {
+        console.log("Seleciona frete quantidade chamado");
+        venda.calcFrete();
+    });
+    document.querySelector("#cupom").addEventListener("keydown", (event) => {
+        //console.log("Seleciona cupom chamado");
+        venda.validaCupom(event.target);
+    });
     document.querySelector(".confirmar").addEventListener('click', function () {
         console.log('Confirmar chamado');
         venda.confirmaVenda();  // Chama o método da instância venda
     });
-})    
+    
+    //calcSubtotal();
+})

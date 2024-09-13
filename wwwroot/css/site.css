@@ -17,9 +17,6 @@ html {
   min-height: 100%;
 }
 
-body {
-  margin-bottom: 60px;
-}
 button {
     background-size: cover;
     background-repeat: no-repeat;
@@ -42,6 +39,9 @@ button {
 .cancelar {
     background-color: #ea8686;
     background-image: url('../Imagens/Grandes/Cancelar.png')
+}
+.alterar {
+    background-image: url('../Imagens/Grandes/Alterar.png');
 }
 .col{
     border: solid;

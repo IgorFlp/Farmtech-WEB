@@ -20,11 +20,27 @@ namespace Farmtech_WEB.Controllers
         {
             return View();        
         }
-        public IActionResult Privacy()
+        public IActionResult Clientes()
         {
             return View();
         }
-        public IActionResult Usuario()
+        public IActionResult ClientesNovo()
+        {
+            return View();
+        }
+        public IActionResult ClientesAlterar()
+        {
+            return View();
+        }
+        public IActionResult Fornecedores()
+        {
+            return View();
+        }
+        public IActionResult Produtos()
+        {
+            return View();
+        }
+        public IActionResult Usuarios()
         {
             return View();
         }
@@ -33,7 +49,11 @@ namespace Farmtech_WEB.Controllers
         {
             return View();
         }
-        public IActionResult Vender_addprod()
+        public IActionResult Relatorios()
+        {
+            return View();
+        }
+        public IActionResult Producao()
         {
             return View();
         }
