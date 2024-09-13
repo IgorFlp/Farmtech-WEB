@@ -8,6 +8,11 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Content Remove="Views\Login.cshtml" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="Views\Home\Login.cshtml" />
     <None Include="wwwroot\Imagens\Grandes\Adicionar.png" />
     <None Include="wwwroot\Imagens\Grandes\Cancelar.png" />
     <None Include="wwwroot\Imagens\Grandes\Cesta de frutas.png" />
@@ -64,6 +69,14 @@
   <ItemGroup>
     <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="8.0.8" />
     <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="8.0.4" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <UpToDateCheckInput Remove="Views\Login.cshtml" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <_ContentIncludedByDefault Remove="Views\Login.cshtml" />
   </ItemGroup>
 
 </Project>
