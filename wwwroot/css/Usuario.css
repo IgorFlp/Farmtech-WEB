@@ -51,13 +51,13 @@ button[type="reset"] {
     color: white;
 }
 
-#clienteTabela th, #clienteTabela td {
-    
+#clienteTabela th,
+#clienteTabela td {
     vertical-align: middle;
-    font-size: 0.70rem;
+    font-size: 0.7rem;
 }
 
-    #clienteTabela th.text-center, #clienteTabela td.text-center {
+    #clienteTabela th.text-center,
+    #clienteTabela td.text-center {
         text-align: center;
-        
     }

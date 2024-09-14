@@ -43,6 +43,10 @@ button {
 .alterar {
     background-image: url('../Imagens/Grandes/Alterar.png');
 }
+.salvar {    
+    background-size: 2rem;
+    background-image: url('../Imagens/Grandes/Salvar.png');    
+}
 .col{
     border: solid;
     border-color: black;

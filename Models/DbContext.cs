@@ -1,9 +1,26 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
+using System.Configuration;
 namespace Farmtech_WEB.Models
 {
     public class ApplicationDbContext : DbContext
     {
+        private readonly IConfiguration _configuration;
+
+        public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options, IConfiguration configuration)
+            : base(options)
+        {
+            _configuration = configuration;
+        }
+
+        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        {
+            if (!optionsBuilder.IsConfigured)
+            {
+                var connectionString = _configuration.GetConnectionString("DefaultConnection");
+                optionsBuilder.UseSqlServer(connectionString);
+            }
+        }
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
             : base(options)
         {
@@ -13,6 +30,7 @@ namespace Farmtech_WEB.Models
         public DbSet<Cliente> Cliente { get; set; }
         public DbSet<ClienteEndereco> ClienteEndereco { get; set; }
         public DbSet<Produto> Produto { get; set; }
+        public DbSet<Usuario> Usuario { get; set; }
         public DbSet<Venda> Vendas { get; set; }
         public DbSet<Cupom> Cupom {  get; set; }    
         public DbSet<VendaProdutos> VendaProdutos { get; set; }

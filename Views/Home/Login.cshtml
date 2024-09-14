@@ -31,7 +31,7 @@
                        id="senha"
                        placeholder="Digite sua senha" />
             </div>
-            <button id="btnEntrar" type="button" class="btn btn-primary btn-block">Entrar</button>
+            <button id="btnEntrar" type="button" class="btn btn-primary btn-block" onclick="var res = logar(); if(res=='Correto'){window.location.href='@Url.Action("Index", "Home")'}">Entrar</button>
         </form>
     </div>
 
