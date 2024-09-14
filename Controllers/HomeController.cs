@@ -12,7 +12,10 @@ namespace Farmtech_WEB.Controllers
         {
             _logger = logger;
         }
-
+        public IActionResult Login()
+        {
+            return View();
+        }
         public IActionResult Index()
         {
             return View();        
