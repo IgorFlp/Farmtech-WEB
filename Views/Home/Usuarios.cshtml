@@ -1,5 +1,5 @@
 ﻿@{
-    ViewData["Title"] = "Usuarios";//Preencher com nome da tela
+    ViewData["Title"] = "Usuarios";
 }
 
 <h2 style="margin-left:1.5rem;">@ViewData["Title"]</h2>
@@ -28,7 +28,7 @@
     <div class="element d-flex flex-column" style="margin-right: 1rem;">
         <label class="text-dark">Cargo</label>
         <select disabled id="slcCargo" style="height:3rem;">
-            <option disabled></option>
+            <option selected disabled></option>
             <option>Estoquista</option>
             <option>Produtor</option>
             <option>Vendedor</option>
@@ -42,7 +42,7 @@
 
     <div class="element d-flex flex-column" style="margin-right: 1rem;">
         <label class="text-dark">Senha</label>
-        <input type="text"
+        <input type="password"
                class="form-control"
                id="txtSenha"
                placeholder="Digite a senha do usuario"
@@ -70,6 +70,7 @@
                 <th>Login</th>
                 <th>Nome</th>
                 <th>Cargo</th>
+                <th>ID</th>
             </tr>
         </thead>
         <tbody>

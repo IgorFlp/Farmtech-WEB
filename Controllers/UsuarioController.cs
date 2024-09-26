@@ -22,15 +22,39 @@ namespace Farmtech_WEB.Controllers
         {
             return View();
         }
-        [HttpGet]
+        [HttpPost]
         public async Task<IActionResult> Logar([FromBody] Usuario usuario)
+        {
+            try
+            {  
+                    var user = await _context.Usuario.Where(u => u.Login == usuario.Login && u.Senha == usuario.Senha)
+            .FirstOrDefaultAsync();
+
+                    if (user != null)
+                    {
+                        return Ok(new { message = "Login feito com sucesso", user });
+                    }
+                    else
+                    {
+                        return NotFound(new { message = "Usuário não encontrado HTTP." });
+                    }                 
+            }
+            catch (Exception ex)
+            {
+                // Log the exception and return a 500 status co de
+                // Logging can be done using a logging library or simply console
+                Console.WriteLine(ex.Message);
+                return StatusCode(500, "Internal server error");
+            }
+        }
+        [HttpGet]
+        public async Task<IActionResult> Consultar()
         {
             try
             {
                 if (ModelState.IsValid)
                 {
-                    var clientes = await _context.Usuario.Where(u => u.Login == usuario.Login && u.Senha == usuario.Senha)
-            .FirstOrDefaultAsync();
+                    var usuario = await _context.Usuario.ToListAsync();
                     return Ok(usuario);
                 }
                 return BadRequest(ModelState); ;
@@ -43,21 +67,21 @@ namespace Farmtech_WEB.Controllers
                 return StatusCode(500, "Internal server error");
             }
         }
-        /*
-        //POST: Cliente/Create
         [HttpPost]
         //[ValidateAntiForgeryToken]
-        public async Task<IActionResult> Criar([FromBody] Cliente cliente)
+        public async Task<IActionResult> Criar([FromBody] Usuario usuario)
         {
-            try { 
-            if (ModelState.IsValid)
+            try
             {
-                _context.Add(cliente);
-                await _context.SaveChangesAsync();
-                return Ok(cliente);
+                if (ModelState.IsValid)
+                {
+                    _context.Add(usuario);
+                    await _context.SaveChangesAsync();
+                    return Ok(usuario);
+                }
+                return BadRequest(ModelState); ;
             }
-            return BadRequest(ModelState); ;
-            } catch (Exception ex)
+            catch (Exception ex)
             {
                 // Log the exception and return a 500 status co de
                 // Logging can be done using a logging library or simply console
@@ -65,6 +89,43 @@ namespace Farmtech_WEB.Controllers
                 return StatusCode(500, "Internal server error");
             }
         }
+        [HttpPost]
+        public async Task<IActionResult> Alterar([FromBody] Usuario usuario)
+        {
+            try
+            {
+                var user = _context.Usuario.Find(usuario.Id);
+
+                if (user != null)
+                {
+
+                    user.Nome = usuario.Nome;
+                    user.Cargo = usuario.Cargo;
+                    user.Login = usuario.Login;
+                    user.Senha = usuario.Senha;
+
+                    _context.Entry(user).State = EntityState.Modified;
+                    _context.SaveChanges();
+                    return Ok(user);
+
+                }
+                else
+                {
+                    return NotFound("Usuario não encontrado");
+                }               
+
+            }
+            catch (Exception ex)
+            {
+                // Log the exception and return a 500 status co de
+                // Logging can be done using a logging library or simply console
+                Console.WriteLine(ex.Message);
+                return StatusCode(500, "Internal server error");
+            }                
+        }
+        /*
+        //POST: Cliente/Create
+        
         [HttpPost]
         //[ValidateAntiForgeryToken]
         public async Task<IActionResult> Excluir([FromBody] Cliente cliente)
@@ -161,26 +222,7 @@ namespace Farmtech_WEB.Controllers
         }
         
 
-        [HttpGet]
-        public async Task<IActionResult> Consultar()
-        {
-            try
-            {
-                if (ModelState.IsValid)
-                {
-                    var clientes = await _context.Usuario.ToListAsync();            
-                    return Ok(usuario);
-                }
-                return BadRequest(ModelState); ;
-            }
-            catch (Exception ex)
-            {
-                // Log the exception and return a 500 status co de
-                // Logging can be done using a logging library or simply console
-                Console.WriteLine(ex.Message);
-                return StatusCode(500, "Internal server error");
-            }
-        }
+        
         [HttpGet]
         public async Task<IActionResult> ConsultarEndereco()
         {

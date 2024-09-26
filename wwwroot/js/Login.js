@@ -12,28 +12,31 @@ function logar() {
     const usuario = document.querySelector("#usuario").value;
     const senha = document.querySelector("#senha").value;
     console.log("Usuario: " + usuario + "Senha: " + senha);
-    let usuario = new Usuario("", usuario, "", senha);
+    let usr = new Usuario("", usuario, "", senha);
 
     
-        const url = '/Usuario/Logar';        
+    const url = '/Usuario/Logar';        
     return fetch(url, {
-        method: 'GET',
+        method: 'POST',
         headers: {
             'Content-Type': 'application/json'
         },
-        body: JSON.stringfy(usuario);            
+        body: JSON.stringify(usr)            
         })
             .then(response => {
                 if (response.ok) {
                     return response.json();
 
                 } else {
-                    throw new Error('Usuario não encontrado.');
+                    throw new Error(alert("Login incorreto"));
+                    return "Incorreto"
                 }
             })
             .then(data => {
                 console.log('Login feito com sucesso:', data);
-                return data;
+                const url = 'Home/Index';
+                window.location.href = url;            
+                return "Correto";
             })
             .catch(error => {
                 console.error('Erro:', error);

@@ -20,15 +20,15 @@ namespace Farmtech_WEB.Models
                 var connectionString = _configuration.GetConnectionString("DefaultConnection");
                 optionsBuilder.UseSqlServer(connectionString);
             }
-        }
-        public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
-            : base(options)
-        {
-        }
+        }       
 
         // Defina as tabelas do banco de dados como DbSet<>
         public DbSet<Cliente> Cliente { get; set; }
         public DbSet<ClienteEndereco> ClienteEndereco { get; set; }
+
+        public DbSet<Fornecedor> Fornecedor { get; set; }
+        public DbSet<FornecedorEndereco> FornecedorEndereco { get; set; }
+
         public DbSet<Produto> Produto { get; set; }
         public DbSet<Usuario> Usuario { get; set; }
         public DbSet<Venda> Vendas { get; set; }
@@ -40,7 +40,10 @@ namespace Farmtech_WEB.Models
 
             modelBuilder.Entity<Cliente>().ToTable("Tb_cliente");
             modelBuilder.Entity<ClienteEndereco>().ToTable("Tb_cl_endereco");
+            modelBuilder.Entity<Fornecedor>().ToTable("Tb_fornecedor");
+            modelBuilder.Entity<FornecedorEndereco>().ToTable("Tb_frn_endereco");
             modelBuilder.Entity<Produto>().ToTable("Tb_produto");
+            modelBuilder.Entity<Usuario>().ToTable("Tb_usuario");
             modelBuilder.Entity<VendaProdutos>().ToTable("Tb_ven_produtos");
             modelBuilder.Entity<Cupom>().ToTable("Tb_cupom");
 
