@@ -1,13 +1,12 @@
-﻿class Usuario {
-    constructor(nome, login, cargo, senha, id) {
+﻿class Produto {
+    constructor(nome, unMedida, precoUn, id) {
         this.nome = nome;
-        this.login = login;
-        this.cargo = cargo;
-        this.senha = senha;
+        this.unMedida = unMedida;
+        this.precoUn = precoUn;        
         this.id = id;
     }
-    consultarUsuarios() {
-        const url = '/Usuario/Consultar';
+    consultarProdutos() {
+        const url = '/Produto/Consultar';
         // Faz a requisição POST usando fetch
         return fetch(url, {
             method: 'GET',
@@ -20,11 +19,11 @@
                     return response.json();
 
                 } else {
-                    throw new Error('Erro ao consultar usuarios.');
+                    throw new Error('Erro ao consultar Produtos.');
                 }
             })
             .then(data => {
-                console.log('Consulta usuarios realisada com sucesso:', data);
+                console.log('Consulta de produtos realisada com sucesso:', data);
                 return data;
             })
             .catch(error => {
@@ -32,23 +31,22 @@
             });
         
     }
-    criarUsuario(tipo,idUser) {
-        const usuario = new Usuario();
-        usuario.login = document.querySelector("#txtUsuario").value;
-        usuario.cargo = document.querySelector("#slcCargo").value;
-        usuario.nome = document.querySelector("#txtNome").value;
-        usuario.senha = document.querySelector("#txtSenha").value;
+    criarProduto(tipo,idProd) {
+        const produto = new Produto();
+        produto.unMedida = document.querySelector("#txtProduto").value;
+        produto.precoUn = document.querySelector("#slcCargo").value;
+        produto.nome = document.querySelector("#txtNome").value;        
         
         if (tipo == "Novo") {
             console.log("tipo: " + tipo);
-            const url = '/Usuario/Criar';
+            const url = '/Produto/Criar';
             
             return fetch(url, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
                 },
-                body: JSON.stringify(usuario)
+                body: JSON.stringify(produto)
                 
 
             })
@@ -56,11 +54,11 @@
                     if (response.ok) {
                         return response.json(); 
                     } else {
-                        throw new Error('Erro ao cadastrar usuario.');
+                        throw new Error('Erro ao cadastrar produto.');
                     }
                 })
                 .then(data => {
-                    console.log('Usuario cadastrado adicionados:', data);
+                    console.log('Produto cadastrado adicionados:', data);
                     location.reload();
                     return data;
                 })
@@ -69,28 +67,28 @@
                     throw error;
                 });
         } else if (tipo == "Alterar") { 
-            usuario.id = idUser;
+            produto.id = idUser;
             console.log("tipo: " + tipo);
-            console.log("Usuario: "+JSON.stringify(usuario));
-            const url = '/Usuario/Alterar';
+            console.log("Produto: "+JSON.stringify(produto));
+            const url = '/Produto/Alterar';
 
             return fetch(url, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
                 },
-                body: JSON.stringify(usuario)
+                body: JSON.stringify(produto)
 
             })
                 .then(response => {
                     if (response.ok) {
                         return response.json();
                     } else {
-                        throw new Error('Erro ao alterar usuario.');
+                        throw new Error('Erro ao alterar produto.');
                     }
                 })
                 .then(data => {
-                    console.log('Usuario alterado com sucesso:', data);
+                    console.log('Produto alterado com sucesso:', data);
                     location.reload();
                     return data;
                 })
@@ -100,40 +98,40 @@
                 });
         }
     }
-    alterarUsuario() {
-        //let usuario = new Usuario();     
-        let login = document.querySelector("#txtUsuario").value;
-        let cargo = document.querySelector("#slcCargo").value;
+    alterarProduto() {
+        //let produto = new Produto();     
+        let precoUn = document.querySelector("#txtPreco").value;
+        let unMedida = document.querySelector("#slcUnidade").value;
         let nome = document.querySelector("#txtNome").value;
-        let senha = document.querySelector("#txtSenha").value;
-        let nodeList = document.querySelectorAll(".check-usuario");
+        
+        let nodeList = document.querySelectorAll(".check-produto");
         Array.from(nodeList).forEach(async function (el) {
             if (el.checked == true) {
                 //console.log("Marcado: " + el.id)
                 let linha = el.parentElement.parentElement;
                 //console.log("Linha: " + linha.id)
                 let idBusca = document.querySelector("#" + CSS.escape(linha.id) + " .labelId").innerText
-                usuario.id = idBusca;
-                console.log("Id usuario: " + usuario.id);             
+                produto.id = idBusca;
+                console.log("Id produto: " + produto.id);             
                 habilitaCampos();
-                let pos = usuarios.findIndex((u) => u.id.toString() === idBusca);                
-                console.log("POS: "+pos+JSON.stringify(usuarios[pos]));
-                document.querySelector("#txtUsuario").value = usuarios[pos].login;
+                let pos = produtos.findIndex((p) => p.id.toString() === idBusca);                
+                console.log("POS: "+pos+JSON.stringify(produtos[pos]));
+                document.querySelector("#txtNome").value = produtos[pos].login;
                 let slcCargo = document.querySelector("#slcCargo");
                 for (let i = 0; i < slcCargo.options.length; i++) {
-                    if (slcCargo.options[i].text.toLowerCase() === usuarios[pos].cargo.toLowerCase()) {
+                    if (slcCargo.options[i].text.toLowerCase() === produtos[pos].cargo.toLowerCase()) {
                         slcCargo.selectedIndex = i;
                         break;
                     }
                 }                
-                document.querySelector("#txtNome").value = usuarios[pos].nome;        
-                document.querySelector("#txtSenha").value = usuarios[pos].senha;
+                document.querySelector("#txtNome").value = produtos[pos].nome;        
+                document.querySelector("#txtSenha").value = produtos[pos].senha;
             }
         }
         )
     }
-    async excluirUsuario() {
-        let nodeList = document.querySelectorAll(".check-usuario");
+    async excluirProduto() {
+        let nodeList = document.querySelectorAll(".check-produto");
         Array.from(nodeList).forEach(async function (el) {
             if (el.checked == true) {
                 console.log("Marcado: " + el.id)
@@ -141,17 +139,17 @@
                 console.log("Linha: " + linha.id)
                 let idBusca = document.querySelector("#" + CSS.escape(linha.id) + " .labelId").innerText
                 console.log("ID: " + idBusca);                
-                usuario.id = idBusca;
+                produto.id = idBusca;
                 //Excluir cliente
 
-                const url = '/Usuario/Excluir';
+                const url = '/Produto/Excluir';
                 // Faz a requisição POST usando fetch
                 fetch(url, {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
                     },
-                    body: JSON.stringify(usuario)
+                    body: JSON.stringify(produto)
                 })
                     .then(response => {
                         if (response.ok) {
@@ -161,7 +159,7 @@
                         }
                     })
                     .then(data => {
-                        console.log('Usuario excluido:', data);
+                        console.log('Produto excluido:', data);
                         location.reload();
                         return data;
                     })
@@ -176,27 +174,20 @@
 
     }
 }
-let usuario = new Usuario();
-let usuarios = [];
+let produto = new Produto();
+let produtos = [];
 function montarTabela() {
-    let tabela = document.querySelector("#usuarioTabela > tbody");
-    let i = 0;
-    /*let usuarios = [];
-    usr = new Usuario("Julio", "Julio354", "Vendedor");
-    usuarios.push(usr);
-    usr = new Usuario("Andreia", "And984", "Gerente de vendas");
-    usuarios.push(usr);
-    usr = new Usuario("Cleomar", "Cleo1324", "Gerente geral");
-    usuarios.push(usr);*/
+    let tabela = document.querySelector("#produtoTabela > tbody");
+    let i = 0;    
 
-    usuarios.forEach((c) => {
+    produtos.forEach((c) => {
         let linha = document.createElement("tr");
         linha.id = "linha-" + i;
 
         let checkbox = document.createElement("input");
         checkbox.id = "cb-" + i;
         checkbox.type = "checkbox";
-        checkbox.className = "text-center check-usuario";
+        checkbox.className = "text-center check-produto";
         let tdCheckbox = document.createElement("td");
         tdCheckbox.appendChild(checkbox);
         linha.appendChild(tdCheckbox);
@@ -239,12 +230,12 @@ function montarTabela() {
     i = 0;
 }
 function habilitaCampos() {
-    const usuario = document.querySelector("#txtUsuario");
+    const produto = document.querySelector("#txtProduto");
     const cargo = document.querySelector("#slcCargo");
     const nome = document.querySelector("#txtNome");
     const senha = document.querySelector("#txtSenha");
     const salvar = document.querySelector("#btnSalvar");
-    usuario.disabled = false;
+    produto.disabled = false;
     cargo.disabled = false;
     nome.disabled = false;
     senha.disabled = false;
@@ -252,8 +243,8 @@ function habilitaCampos() {
 }
 
 window.addEventListener("load", async () => {
-    //clientes = await usuario.consultarUsuario();
-    usuarios = await usuario.consultarUsuarios();
+    //clientes = await produto.consultarProduto();
+    produtos = await produto.consultarProdutos();
     await this.montarTabela();
     
 
@@ -272,21 +263,21 @@ window.addEventListener("load", async () => {
         });
     });
     document.querySelector(".excluir").addEventListener("click", async () => {
-        await usuario.excluirUsuario();
+        await produto.excluirProduto();
     });
     document.querySelector(".incluir").addEventListener("click", async () => {
         habilitaCampos();
         document.querySelector(".salvar").addEventListener('click', async () => {
-            usuario.criarUsuario("Novo");
+            produto.criarProduto("Novo");
         })
     });    
     document.querySelector(".alterar").addEventListener("click", async () => {        
-        let res = await usuario.alterarUsuario();   
-        console.log("ID USER: " + usuario.id);
+        let res = await produto.alterarProduto();   
+        console.log("ID USER: " + produto.id);
         document.querySelector(".salvar").addEventListener('click', async () => {
-            console.log("ID USER: " + usuario.id);
-            let idUser = usuario.id;
-            usuario.criarUsuario("Alterar",idUser);
+            console.log("ID USER: " + produto.id);
+            let idProd = produto.id;
+            produto.criarProduto("Alterar",idProd);
         })
     });
 });

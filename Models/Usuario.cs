@@ -14,7 +14,6 @@ namespace Farmtech_WEB.Models
         // Construir classe com base no banco
         [Key]
         public int Id { get; set; }
-
         public string Nome { get; set; }
         public string Login { get; set; }
         public string Senha { get; set; }

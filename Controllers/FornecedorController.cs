@@ -118,8 +118,7 @@ namespace Farmtech_WEB.Controllers
             try
             {
                 if (ModelState.IsValid)
-                {
-                    
+                {                   
 
                     _context.Add(fornecedorEndereco);
                     await _context.SaveChangesAsync();

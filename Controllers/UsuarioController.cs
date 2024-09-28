@@ -123,31 +123,28 @@ namespace Farmtech_WEB.Controllers
                 return StatusCode(500, "Internal server error");
             }                
         }
-        /*
-        //POST: Cliente/Create
-        
         [HttpPost]
         //[ValidateAntiForgeryToken]
-        public async Task<IActionResult> Excluir([FromBody] Cliente cliente)
+        public async Task<IActionResult> Excluir([FromBody] Usuario usuario)
         {
             try
             {
-                    if (cliente.Cpf == null) 
+                    if (usuario.Id == null) 
                     {
-                        Console.WriteLine("CPF não fornecido: " + JsonConvert.SerializeObject(cliente.Cpf));
-                        return BadRequest("CPF não fornecido.");
+                        Console.WriteLine("ID não fornecido: " + JsonConvert.SerializeObject(usuario.Id));
+                        return BadRequest("ID não fornecido.");
                     }                
                                     
 
                     // Buscar o endereço pelo ID antes de excluir
-                    var clienteBuscado = await _context.Cliente.FindAsync(cliente.Cpf);
-                    if (clienteBuscado== null)
+                    var usuarioBuscado = await _context.Usuario.FindAsync(usuario.Id);
+                    if (usuarioBuscado == null)
                     {
-                        return NotFound("Endereço não encontrado.");
+                        return NotFound("Usuario não encontrado.");
                     }
-                    _context.Remove(clienteBuscado);
+                    _context.Remove(usuarioBuscado);
                     await _context.SaveChangesAsync();
-                    return Ok(cliente);
+                    return Ok(usuario);
                 
                 
             }
@@ -159,6 +156,7 @@ namespace Farmtech_WEB.Controllers
                 return StatusCode(500, "Internal server error");
             }
         }
+        /*
         [HttpPost]
         //[ValidateAntiForgeryToken]
         public async Task<IActionResult> ExcluirEndereco([FromBody] ClienteEndereco clienteEndereco)

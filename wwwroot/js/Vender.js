@@ -93,49 +93,14 @@ class Venda {
         option.innerText = "-Selecione um produto-";
         selectNome.appendChild(option);
         let i = 0;
-        /*
-        if (!selectNome) {
-            console.error('Elemento selectNome não encontrado');
-        } else {
-            var listaProdutosDB = this.consultarProdutos();
-
-            listaProdutosDB.then((listaProdutosDB) => {
-                // Verifique se listaProdutosDB é um array
-                if (Array.isArray(listaProdutosDB)) {
-                    console.log("Lista produtos length: " + listaProdutosDB.length);
-
-                    for (let i = 0; i < listaProdutosDB.length; i++) {
-                        const produto = listaProdutosDB[i];
-                        const option = document.createElement('option');
-                        option.innerText = produto.nome;
-                        option.value = produto.id;
-                        selectNome.appendChild(option);
-                        console.log("Criou option para:", produto.nome);
-                    }
-                } else {
-                    console.error('Lista de produtos não é um array ou está indefinida.');
-                }
-            }).catch((error) => {
-                console.error('Erro ao consultar produtos:', error);
-            });
-        }*/
-        
-        /*var listaProdutosDB = this.consultarProdutos()
-            listaProdutosDB.then((listaProdutosDB) => {
-            */
-            console.log("Lista produtos length: " + this.listaProdutosDB.length)
+                    console.log("Lista produtos length: " + this.listaProdutosDB.length)
             for (i = 0; i < this.listaProdutosDB.length; i++) {
                 var option = document.createElement('option');
                 option.innerText = this.listaProdutosDB[i].nome;
                 option.value = this.listaProdutosDB[i].id;
                 selectNome.appendChild(option);
                 console.log("Tentou criar option");
-            }
-            
-        
-        
-        
-        
+            }       
         spanItem.appendChild(selectNome);
 
         // Cria o label para o preço unitário

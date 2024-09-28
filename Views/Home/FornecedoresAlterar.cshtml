@@ -8,23 +8,23 @@
         <div class="card">
             <div class="card-header bg-success text-white">
                 <div class="d-flex align-items-center">
-                    <img src="https://cdn-icons-png.flaticon.com/512/747/747376.png"
+                    <img src="~/Imagens/Grandes/forncedor.png"
                          alt="Ícone de Cadastro"
                          width="30"
                          height="30"
                          class="me-2" />
-                    <h4 class="mb-0">Cadastro de clientes</h4>
+                    <h4 class="mb-0">Alteração de Fornecedor</h4>
                 </div>
             </div>
             <div class="card-body">
                 <form>
                     <div class="row">
                         <div class="col-md-4 mb-3">
-                            <label for="nome" class="form-label">Nome</label>
+                            <label for="nome" class="form-label">Razão social</label>
                             <input type="text"
                                    class="form-control"
-                                   id="nome"
-                                   placeholder="Nome do cliente"
+                                   id="razaoSocial"
+                                   placeholder="Razão social da empresa"
                                    value="" />
                         </div>
                         <div class="col-md-4 mb-3">
@@ -45,33 +45,26 @@
                                    value="" />                        
                         </div>
                     </div>
+
                     <div class="row">
-                        <div class="col-md-4 mb-3">
-                            <label for="cpf-cnpj" class="form-label">CPF</label>
-                            <input type="text"
-                                   disabled
+                    <div class="col-md-4 mb-3">
+                        <label for="data-nascimento" class="form-label">Nome fantasia</label>
+                        <input type="text"
+                               class="form-control"
+                               id="nomeFantasia"
+                               placeholder="Nome fantasia da empresa"
+                               value="" />
+                    </div>
+                    <div class="col-md-4 mb-3">
+                            <label class="form-label">CNPJ</label>
+                            <input type="number"
                                    class="form-control"
-                                   id="cpf"
-                                   placeholder="123.456.789-11"
+                                   id="cnpj"
+                                   maxlength="14"
+                                   placeholder="12.345.678/0001-12"
                                    value="" />
                         </div>
-                        <div class="col-md-4 mb-3">
-                            <label for="data-nascimento" class="form-label">Data de nascimento</label>
-                            <input type="date"
-                                   class="form-control"
-                                   id="data-nascimento"
-                                   placeholder="@DateOnly.FromDateTime(DateTime.Now)"
-                                   value="" />
-                        </div>
-                        <div class="col-md-4 mb-3">
-                            <label for="genero" class="form-label">Gênero</label>
-                            <select class="form-select" id="genero">
-                                <option selected disabled>Selecione o genero</option>
-                                <option value="M">Masculino</option>
-                                <option value="F">Feminino</option>
-                                <option value="O">Outro</option>
-                            </select>
-                        </div>
+                                             
                     </div>
                     <div class="row">
                         <div class="col-md-8 mb-3">
@@ -96,8 +89,33 @@
                             <label for="estado" class="form-label">Estado</label>
                             <select class="form-select" id="estado">
                                 <option selected disabled>Selecione o estado</option>
-                                <option>RJ</option>
-                                <option>MG</option>
+                            <option value="AC">AC</option>
+                            <option value="AL">AL</option>
+                            <option value="AP">AP</option>
+                            <option value="AM">AM</option>
+                            <option value="BA">BA</option>
+                            <option value="CE">CE</option>
+                            <option value="DF">DF</option>
+                            <option value="ES">ES</option>
+                            <option value="GO">GO</option>
+                            <option value="MA">MA</option>
+                            <option value="MT">MT</option>
+                            <option value="MS">MS</option>
+                            <option value="MG">MG</option>
+                            <option value="PA">PA</option>
+                            <option value="PB">PB</option>
+                            <option value="PR">PR</option>
+                            <option value="PE">PE</option>
+                            <option value="PI">PI</option>
+                            <option value="RJ">RJ</option>
+                            <option value="RN">RN</option>
+                            <option value="RS">RS</option>
+                            <option value="RO">RO</option>
+                            <option value="RR">RR</option>
+                            <option value="SC">SC</option>
+                            <option value="SP">SP</option>
+                            <option value="SE">SE</option>
+                            <option value="TO">TO</option>
                             </select>
                         </div>
                         <div class="col-md-4 mb-3">

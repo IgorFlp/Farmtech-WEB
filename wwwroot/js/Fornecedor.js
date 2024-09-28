@@ -334,14 +334,15 @@ window.addEventListener('load', async () => {
         console.log("Botão de confirmar clicado");
         event.preventDefault();
 
-        fornecedor.nome = document.querySelector("#nome").value;
+        fornecedor.razaoSocial = document.querySelector("#razaoSocial").value;
+        fornecedor.nomeFantasia = document.querySelector("#nomeFantasia").value;
         fornecedor.email = document.querySelector("#email").value;
         fornecedor.telefone = document.querySelector("#telefone").value;
         fornecedor.cnpj = document.querySelector("#cnpj").value;
-        fornecedor.dataNasc = document.querySelector("#data-nascimento").value;
-        fornecedor.genero = document.querySelector("#genero").options[document.querySelector("#genero").selectedIndex].value;
+        
+        
 
-        fornecedorEndereco.frn_fornecedor = document.querySelector("#cnpj").value;
+        fornecedorEndereco.frn_cnpj = document.querySelector("#cnpj").value;
         fornecedorEndereco.rua = document.querySelector("#rua").value;
         fornecedorEndereco.bairro = document.querySelector("#bairro").value;
         fornecedorEndereco.estado = document.querySelector("#estado").options[document.querySelector("#estado").selectedIndex].value;
