@@ -180,7 +180,9 @@ class ClienteEndereco {
                 }
             })
             .then(data => {
-                console.log('Endereco Cadastrado:', data);                
+                console.log('Endereco Cadastrado:', data);  
+                alert("Cliente cadastrado com sucesso");
+                window.location.href = "https://localhost:7160/Home/Clientes"
                 return data;
             })
             .catch(error => {
@@ -214,7 +216,9 @@ class ClienteEndereco {
                 }
             })
             .then(data => {
-                console.log('Endereco Cadastrado:', data);                
+                console.log('Endereco Cadastrado:', data);  
+                alert("cliente alterado com sucesso")
+                window.location.href = "https://localhost:7160/Home/Clientes";
                 return data;
             })
             .catch(error => {
@@ -422,7 +426,63 @@ function preencherCliente() {
         document.querySelector("#cep").value = endereco.cep;
     }
 }
+async function validarCpf(cpf) {
+    cpf = cpf.replace(/\D/g, '');
+                let passo1 = [10, 9, 8, 7, 6, 5, 4, 3, 2];
+                let passo2 = [11, 10, 9, 8, 7, 6, 5, 4, 3, 2];
+                let soma = 0;
+                let soma2 = 0;
 
+                for (let i = 0; i < passo1.length; i++) {
+                    soma = soma + (cpf[i] * passo1[i]);
+                }
+                let divisao = soma / 11;
+                let resto = soma % 11;
+                if (resto < 2 && cpf[9] == 0) {
+                    //Segundo passo
+                    let resto2;
+                    for (let i = 0; i < passo2.length; i++) {
+                        soma2 = soma2 + (cpf[i] * passo2[i]);
+                    }
+                    resto2 = soma2 % 11;
+                    if (resto2 < 2 && cpf[10] == 0) {
+                        return "VALIDO";
+                        console.log("CPF Valido");
+                    }
+                    else if (resto2 >= 2 && 11 - resto2 == cpf[10]) {
+                        return "VALIDO";
+                        console.log("CPF VALIDO");
+                    }
+                    else {
+                        return "INVALIDO";
+                        console.log("Incorreto tente novamente");
+                    }
+                }
+                else if (resto >= 2 && 11 - resto == cpf[9]) {
+                    // Segundo passo
+                    let resto2;
+                    for (let i = 0; i < passo2.length; i++) {
+                        soma2 = soma2 + (cpf[i] * passo2[i]);
+                    }
+                    resto2 = soma2 % 11;
+                    if (resto2 < 2 && cpf[10] == 0) {
+                        return "VALIDO";
+                        console.log("CPF VALIDO");
+                    }
+                    else if (resto2 >= 2 && 11 - resto2 == cpf[10]) {
+                        console.log("CPF VALIDO");
+                        return "VALIDO";
+                    }
+                    else {   //Falha segundo digito    
+                        return "INVALIDO";
+                        console.log("CPF invalido segundo digito");
+                    }
+                }
+                else { //Falha no primeiro digito
+                    return "INVALIDO";
+                    console.log("CPF invalido primeiro digito");
+                }
+}
 
 window.addEventListener('load', async () => {
     // Verifica se a URL atual corresponde a "/Home/Clientes"
@@ -458,6 +518,26 @@ window.addEventListener('load', async () => {
 
     // Verifica se a URL atual corresponde a "/Home/ClientesAlterar"
     if (window.location.pathname === "/Home/ClientesAlterar") {
+        document.querySelector("#telefone").addEventListener('input', () => {
+            let campoTelefone = document.querySelector("#telefone");
+            let telefone = campoTelefone.value.replace(/\D/g, ''); // Remove tudo que não for dígito
+
+            if (telefone.length > 2 && telefone.length <= 7) {
+                telefone = telefone.replace(/(\d{2})(\d+)/, "($1) $2");
+            } else if (telefone.length > 7 && telefone.length <= 11) {
+                telefone = telefone.replace(/(\d{2})(\d{5})(\d+)/, "($1) $2-$3");
+            }
+
+            campoTelefone.value = telefone; // Atualiza o campo com o telefone formatado
+        });
+        document.querySelector("#cep").addEventListener('input', () => {
+            let campoCep = document.querySelector("#cep");
+            let cep = campoCep.value.replace(/\D/g, ''); // Remove tudo que não for dígito            
+            cep = cep.replace(/(\d{5})(\d{3})/, "$1-$2");
+
+            campoCep.value = cep; // Atualiza o campo com o telefone formatado
+        });
+
         let cpfBusca = localStorage.getItem('cpfBusca'); // Recupera o CPF armazenado
         console.log("CPF busca: " + cpfBusca);
 
@@ -469,28 +549,44 @@ window.addEventListener('load', async () => {
             enderecos = await clienteEndereco.consultarEndereco();
             preencherCliente();
         }
+        
         document.querySelector("#confirmar").addEventListener('click', async (event) => {
             console.log("Botão de confirmar clicado");
             event.preventDefault();
+            if (
+                document.querySelector("#nome").value !== "" &&
+                document.querySelector("#email").value !== "" &&
+                document.querySelector("#telefone").value !== "" &&
+                document.querySelector("#cpf").value !== "" &&
+                document.querySelector("#data-nascimento").value !== "" &&
+                document.querySelector("#genero").options[document.querySelector("#genero").selectedIndex].value !== "Selecione o genero" &&
+                document.querySelector("#rua").value !== "" &&
+                document.querySelector("#bairro").value !== "" &&
+                document.querySelector("#estado").options[document.querySelector("#estado").selectedIndex].value !== "Selecione o estado" &&
+                document.querySelector("#cidade").value !== "" &&
+                document.querySelector("#cep").value !== ""
+            ) {
+                cliente.nome = document.querySelector("#nome").value;
+                cliente.email = document.querySelector("#email").value;
+                cliente.telefone = document.querySelector("#telefone").value.replace(/\D/g, '');
+                cliente.cpf = document.querySelector("#cpf").value.replace(/\D/g, '');
+                cliente.dataNasc = document.querySelector("#data-nascimento").value;
+                cliente.genero = document.querySelector("#genero").options[document.querySelector("#genero").selectedIndex].value;
 
-            cliente.nome = document.querySelector("#nome").value;
-            cliente.email = document.querySelector("#email").value;
-            cliente.telefone = document.querySelector("#telefone").value;
-            cliente.cpf = document.querySelector("#cpf").value;
-            cliente.dataNasc = document.querySelector("#data-nascimento").value;
-            cliente.genero = document.querySelector("#genero").options[document.querySelector("#genero").selectedIndex].value;
+                clienteEndereco.cl_cpf = document.querySelector("#cpf").value.replace(/\D/g, '');
+                clienteEndereco.rua = document.querySelector("#rua").value;
+                clienteEndereco.bairro = document.querySelector("#bairro").value;
+                clienteEndereco.estado = document.querySelector("#estado").options[document.querySelector("#estado").selectedIndex].value;
+                clienteEndereco.cidade = document.querySelector("#cidade").value;
+                clienteEndereco.cep = document.querySelector("#cep").value.replace(/\D/g, '')
 
-            clienteEndereco.cl_cpf = document.querySelector("#cpf").value;
-            clienteEndereco.rua = document.querySelector("#rua").value;
-            clienteEndereco.bairro = document.querySelector("#bairro").value;
-            clienteEndereco.estado = document.querySelector("#estado").options[document.querySelector("#estado").selectedIndex].value;
-            clienteEndereco.cidade = document.querySelector("#cidade").value;
-            clienteEndereco.cep = document.querySelector("#cep").value;
-
-            await cliente.atualizarCliente().then(() => {
-                window.location.href = "https://localhost:7160/Home/Clientes";
-                //location.reload();
-            });
+                await cliente.atualizarCliente().then(() => {
+                    
+                    //location.reload();
+                });
+            } else {
+                alert("Preencha todos os campos")
+            }
         });
         document.querySelector("#cancelar").addEventListener('click', async (event) => {
             window.location.href = "https://localhost:7160/Home/Clientes";
@@ -499,119 +595,103 @@ window.addEventListener('load', async () => {
 
     // Verifica se a URL atual corresponde a "/Home/ClientesNovo"
     if (window.location.pathname === "/Home/ClientesNovo") {
+        let cpfValido;
+        document.querySelector("#cpf").addEventListener('input', async () => {
+            let campoCpf = document.querySelector("#cpf");
+            let cpf = campoCpf.value.replace(/\D/g, ''); // Remove tudo que não for dígito
+
+            if (cpf.length > 3 && cpf.length <= 6) {
+                cpf = cpf.replace(/(\d{3})(\d+)/, "$1.$2"); // Adiciona ponto após os 3 primeiros dígitos
+            } else if (cpf.length > 6 && cpf.length <= 9) {
+                cpf = cpf.replace(/(\d{3})(\d{3})(\d+)/, "$1.$2.$3"); // Adiciona ponto após os 6 primeiros dígitos
+            } else if (cpf.length > 9) {
+                cpf = cpf.replace(/(\d{3})(\d{3})(\d{3})(\d+)/, "$1.$2.$3-$4"); // Adiciona hífen após os 9 primeiros dígitos
+            }
+            campoCpf.value = cpf;            
+            
+            if (cpf.length == 14) {
+                let res = await validarCpf(cpf);
+                if (res == "VALIDO") {
+                    campoCpf.className = "form-control border-success"
+                } else {
+                    campoCpf.className = "form-control border-danger"
+                }
+            } 
+        });
+
+
+
+        document.querySelector("#telefone").addEventListener('input', () => {
+            let campoTelefone = document.querySelector("#telefone");
+            let telefone = campoTelefone.value.replace(/\D/g, ''); // Remove tudo que não for dígito
+
+            if (telefone.length > 2 && telefone.length <= 7) {
+                telefone = telefone.replace(/(\d{2})(\d+)/, "($1) $2");
+            } else if (telefone.length > 7 && telefone.length <= 11) {
+                telefone = telefone.replace(/(\d{2})(\d{5})(\d+)/, "($1) $2-$3");
+            }
+
+            campoTelefone.value = telefone; // Atualiza o campo com o telefone formatado
+        });
+        document.querySelector("#cep").addEventListener('input', () => {
+            let campoCep = document.querySelector("#cep");
+            let cep = campoCep.value.replace(/\D/g, ''); // Remove tudo que não for dígito            
+            cep = cep.replace(/(\d{5})(\d{3})/, "$1-$2");
+
+            campoCep.value = cep; // Atualiza o campo com o telefone formatado
+        });
+
         document.querySelector("#confirmar").addEventListener('click', async (event) => {
             console.log("Botão de confirmar clicado");
             event.preventDefault();
+            if (
+                document.querySelector("#nome").value !== "" &&
+                document.querySelector("#email").value !== "" &&
+                document.querySelector("#telefone").value !== "" &&
+                document.querySelector("#cpf").value !== "" &&
+                document.querySelector("#data-nascimento").value !== "" &&
+                document.querySelector("#genero").options[document.querySelector("#genero").selectedIndex].value !== "Selecione o genero" &&
+                document.querySelector("#rua").value !== "" &&
+                document.querySelector("#bairro").value !== "" &&
+                document.querySelector("#estado").options[document.querySelector("#estado").selectedIndex].value !== "Selecione o estado" &&
+                document.querySelector("#cidade").value !== "" &&
+                document.querySelector("#cep").value !== ""
+            ) {
+                let res = await validarCpf(document.querySelector("#cpf").value);                
+                if (res == "INVALIDO") {
+                    alert("CPF invalido")
+                }
+                else { 
+                    cliente.nome = document.querySelector("#nome").value;
+                    cliente.email = document.querySelector("#email").value;
+                    cliente.telefone = document.querySelector("#telefone").value.replace(/\D/g, '');
+                    cliente.cpf = document.querySelector("#cpf").value.replace(/\D/g, '');
+                    cliente.dataNasc = document.querySelector("#data-nascimento").value;
+                    cliente.genero = document.querySelector("#genero").options[document.querySelector("#genero").selectedIndex].value;
 
-            cliente.nome = document.querySelector("#nome").value;
-            cliente.email = document.querySelector("#email").value;
-            cliente.telefone = document.querySelector("#telefone").value;
-            cliente.cpf = document.querySelector("#cpf").value;
-            cliente.dataNasc = document.querySelector("#data-nascimento").value;
-            cliente.genero = document.querySelector("#genero").options[document.querySelector("#genero").selectedIndex].value;
+                    clienteEndereco.cl_cpf = document.querySelector("#cpf").value.replace(/\D/g, '');
+                    clienteEndereco.rua = document.querySelector("#rua").value;
+                    clienteEndereco.bairro = document.querySelector("#bairro").value;
+                    clienteEndereco.estado = document.querySelector("#estado").options[document.querySelector("#estado").selectedIndex].value;
+                    clienteEndereco.cidade = document.querySelector("#cidade").value;
+                    clienteEndereco.cep = document.querySelector("#cep").value.replace(/\D/g, '');
 
-            clienteEndereco.cl_cpf = document.querySelector("#cpf").value;
-            clienteEndereco.rua = document.querySelector("#rua").value;
-            clienteEndereco.bairro = document.querySelector("#bairro").value;
-            clienteEndereco.estado = document.querySelector("#estado").options[document.querySelector("#estado").selectedIndex].value;
-            clienteEndereco.cidade = document.querySelector("#cidade").value;
-            clienteEndereco.cep = document.querySelector("#cep").value;
+                    await cliente.criarCliente().then(() => {
+                       
+                    });
+                }
+            } else {
+                alert("Preencha todos os campos")
+            }
 
-            await cliente.criarCliente().then(() => {                
-                location.reload();
-            });
         });
         document.querySelector("#cancelar").addEventListener('click', async (event) => {
             window.location.href = "https://localhost:7160/Home/Clientes";
         })
+    
     }
 });
-/*
-window.addEventListener('load', async () => {
-    if (window.location == "https://localhost:7160/Home/Clientes") {
 
-        clientes = await cliente.consultarClientes();
-        enderecos = await clienteEndereco.consultarEndereco();
-        //alert(JSON.stringify(clientes) + JSON.stringify(enderecos));
-        await this.montarTabela();
-
-        document.querySelectorAll('input[type="checkbox"]').forEach((checkbox) => {
-            checkbox.addEventListener('change', function () {
-                if (this.checked) {
-                    // Desmarcar todos os outros checkboxes
-                    document.querySelectorAll('input[type="checkbox"]').forEach((otherCheckbox) => {
-                        if (otherCheckbox !== this) {
-                            otherCheckbox.checked = false;
-                        }
-                    });
-                }
-            });
-        });
-        document.querySelector(".excluir").addEventListener('click', async () => { await cliente.excluirCliente() });
-        document.querySelector(".alterar").addEventListener('click', alterarCliente);
-        document.querySelector(".incluir").addEventListener('click', () => { window.location.href = 'https://localhost:7160/Home/ClientesNovo' });
-    }
-    if (window.location.href === "https://localhost:7160/Home/ClientesAlterar") {
-        document.addEventListener('DOMContentLoaded', function () {
-            let cpfBusca = localStorage.getItem('cpfBusca'); // Recupera o CPF armazenado
-            console.log("CPF busca: " + cpfBusca)
-            if (cpfBusca) {
-                console.log("CPF para alteração: " + cpfBusca);
-
-                // Consulta os dados dos clientes e endereços
-                let clientes = consultarClientes();
-                let enderecos = consultarEnderecos();
-
-                let cliente = clientes.find(c => c.cpf === cpfBusca);
-                let endereco = enderecos.find(e => e.cl_cpf === cpfBusca);
-
-                if (cliente) {
-                    document.querySelector("#nome").value = cliente.nome;
-                    document.querySelector("#email").value = cliente.email;
-                    document.querySelector("#telefone").value = cliente.telefone;
-                    document.querySelector("#cpf").value = cliente.cpf;
-                    document.querySelector("#data-nascimento").value = cliente.dataNasc;
-                    document.querySelector("#genero").value = cliente.genero;
-                }
-
-                if (endereco) {
-                    document.querySelector("#rua").value = endereco.rua;
-                    document.querySelector("#bairro").value = endereco.bairro;
-                    document.querySelector("#estado").value = endereco.estado;
-                    document.querySelector("#cidade").value = endereco.cidade;
-                    document.querySelector("#cep").value = endereco.cep;
-                }
-            }
-        });
-    }
-
-    if (window.location.href === "https://localhost:7160/Home/ClientesNovo") {
-        document.querySelector("#confirmar").addEventListener('click', async (event) => {
-            console.log("Botão de confirmar clicado");
-            event.preventDefault();
-
-            cliente.nome = document.querySelector("#nome").value;
-            cliente.email = document.querySelector("#email").value;
-            cliente.telefone = document.querySelector("#telefone").value;
-            cliente.cpf = document.querySelector("#cpf").value;
-            cliente.dataNasc = document.querySelector("#data-nascimento").value;
-            cliente.genero = document.querySelector("#genero").options[document.querySelector("#genero").selectedIndex].value;
-
-            clienteEndereco.cl_cpf = document.querySelector("#cpf").value;
-            clienteEndereco.rua = document.querySelector("#rua").value;
-            clienteEndereco.bairro = document.querySelector("#bairro").value;
-            clienteEndereco.estado = document.querySelector("#estado").options[document.querySelector("#estado").selectedIndex].value;
-            clienteEndereco.cidade = document.querySelector("#cidade").value;
-            clienteEndereco.cep = document.querySelector("#cep").value;
-
-            await cliente.criarCliente().then(() => { location.reload(); });
-
-
-            //alert(JSON.stringify(cliente) + JSON.stringify(clienteEndereco));
-
-        });
-    }
-}*/
 
 
        

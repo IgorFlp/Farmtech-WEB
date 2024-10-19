@@ -264,7 +264,7 @@ class Producao {
                                 }
                             })
                             .then(data => {
-                                console.log('Estoque atualizado:', data);
+                                console.log('Estoque atualizado:', data);                                
                                 //location.reload();
                                 return data;
                             })
@@ -275,6 +275,8 @@ class Producao {
                     //}
                 })
         }
+        alert("Producão registrada com sucesso")
+        window.location.href = "https://localhost:7160/Home/Producao"
     }
 
         

@@ -180,7 +180,9 @@ class FornecedorEndereco {
                 }
             })
             .then(data => {
-                console.log('Endereco Cadastrado:', data);                
+                console.log('Endereco Cadastrado:', data);
+                alert("Fornecedor criado")
+                window.location.href = "https://localhost:7160/Home/Fornecedores";
                 return data;
             })
             .catch(error => {
@@ -215,6 +217,8 @@ class FornecedorEndereco {
             })
             .then(data => {
                 console.log('Endereco Cadastrado:', data);
+                alert("Fornecedor alterado com sucesso")
+                window.location.href = "https://localhost:7160/Home/Fornecedores";
                 return data;
             })
             .catch(error => {
@@ -459,29 +463,87 @@ window.addEventListener('load', async () => {
 
     // Verifica se está na página de adicionar fornecedores
     if (window.location.href === "https://localhost:7160/Home/FornecedoresNovo") {
+        document.querySelector("#cnpj").addEventListener('input', async () => {
+            let campoCnpj = document.querySelector("#cnpj");            
+            let cnpj = campoCnpj.value.replace(/\D/g, ''); // Remove qualquer caractere que não seja número
+
+            if (cnpj.length > 2 && cnpj.length <= 5) {
+                cnpj = cnpj.replace(/(\d{2})(\d+)/, "$1.$2"); // Formata 12.345
+            } else if (cnpj.length > 5 && cnpj.length <= 8) {
+                cnpj = cnpj.replace(/(\d{2})(\d{3})(\d+)/, "$1.$2.$3"); // Formata 12.345.678
+            } else if (cnpj.length > 8 && cnpj.length <= 12) {
+                cnpj = cnpj.replace(/(\d{2})(\d{3})(\d{3})(\d+)/, "$1.$2.$3/$4"); // Formata 12.345.678/0001
+            } else if (cnpj.length > 12) {
+                cnpj = cnpj.replace(/(\d{2})(\d{3})(\d{3})(\d{4})(\d{2})/, "$1.$2.$3/$4-$5"); // Formata 12.345.678/0001-12
+            }
+
+            campoCnpj.value = cnpj; 
+
+            // Verifica se o CNPJ tem 14 dígitos
+            if (cnpj.length == 18) {
+                campoCnpj.className = "form-control border-success"
+            } else {
+                campoCnpj.className = "form-control"
+            }
+        })
+        document.querySelector("#telefone").addEventListener('input', () => {
+
+            let campoTelefone = document.querySelector("#telefone");
+            let telefone = campoTelefone.value.replace(/\D/g, ''); 
+
+            if (telefone.length > 2 && telefone.length <= 7) {
+                telefone = telefone.replace(/(\d{2})(\d+)/, "($1) $2");
+            } else if (telefone.length > 7 && telefone.length <= 11) {
+                telefone = telefone.replace(/(\d{2})(\d{5})(\d+)/, "($1) $2-$3");
+            }
+
+            campoTelefone.value = telefone; 
+        });
+        document.querySelector("#cep").addEventListener('input', () => {
+            let campoCep = document.querySelector("#cep");
+            let cep = campoCep.value.replace(/\D/g, '');          
+            cep = cep.replace(/(\d{5})(\d{3})/, "$1-$2");
+
+            campoCep.value = cep; 
+        });
         document.querySelector("#confirmar").addEventListener('click', async (event) => {
             console.log("Botão de confirmar clicado");
             event.preventDefault();
+            if (
+                document.querySelector("#razaoSocial").value !== "" &&
+                document.querySelector("#nomeFantasia").value !== "" &&
+                document.querySelector("#razaoSocial").value !== "" &&
+                document.querySelector("#email").value !== "" &&
+                document.querySelector("#telefone").value !== "" &&
+                document.querySelector("#cnpj").value !== "" &&
+                document.querySelector("#rua").value !== "" &&
+                document.querySelector("#bairro").value !== "" &&
+                document.querySelector("#estado").options[document.querySelector("#estado").selectedIndex].value !== "Selecione o estado" &&
+                document.querySelector("#cidade").value !== "" &&
+                document.querySelector("#cep").value !== ""
+            ) {
+                fornecedor.razaoSocial = document.querySelector("#razaoSocial").value;
+                fornecedor.nomeFantasia = document.querySelector("#nomeFantasia").value;
+                fornecedor.email = document.querySelector("#email").value;
+                fornecedor.telefone = document.querySelector("#telefone").value.replace(/\D/g, '');
+                fornecedor.cnpj = document.querySelector("#cnpj").value.replace(/\D/g, '');
 
-            fornecedor.razaoSocial = document.querySelector("#razaoSocial").value;
-            fornecedor.nomeFantasia = document.querySelector("#nomeFantasia").value;
-            fornecedor.email = document.querySelector("#email").value;
-            fornecedor.telefone = document.querySelector("#telefone").value;
-            fornecedor.cnpj = document.querySelector("#cnpj").value;
+                fornecedorEndereco.frn_cnpj = document.querySelector("#cnpj").value.replace(/\D/g, '');
+                fornecedorEndereco.rua = document.querySelector("#rua").value;
+                fornecedorEndereco.bairro = document.querySelector("#bairro").value;
+                fornecedorEndereco.estado = document.querySelector("#estado").options[document.querySelector("#estado").selectedIndex].value;
+                fornecedorEndereco.cidade = document.querySelector("#cidade").value;
+                fornecedorEndereco.cep = document.querySelector("#cep").value.replace(/\D/g, '');
 
-            fornecedorEndereco.frn_cnpj = document.querySelector("#cnpj").value;
-            fornecedorEndereco.rua = document.querySelector("#rua").value;
-            fornecedorEndereco.bairro = document.querySelector("#bairro").value;
-            fornecedorEndereco.estado = document.querySelector("#estado").options[document.querySelector("#estado").selectedIndex].value;
-            fornecedorEndereco.cidade = document.querySelector("#cidade").value;
-            fornecedorEndereco.cep = document.querySelector("#cep").value;
-
-            await fornecedor.criarFornecedor().then(() => {
-                location.reload();
-            });
+                await fornecedor.criarFornecedor().then(() => {
+                    
+                });
+            } else {
+                alert("Preencha todos os campos");
+            }
         });
 
-        document.querySelector("#cancelar").addEventListener('click', async (event) => {
+        document.querySelector("#cancelar").addEventListener('click', async () => {
             window.location.href = "https://localhost:7160/Home/Fornecedores";
         });
     }
@@ -489,27 +551,63 @@ window.addEventListener('load', async () => {
     // Verifica se está na página de alterar fornecedores
     if (window.location.href === "https://localhost:7160/Home/FornecedoresAlterar") {
         
+
+        document.querySelector("#telefone").addEventListener('input', () => {
+            let campoTelefone = document.querySelector("#telefone");
+            let telefone = campoTelefone.value.replace(/\D/g, ''); // Remove tudo que não for dígito
+
+            if (telefone.length > 2 && telefone.length <= 7) {
+                telefone = telefone.replace(/(\d{2})(\d+)/, "($1) $2");
+            } else if (telefone.length > 7 && telefone.length <= 11) {
+                telefone = telefone.replace(/(\d{2})(\d{5})(\d+)/, "($1) $2-$3");
+            }
+
+            campoTelefone.value = telefone; // Atualiza o campo com o telefone formatado
+        });
+        document.querySelector("#cep").addEventListener('input', () => {
+            let campoCep = document.querySelector("#cep");
+            let cep = campoCep.value.replace(/\D/g, ''); // Remove tudo que não for dígito            
+            cep = cep.replace(/(\d{5})(\d{3})/, "$1-$2");
+
+            campoCep.value = cep; // Atualiza o campo com o telefone formatado
+        });
+        
         preencherFornecedor();
         document.querySelector("#confirmar").addEventListener('click', async (event) => {
             console.log("Botão de confirmar clicado");
             event.preventDefault();
+            if (
+                document.querySelector("#razaoSocial").value !== "" &&
+                document.querySelector("#nomeFantasia").value !== "" &&
+                document.querySelector("#razaoSocial").value !== "" &&
+                document.querySelector("#email").value !== "" &&
+                document.querySelector("#telefone").value !== "" &&
+                document.querySelector("#cnpj").value !== "" &&
+                document.querySelector("#rua").value !== "" &&
+                document.querySelector("#bairro").value !== "" &&
+                document.querySelector("#estado").options[document.querySelector("#estado").selectedIndex].value !== "Selecione o estado" &&
+                document.querySelector("#cidade").value !== "" &&
+                document.querySelector("#cep").value !== ""
+            ) {
+                fornecedor.razaoSocial = document.querySelector("#razaoSocial").value;
+                fornecedor.nomeFantasia = document.querySelector("#nomeFantasia").value;
+                fornecedor.email = document.querySelector("#email").value;
+                fornecedor.telefone = document.querySelector("#telefone").value.replace(/\D/g, '');
+                fornecedor.cnpj = document.querySelector("#cnpj").value.replace(/\D/g, '');
 
-            fornecedor.razaoSocial = document.querySelector("#razaoSocial").value;
-            fornecedor.nomeFantasia = document.querySelector("#nomeFantasia").value;
-            fornecedor.email = document.querySelector("#email").value;
-            fornecedor.telefone = document.querySelector("#telefone").value;
-            fornecedor.cnpj = document.querySelector("#cnpj").value;
+                fornecedorEndereco.frn_cnpj = document.querySelector("#cnpj").value.replace(/\D/g, '');
+                fornecedorEndereco.rua = document.querySelector("#rua").value;
+                fornecedorEndereco.bairro = document.querySelector("#bairro").value;
+                fornecedorEndereco.estado = document.querySelector("#estado").options[document.querySelector("#estado").selectedIndex].value;
+                fornecedorEndereco.cidade = document.querySelector("#cidade").value;
+                fornecedorEndereco.cep = document.querySelector("#cep").value.replace(/\D/g, '');
 
-            fornecedorEndereco.frn_cnpj = document.querySelector("#cnpj").value;
-            fornecedorEndereco.rua = document.querySelector("#rua").value;
-            fornecedorEndereco.bairro = document.querySelector("#bairro").value;
-            fornecedorEndereco.estado = document.querySelector("#estado").options[document.querySelector("#estado").selectedIndex].value;
-            fornecedorEndereco.cidade = document.querySelector("#cidade").value;
-            fornecedorEndereco.cep = document.querySelector("#cep").value;
-
-            await fornecedor.atualizarFornecedor().then(() => {
-                window.location.href = "https://localhost:7160/Home/Fornecedores";
-            });
+                await fornecedor.atualizarFornecedor().then(() => {
+                    
+                });
+            } else {
+                alert("Preencha todos os campos");
+            }
         });
 
         document.querySelector("#cancelar").addEventListener('click', async (event) => {

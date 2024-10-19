@@ -34,11 +34,13 @@ button {
 }
 .confirmar {
     background-color: #80ca5d;
-    background-image: url('../Imagens/Grandes/Confirmar.png')
+    background-image: url('../Imagens/Grandes/Confirmar.png');
+    background-size: 35px;
 }
 .cancelar {
     background-color: #ea8686;
-    background-image: url('../Imagens/Grandes/Cancelar.png')
+    background-image: url('../Imagens/Grandes/Cancelar.png');    
+    background-size: 30px;
 }
 .alterar {
     background-image: url('../Imagens/Grandes/Alterar.png');
