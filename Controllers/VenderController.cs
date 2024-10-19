@@ -49,20 +49,23 @@ namespace Farmtech_WEB.Controllers
         {
             try
             {
-                if (ModelState.IsValid)
+                if(vendaProdutos == null)
                 {
+                    var errors = ModelState.Values.SelectMany(v => v.Errors).Select(e => e.ErrorMessage);
+                    Console.WriteLine("Erros de validação: " + string.Join(", ", errors));
+                    return BadRequest();
+                }
+                
                     foreach (var produtoVenda in vendaProdutos)
                     {
                         _context.Add(produtoVenda);
                     }                    
                     await _context.SaveChangesAsync();
                     return Ok(vendaProdutos);
-                }
-                else{
-                    var errors = ModelState.Values.SelectMany(v => v.Errors).Select(e => e.ErrorMessage);
-                    Console.WriteLine("Erros de validação: " + string.Join(", ", errors));
-                    return BadRequest(ModelState);
-                }                
+                
+                
+                    
+                               
             }
             catch (Exception ex)
             {

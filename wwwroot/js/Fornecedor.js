@@ -37,6 +37,43 @@
             });
 
     }
+    atualizarFornecedor() {
+        const url = 'http://localhost:5147/api/Fornecedores/' + fornecedor.cnpj;
+        // Faz a requisição POST usando fetch
+        //console.log("Cliente: "+JSON.stringify(cliente));
+        return fetch(url, {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json', // Define o tipo de conteúdo como JSON
+            },
+            body: JSON.stringify(fornecedor) // Envia o objeto venda como JSON
+            // Verifica os dados que estão sendo enviados
+
+        })
+            .then(response => {
+                if (response.ok) {
+                    return response.text().then(text => {
+                        if (text) {
+                            return JSON.parse(text);
+                        } else {
+                            return {};
+                        }
+                    });
+                } else {
+                    throw new Error('Erro ao cadastrar cliente.');
+                }
+            })
+            .then(data => {
+                console.log('Fornecedor cadastro alterado:', data);
+                fornecedorEndereco.atualizarEndereco();
+                return data;
+            })
+            .catch(error => {
+                console.error('Erro:', error);
+                throw error;
+            });
+
+    }
     async excluirFornecedor() {
         let nodeList = document.querySelectorAll(".check-fornecedor");
         Array.from(nodeList).forEach(async function (el) {
@@ -111,7 +148,9 @@
                 console.error('Erro:', error);
             });
     }
+    
 }
+
 class FornecedorEndereco {
     constructor(frn_cnpj, rua, bairro, cidade, estado, cep) {
         this.frn_cnpj = frn_cnpj;
@@ -142,6 +181,40 @@ class FornecedorEndereco {
             })
             .then(data => {
                 console.log('Endereco Cadastrado:', data);                
+                return data;
+            })
+            .catch(error => {
+                console.error('Erro:', error);
+                throw error;
+            });
+    }
+    atualizarEndereco() {
+        let url = 'http://localhost:5147/api/FornecedoresEnderecos/' + fornecedorEndereco.frn_cnpj;
+        //console.log("Cliente Endereco: "+JSON.stringify(cliente));
+        fetch(url, {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json', // Define o tipo de conteúdo como JSON
+            },
+            body: JSON.stringify(fornecedorEndereco) // Envia o objeto venda como JSON
+            // Verifica os dados que estão sendo enviados
+
+        })
+            .then(response => {
+                if (response.ok) {
+                    return response.text().then(text => {
+                        if (text) {
+                            return JSON.parse(text);
+                        } else {
+                            return {};
+                        }
+                    });
+                } else {
+                    throw new Error('Erro ao cadastrar cliente.');
+                }
+            })
+            .then(data => {
+                console.log('Endereco Cadastrado:', data);
                 return data;
             })
             .catch(error => {
@@ -210,27 +283,32 @@ let fornecedor = new Fornecedor();
 let fornecedorEndereco = new FornecedorEndereco();
 let fornecedores = [];
 let enderecos = [];
+fornecedores = fornecedor.consultarFornecedores();
+enderecos = fornecedorEndereco.consultarEndereco();
 
 function montarTabela() {
     let tabela = document.querySelector("#fornecedorTabela > tbody");
     let i = 0
+    //let fornecedores = await fornecedor.consultarFornecedores();
+    //let enderecos = await fornecedorEndereco.consultarEndereco();
     fornecedores.forEach((f) => {
-        
+
         //console.log("Fornecedor: "+JSON.stringify(c))
         const pos = enderecos.map(e => e.frn_cnpj).indexOf(f.cnpj);
         //console.log("Endereco: " + JSON.stringify(enderecos[pos]));
 
-       
+
         let linha = document.createElement('tr');
         linha.id = "linha-" + i;
 
         let checkbox = document.createElement('input');
-        checkbox.id = "cb-" + i;        
+        checkbox.id = "cb-" + i;
         checkbox.type = "checkbox";
         checkbox.className = "text-center check-fornecedor"
         let tdCheckbox = document.createElement('td');
         tdCheckbox.appendChild(checkbox);
         linha.appendChild(tdCheckbox);
+
 
         let lblCnpj = document.createElement('label');
         lblCnpj.id = "cnpj-" + i;
@@ -245,7 +323,7 @@ function montarTabela() {
         let tdRazao = document.createElement('td');
         tdRazao.appendChild(lblRazao);
         linha.appendChild(tdRazao);
-        
+
 
         let lblNome = document.createElement('label');
         lblNome.innerText = f.nomeFantasia;
@@ -253,7 +331,7 @@ function montarTabela() {
         tdNome.appendChild(lblNome);
         linha.appendChild(tdNome);
 
-        
+
         let lblTelefone = document.createElement('label');
         lblTelefone.innerText = f.telefone;
         let tdTelefone = document.createElement('td');
@@ -298,20 +376,52 @@ function montarTabela() {
         tdCep.appendChild(lblCep);
         linha.appendChild(tdCep);
 
-        tabela.appendChild(linha) 
+        tabela.appendChild(linha)
         i++;
-        
-    }) 
+
+    })
     i = 0
 }
 
+async function preencherFornecedor() {
+    let cnpjBusca = localStorage.getItem('cnpjBusca');
+    console.log("Busca: " + cnpjBusca);    
+    let f = new Fornecedor();
+    let e = new FornecedorEndereco();
+
+    let fornecedores = await f.consultarFornecedores();
+    let enderecos = await e.consultarEndereco();
+    console.log(fornecedores)
+    console.log(enderecos)
+    let fornecedor = fornecedores.find(c => c.cnpj === cnpjBusca);    
+    let fornecedorEndereco = enderecos.find(e => e.frn_cnpj === cnpjBusca);
+    console.log(fornecedor)
+    console.log(fornecedorEndereco)
+
+    document.querySelector("#razaoSocial").value = fornecedor.razaoSocial;
+    document.querySelector("#nomeFantasia").value = fornecedor.nomeFantasia;
+    document.querySelector("#email").value = fornecedor.email;
+    document.querySelector("#telefone").value = fornecedor.telefone;
+    document.querySelector("#cnpj").value = fornecedor.cnpj;
+
+
+
+    document.querySelector("#cnpj").value = fornecedorEndereco.frn_cnpj;
+    document.querySelector("#rua").value = fornecedorEndereco.rua;
+    document.querySelector("#bairro").value = fornecedorEndereco.bairro;
+    document.querySelector("#estado").value = fornecedorEndereco.estado;
+    document.querySelector("#cidade").value = fornecedorEndereco.cidade;
+    document.querySelector("#cep").value = fornecedorEndereco.cep;
+}
 window.addEventListener('load', async () => {
     console.log("listener iniciou");
-    if (window.location == "https://localhost:7160/Home/Fornecedores") {       
-        fornecedores = await fornecedor.consultarFornecedores();        
+
+    // Verifica se está na página de fornecedores
+    if (window.location.href === "https://localhost:7160/Home/Fornecedores") {
+        fornecedores = await fornecedor.consultarFornecedores();
         enderecos = await fornecedorEndereco.consultarEndereco();
-        //alert(JSON.stringify(fornecedors) + JSON.stringify(enderecos));
-        await this.montarTabela();
+
+        await montarTabela();
 
         document.querySelectorAll('input[type="checkbox"]').forEach((checkbox) => {
             checkbox.addEventListener('change', function () {
@@ -325,39 +435,88 @@ window.addEventListener('load', async () => {
                 }
             });
         });
-        document.querySelector(".excluir").addEventListener('click', async () => { await fornecedor.excluirFornecedor()});          
+
+        document.querySelector(".excluir").addEventListener('click', async () => {
+            await fornecedor.excluirFornecedor();
+        });
+
+        document.querySelector(".alterar").addEventListener('click', () => {
+            console.log("Alterar clicado");
+            let nodeList = document.querySelectorAll(".check-fornecedor");
+            Array.from(nodeList).forEach(async function (el) {
+                if (el.checked) {
+                    console.log("Marcado: " + el.id);
+                    let linha = el.parentElement.parentElement;
+                    console.log("Linha: " + linha.id);
+                    let cnpjBusca = document.querySelector("#" + CSS.escape(linha.id) + " .labelCnpj").innerText;
+                    localStorage.setItem('cnpjBusca', cnpjBusca);
+                    window.location.href = 'FornecedoresAlterar';
+                    
+                }
+            });
+        });
     }
 
+    // Verifica se está na página de adicionar fornecedores
+    if (window.location.href === "https://localhost:7160/Home/FornecedoresNovo") {
+        document.querySelector("#confirmar").addEventListener('click', async (event) => {
+            console.log("Botão de confirmar clicado");
+            event.preventDefault();
 
-    if (window.location.href === "https://localhost:7160/Home/FornecedoresNovo") {        
-    document.querySelector("#confirmar").addEventListener('click', async (event) => {
-        console.log("Botão de confirmar clicado");
-        event.preventDefault();
+            fornecedor.razaoSocial = document.querySelector("#razaoSocial").value;
+            fornecedor.nomeFantasia = document.querySelector("#nomeFantasia").value;
+            fornecedor.email = document.querySelector("#email").value;
+            fornecedor.telefone = document.querySelector("#telefone").value;
+            fornecedor.cnpj = document.querySelector("#cnpj").value;
 
-        fornecedor.razaoSocial = document.querySelector("#razaoSocial").value;
-        fornecedor.nomeFantasia = document.querySelector("#nomeFantasia").value;
-        fornecedor.email = document.querySelector("#email").value;
-        fornecedor.telefone = document.querySelector("#telefone").value;
-        fornecedor.cnpj = document.querySelector("#cnpj").value;
+            fornecedorEndereco.frn_cnpj = document.querySelector("#cnpj").value;
+            fornecedorEndereco.rua = document.querySelector("#rua").value;
+            fornecedorEndereco.bairro = document.querySelector("#bairro").value;
+            fornecedorEndereco.estado = document.querySelector("#estado").options[document.querySelector("#estado").selectedIndex].value;
+            fornecedorEndereco.cidade = document.querySelector("#cidade").value;
+            fornecedorEndereco.cep = document.querySelector("#cep").value;
+
+            await fornecedor.criarFornecedor().then(() => {
+                location.reload();
+            });
+        });
+
+        document.querySelector("#cancelar").addEventListener('click', async (event) => {
+            window.location.href = "https://localhost:7160/Home/Fornecedores";
+        });
+    }
+
+    // Verifica se está na página de alterar fornecedores
+    if (window.location.href === "https://localhost:7160/Home/FornecedoresAlterar") {
         
-        
+        preencherFornecedor();
+        document.querySelector("#confirmar").addEventListener('click', async (event) => {
+            console.log("Botão de confirmar clicado");
+            event.preventDefault();
 
-        fornecedorEndereco.frn_cnpj = document.querySelector("#cnpj").value;
-        fornecedorEndereco.rua = document.querySelector("#rua").value;
-        fornecedorEndereco.bairro = document.querySelector("#bairro").value;
-        fornecedorEndereco.estado = document.querySelector("#estado").options[document.querySelector("#estado").selectedIndex].value;
-        fornecedorEndereco.cidade = document.querySelector("#cidade").value;
-        fornecedorEndereco.cep = document.querySelector("#cep").value;
+            fornecedor.razaoSocial = document.querySelector("#razaoSocial").value;
+            fornecedor.nomeFantasia = document.querySelector("#nomeFantasia").value;
+            fornecedor.email = document.querySelector("#email").value;
+            fornecedor.telefone = document.querySelector("#telefone").value;
+            fornecedor.cnpj = document.querySelector("#cnpj").value;
 
-        await fornecedor.criarFornecedor().then(() => { location.reload(); });
+            fornecedorEndereco.frn_cnpj = document.querySelector("#cnpj").value;
+            fornecedorEndereco.rua = document.querySelector("#rua").value;
+            fornecedorEndereco.bairro = document.querySelector("#bairro").value;
+            fornecedorEndereco.estado = document.querySelector("#estado").options[document.querySelector("#estado").selectedIndex].value;
+            fornecedorEndereco.cidade = document.querySelector("#cidade").value;
+            fornecedorEndereco.cep = document.querySelector("#cep").value;
 
-        
-        //alert(JSON.stringify(fornecedor) + JSON.stringify(fornecedorEndereco));
+            await fornecedor.atualizarFornecedor().then(() => {
+                window.location.href = "https://localhost:7160/Home/Fornecedores";
+            });
+        });
 
-    })
-}
-})
-
+        document.querySelector("#cancelar").addEventListener('click', async (event) => {
+            window.location.href = "https://localhost:7160/Home/Fornecedores";
+        });
+    }
+});
 
        
     

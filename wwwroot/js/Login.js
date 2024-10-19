@@ -34,6 +34,10 @@ function logar() {
             })
             .then(data => {
                 console.log('Login feito com sucesso:', data);
+                let usuario = data.user;
+                localStorage.setItem('usrNome',usuario.nome);
+                localStorage.setItem('usrId', usuario.id);
+                console.log(usuario.nome +"-"+ usuario.id)
                 const url = 'Home/Index';
                 window.location.href = url;            
                 return "Correto";

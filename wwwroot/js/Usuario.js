@@ -180,14 +180,7 @@ let usuario = new Usuario();
 let usuarios = [];
 function montarTabela() {
     let tabela = document.querySelector("#usuarioTabela > tbody");
-    let i = 0;
-    /*let usuarios = [];
-    usr = new Usuario("Julio", "Julio354", "Vendedor");
-    usuarios.push(usr);
-    usr = new Usuario("Andreia", "And984", "Gerente de vendas");
-    usuarios.push(usr);
-    usr = new Usuario("Cleomar", "Cleo1324", "Gerente geral");
-    usuarios.push(usr);*/
+    let i = 0;   
 
     usuarios.forEach((c) => {
         let linha = document.createElement("tr");

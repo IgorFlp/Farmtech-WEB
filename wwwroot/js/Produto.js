@@ -33,8 +33,8 @@
     }
     criarProduto(tipo,idProd) {
         const produto = new Produto();
-        produto.unMedida = document.querySelector("#txtProduto").value;
-        produto.precoUn = document.querySelector("#slcCargo").value;
+        produto.unMedida = document.querySelector("#slcUnidade").value;
+        produto.precoUn = document.querySelector("#txtPreco").value;
         produto.nome = document.querySelector("#txtNome").value;        
         
         if (tipo == "Novo") {
@@ -58,8 +58,36 @@
                     }
                 })
                 .then(data => {
+                    
                     console.log('Produto cadastrado adicionados:', data);
-                    location.reload();
+                    const url = 'http://localhost:5147/api/Estoque';
+                    let estoque = {
+                        pdt_id: data.id,
+                        quant: 100
+                    }
+                    fetch(url, {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                        },
+                        body: JSON.stringify(estoque)
+                    })
+                        .then(response => {
+                            if (response.ok) {
+                                return response.json();
+                            } else {
+                                throw new Error('Erro ao cadastrar estoque.');
+                            }
+                        })
+                        .then(data => {
+                            console.log('Estoque cadastrado adicionados:', data);
+                            location.reload();
+                            return data;
+                        })
+                        .catch(error => {
+                            console.error('Erro:', error);
+                            throw error;
+                        });
                     return data;
                 })
                 .catch(error => {
@@ -67,24 +95,31 @@
                     throw error;
                 });
         } else if (tipo == "Alterar") { 
-            produto.id = idUser;
+            produto.id = idProd;
             console.log("tipo: " + tipo);
             console.log("Produto: "+JSON.stringify(produto));
-            const url = '/Produto/Alterar';
+            const url = 'http://localhost:5147/api/Produto/' + idProd;
+            
 
             return fetch(url, {
-                method: 'POST',
+                method: 'PUT',
                 headers: {
                     'Content-Type': 'application/json',
                 },
-                body: JSON.stringify(produto)
+                body: JSON.stringify(produto),
 
             })
                 .then(response => {
                     if (response.ok) {
-                        return response.json();
+                        return response.text().then(text => {
+                            if (text) {
+                                return JSON.parse(text);
+                            } else {
+                                return {};
+                            }
+                        });
                     } else {
-                        throw new Error('Erro ao alterar produto.');
+                        throw new Error('Erro ao cadastrar cliente.');
                     }
                 })
                 .then(data => {
@@ -97,35 +132,30 @@
                     throw error;
                 });
         }
-    }
-    alterarProduto() {
-        //let produto = new Produto();     
-        let precoUn = document.querySelector("#txtPreco").value;
-        let unMedida = document.querySelector("#slcUnidade").value;
-        let nome = document.querySelector("#txtNome").value;
+    }    
+    alterarProduto() {        
         
         let nodeList = document.querySelectorAll(".check-produto");
         Array.from(nodeList).forEach(async function (el) {
             if (el.checked == true) {
-                //console.log("Marcado: " + el.id)
+                
                 let linha = el.parentElement.parentElement;
-                //console.log("Linha: " + linha.id)
+               
                 let idBusca = document.querySelector("#" + CSS.escape(linha.id) + " .labelId").innerText
                 produto.id = idBusca;
-                console.log("Id produto: " + produto.id);             
+                console.log("Id produto: " + produto.id);    
+                
                 habilitaCampos();
-                let pos = produtos.findIndex((p) => p.id.toString() === idBusca);                
+
+                let pos = produtos.findIndex((p) => p.id.toString() === idBusca); 
+                
                 console.log("POS: "+pos+JSON.stringify(produtos[pos]));
-                document.querySelector("#txtNome").value = produtos[pos].login;
-                let slcCargo = document.querySelector("#slcCargo");
-                for (let i = 0; i < slcCargo.options.length; i++) {
-                    if (slcCargo.options[i].text.toLowerCase() === produtos[pos].cargo.toLowerCase()) {
-                        slcCargo.selectedIndex = i;
-                        break;
-                    }
-                }                
-                document.querySelector("#txtNome").value = produtos[pos].nome;        
-                document.querySelector("#txtSenha").value = produtos[pos].senha;
+                document.querySelector("#txtNome").value = produtos[pos].nome;
+                let slcUnidade = document.querySelector("#slcUnidade");
+                slcUnidade.value = produtos[pos].unMedida;
+                            
+                document.querySelector("#txtPreco").value = produtos[pos].precoUn;        
+               
             }
         }
         )
@@ -140,33 +170,67 @@
                 let idBusca = document.querySelector("#" + CSS.escape(linha.id) + " .labelId").innerText
                 console.log("ID: " + idBusca);                
                 produto.id = idBusca;
-                //Excluir cliente
+                //Excluir produto
 
-                const url = '/Produto/Excluir';
+                const url = 'http://localhost:5147/api/Estoque/'+produto.id;
                 // Faz a requisição POST usando fetch
                 fetch(url, {
-                    method: 'POST',
+                    method: 'DELETE',
                     headers: {
                         'Content-Type': 'application/json',
-                    },
-                    body: JSON.stringify(produto)
+                    }                    
                 })
                     .then(response => {
                         if (response.ok) {
-                            return response.json(); // Se a resposta for OK, converte para JSON
+                            return response.text().then(text => {
+                                if (text) {
+                                    return JSON.parse(text);
+                                } else {
+                                    return {};
+                                }
+                            });
                         } else {
                             throw new Error('Erro ao excluir cliente.');
                         }
                     })
                     .then(data => {
-                        console.log('Produto excluido:', data);
-                        location.reload();
-                        return data;
+                        console.log('Estoque excluido:', data);
+                        const url = 'http://localhost:5147/api/Produto/' + produto.id;
+                        // Faz a requisição POST usando fetch
+                        fetch(url, {
+                            method: 'DELETE',
+                            headers: {
+                                'Content-Type': 'application/json',
+                            },                            
+                        })
+                            .then(response => {
+                                if (response.ok) {
+                                    return response.text().then(text => {
+                                        if (text) {
+                                            return JSON.parse(text);
+                                        } else {
+                                            return {};
+                                        }
+                                    }); // Se a resposta for OK, converte para JSON
+                                } else {
+                                    throw new Error('Erro ao excluir cliente.');
+                                }
+                            })
+                            .then(data => {
+                                console.log('Produto excluido:', data);
+                                location.reload();
+                                return data;
+                            })
+                            .catch(error => {
+                                console.error('Erro:', error);
+                                throw error;
+                            });                        
                     })
                     .catch(error => {
                         console.error('Erro:', error);
                         throw error;
                     });
+                
             }
 
         });
@@ -180,7 +244,7 @@ function montarTabela() {
     let tabela = document.querySelector("#produtoTabela > tbody");
     let i = 0;    
 
-    produtos.forEach((c) => {
+    produtos.forEach((p) => {
         let linha = document.createElement("tr");
         linha.id = "linha-" + i;
 
@@ -192,37 +256,38 @@ function montarTabela() {
         tdCheckbox.appendChild(checkbox);
         linha.appendChild(tdCheckbox);
 
-        let lblLogin = document.createElement("label");
-        lblLogin.id = "login-" + i;
-        lblLogin.className = "labelLogin";
-        lblLogin.innerText = c.login;
-        let tdLogin = document.createElement("td");
-        tdLogin.appendChild(lblLogin);
-        linha.appendChild(tdLogin);
+        let lblId = document.createElement("label");
+        lblId.id = "Id-" + i;
+        lblId.className = "labelId";
+        lblId.innerText = p.id;
+        let tdId = document.createElement("td");
+        tdId.appendChild(lblId);
+        linha.appendChild(tdId);
 
         let lblNome = document.createElement("label");
         lblNome.id = "nome-" + i;
         lblNome.className = "labelNome";
-        lblNome.innerText = c.nome;
+        lblNome.innerText = p.nome;
         let tdNome = document.createElement("td");
         tdNome.appendChild(lblNome);
         linha.appendChild(tdNome);
 
-        let lblCargo = document.createElement("label");
-        lblCargo.id = "cargo-" + i;
-        lblCargo.className = "labelCargo";
-        lblCargo.innerText = c.cargo;
-        let tdCargo = document.createElement("td");
-        tdCargo.appendChild(lblCargo);
-        linha.appendChild(tdCargo);
+        let lblMedida = document.createElement("label");
+        lblMedida.id = "unMedida-" + i;
+        lblMedida.className = "labelunMedida";
+        lblMedida.innerText = p.unMedida;
+        let tdMedida = document.createElement("td");
+        tdMedida.appendChild(lblMedida);
+        linha.appendChild(tdMedida);
 
-        let lblId = document.createElement("label");
-        lblId.id = "Id-" + i;
-        lblId.className = "labelId";
-        lblId.innerText = c.id;
-        let tdId = document.createElement("td");
-        tdId.appendChild(lblId);
-        linha.appendChild(tdId);
+        let lblPreco = document.createElement("label");
+        lblPreco.id = "preco-" + i;
+        lblPreco.className = "labelPreco";
+        lblPreco.innerText = p.precoUn;
+        let tdPreco = document.createElement("td");
+        tdPreco.appendChild(lblPreco);
+        linha.appendChild(tdPreco);
+        
 
         tabela.appendChild(linha);
         i++;
@@ -230,16 +295,15 @@ function montarTabela() {
     i = 0;
 }
 function habilitaCampos() {
-    const produto = document.querySelector("#txtProduto");
-    const cargo = document.querySelector("#slcCargo");
     const nome = document.querySelector("#txtNome");
-    const senha = document.querySelector("#txtSenha");
-    const salvar = document.querySelector("#btnSalvar");
-    produto.disabled = false;
-    cargo.disabled = false;
+    const unidade = document.querySelector("#slcUnidade");
+    const preco = document.querySelector("#txtPreco");    
+    const btnSalvar = document.querySelector("#btnSalvar");
+    
     nome.disabled = false;
-    senha.disabled = false;
-    salvar.disabled = false;
+    unidade.disabled = false;
+    preco.disabled = false;
+    btnSalvar.disabled = false;
 }
 
 window.addEventListener("load", async () => {
@@ -273,9 +337,9 @@ window.addEventListener("load", async () => {
     });    
     document.querySelector(".alterar").addEventListener("click", async () => {        
         let res = await produto.alterarProduto();   
-        console.log("ID USER: " + produto.id);
+        console.log("ID Prod: " + produto.id);
         document.querySelector(".salvar").addEventListener('click', async () => {
-            console.log("ID USER: " + produto.id);
+            console.log("ID prod: " + produto.id);
             let idProd = produto.id;
             produto.criarProduto("Alterar",idProd);
         })

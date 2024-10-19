@@ -9,24 +9,24 @@
     <img src="~/Imagens/Grandes/Vender.png" style="width:40px; height:40px; margin: 5px; margin-right: 20px" alt="Alternate Text" /> <h2 style="margin-top:5px">Vender</h2>
 </div>
 
-<div style="margin-left:0px; width:stretch "class=" container border border-secondary">
+<div style="margin-left:0px; width:stretch "class="container-fluid border border-left">
 
     <!--primeira fileira-->
     <div class="row align-items-lg-start" style="height: 23%; margin-bottom:0px;">
 
         <!--Esquerda-->
-        <div class="d-flex border border-dark align-items-start flex-column col-9" style="height:100%; background-color: #ebfce7">
+        <div class="d-flex border border-bottom border-right align-items-start flex-column col-9" style="height:100%; background-color: #ebfce7">
             <select id="select-cliente" class="w-50" style="margin-top: 10px">
                 <option value="" selected disabled>Selecione um cliente</option>
             </select>
-            <div class="justify-content-end" style="margin-top: 3.5rem">
+            <div class="justify-content-end" style="margin-top: 3.6rem">
                 <button id="btnIncluir" class="incluir border border-dark" style="height: 2rem;width: 4rem; margin-right: 1rem"></button>
                 <button class="excluir border border-dark" style="height: 2rem;width: 4rem;"></button>
             </div>            
         </div>        
         
         <!--Direita-->
-        <div class="border border-dark col-3 d-flex flex-column" style="height:100% ;padding-top:5px;padding-bottom: 4px;background-color: #ebfce7">
+        <div class="border border-bottom border-left col-3 d-flex flex-column" style="height:100% ;padding-top:5px;padding-bottom: 4px;background-color: #ebfce7">
             <!--ENTREGA-->
             <div class="d-flex flex-row justify-content-end mb-2 w-100">
                 <label>Entrega</label>
@@ -58,12 +58,15 @@
     <!--Segunda fileira-->
     <div class="row align-items-lg-start mb-3" style="height: 77%; margin-top:0px;background-color:#f6fdf4;">
 
-            <!--Esquerda-->
-        <div id="lista-itens" class="m-0 d-flex border border-dark align-items-start flex-column col-9"
-             style="height: 100%; overflow-y: scroll">            
+        <!--Esquerda-->
+        
+        <div id="lista-itens" class="m-0 d-flex align-items-start flex-column col-9 flex-fill"
+             style="height: 27rem">
         </div>
+        
+        
             <!--Direita-->
-        <div class="p-2 border border-dark col-3 d-flex flex-column" style="height:100%; background-color: #ebfce7">
+        <div class="p-2 border border-top border-left col-3 d-flex flex-column flex-fill" style="height:100%; background-color: #ebfce7">
                     <!--Subtotal-->
                         <div class="d-flex flex-row justify-content-end mb-2 w-100">
                             <label class="mb-0 mr-2">Subtotal</label>
@@ -87,7 +90,7 @@
 
                         <div style="font-size: 1rem; margin-top: 45%;">
                             Vendedor
-                <div class="d-flex flex-row" style="border: 1px solid black; font-size: 1rem; padding: 10px; background-color: white"><img src="~/Imagens/Grandes/Foto usuario.png" style="height: 35px; width:35px; margin-right: 1rem;"><h5 style="margin-top: 5px" id="usuario">Funcionário teste</h5></div>
+                <div class="d-flex flex-row" style="border: 1px solid black; font-size: 1rem; padding: 10px; background-color: white"><img src="~/Imagens/Grandes/Foto usuario.png" style="height: 35px; width:35px; margin-right: 1rem;"><h5 style="margin-top: 5px" id="usuario"></h5></div>
                         
                         <button class="confirmar"style="height: 40px;width: 45%; margin-top: 10px; margin-right: 8%"></button>
                 <button class="cancelar" style="height: 40px;width: 45%; margin-top: 10px;"></button>

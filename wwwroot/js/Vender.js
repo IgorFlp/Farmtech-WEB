@@ -220,7 +220,7 @@ class Venda {
         
     }
 
-    confirmaVenda() {
+    async confirmaVenda() {
 
         //venda.id = 0;
         venda.cupom = document.querySelector("#cupom").value;
@@ -251,23 +251,21 @@ class Venda {
         venda.frete = document.querySelector("#frete").value;
         venda.desconto = document.querySelector("#desconto").value;
         venda.total = document.querySelector("#total").value;
-        venda.userLogin = 5;
-        //                                                                                                           _/\_    _/\_
-        // FAZER FOR PRA PEGAR OS SPANS, PEGAR OS VALUES SELECIONADOS E DEFINIR, PEGAR OS VALUES DE QUANT E DEFINIR (/^-^)/\(^-^\) 
+        let user = document.querySelector("#usuario").className;
+        venda.userLogin = parseInt(user.replace("userId-", ""));
+        console.log("Usuario: " + venda.userLogin);
         
-        
-        //console.log(JSON.stringify(venda));
-        
+              
 
         const url = '/Vender/Criar';
-        // Faz a requisição POST usando fetch
-        fetch(url, {
+        
+        await fetch(url, {
             method: 'POST',
             headers: {
-                'Content-Type': 'application/json', // Define o tipo de conteúdo como JSON
+                'Content-Type': 'application/json',
             },
-            body: JSON.stringify(venda) // Envia o objeto venda como JSON
-             // Verifica os dados que estão sendo enviados
+            body: JSON.stringify(venda) 
+             
 
         })
             .then(response => {
@@ -277,7 +275,7 @@ class Venda {
                     throw new Error('Erro ao enviar a venda.');
                 }
             })
-            .then(data => {
+            .then(async data => {
                 console.log('Venda criada com sucesso:', data);
                 const vendaId = data.id;
                 if (vendaId) {
@@ -299,7 +297,7 @@ class Venda {
                         listaVendaProdutos.push(vendaProduto);
                     }
                     console.log("Venda Produtos Stringfy: " + JSON.stringify(listaVendaProdutos));
-                    this.criarProdutosVenda(listaVendaProdutos);
+                    this.criarProdutosVenda(listaVendaProdutos);                    
                 } else {
                     console.error('ID da venda não retornado.');
                 }
@@ -308,7 +306,7 @@ class Venda {
                 console.error('Erro:', error);
             });
     }
-    criarProdutosVenda(listaVendaProdutos) {
+    async criarProdutosVenda(listaVendaProdutos) {
         const url = '/Vender/AddProdutosVenda';
         console.log(JSON.stringify(listaVendaProdutos));
         // Faz a requisição POST usando fetch
@@ -329,14 +327,45 @@ class Venda {
                 }
             })
             .then(data => {
-                console.log('Produtos da venda adicionados:', data);
+                for (let i = 0; i < listaVendaProdutos.length; i++) {
+                    console.log('Produtos da venda adicionados:', data);
+                    const url = "http://localhost:5147/api/Estoque/Subtrair/" + listaVendaProdutos[i].pdt_id + "?quantidade=" + listaVendaProdutos[i].quant;
+
+                    // Faz a requisição PUT usando fetch
+                    fetch(url, {
+                        method: 'PUT',
+                        headers: {
+                            'Content-Type': 'application/json', // Define o tipo de conteúdo como JSON
+                        }
+                        // O corpo da requisição pode ser removido, pois o `quantidade` é passado pela URL
+                    })
+                        .then(response => {
+                            if (response.ok) {
+                                return response.text().then(text => {
+                                    if (text) {
+                                        return JSON.parse(text);
+                                    } else {
+                                        return {};
+                                    }
+                                });
+                            } else {
+                                throw new Error('Erro ao subtrair estoque.');
+                            }
+                        })
+                        .then(data => {
+                            console.log('Estoque atualizado:', data);                            
+                            return data;
+                        })
+                        .catch(error => {
+                            console.error('Erro:', error);
+                            throw error;
+                        });
+                }
+                alert("Venda cadastrada com sucesso")
+                location.reload();
                 return data;
             })
-            .catch(error => {
-                console.error('Erro:', error);
-                throw error;
-            });
-    }
+     }
     
     calcSubtotal() {
         let subtotal = document.querySelector("#subtotal");
@@ -492,8 +521,13 @@ let cupom = new Cupom();
 window.addEventListener("load", async function () {
     venda.listaClientesDB = await venda.consultarClientes();   
     venda.listaProdutosDB = await venda.consultarProdutos();
+    let userNome = localStorage.getItem("usrNome");
+    let userId = localStorage.getItem("usrId");
+    document.querySelector("#usuario").innerText = userNome;
+    document.querySelector("#usuario").className = "userId-"+userId;
+   
     document.querySelector("#btnIncluir").addEventListener('click', function () {
-        console.log('addItem chamado');
+        console.log('addItem chamado');        
         venda.addItem();  // Chama o método da instância venda
     });
     document.querySelector(".excluir").addEventListener('click', function () {
@@ -520,9 +554,10 @@ window.addEventListener("load", async function () {
         //console.log("Seleciona cupom chamado");
         venda.validaCupom(event.target);
     });
-    document.querySelector(".confirmar").addEventListener('click', function () {
+    document.querySelector(".confirmar").addEventListener('click',async function () {
         console.log('Confirmar chamado');
-        venda.confirmaVenda();  // Chama o método da instância venda
+        venda.confirmaVenda();  
+       
     });
     
     //calcSubtotal();
