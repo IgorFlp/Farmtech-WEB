@@ -3,7 +3,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.9.34728.123
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Farmtech-WEB", "Farmtech-WEB.csproj", "{BE102B35-D4D6-4DFF-800C-2183DD9F4D42}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Farmtech-WEB", "Farmtech-WEB.csproj", "{BE102B35-D4D6-4DFF-800C-2183DD9F4D42}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MinhaApi", "..\..\MinhaApi\MinhaApi.csproj", "{6878BF06-66AD-44C3-A42D-89A25C10E485}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,6 +17,10 @@ Global
 		{BE102B35-D4D6-4DFF-800C-2183DD9F4D42}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{BE102B35-D4D6-4DFF-800C-2183DD9F4D42}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{BE102B35-D4D6-4DFF-800C-2183DD9F4D42}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6878BF06-66AD-44C3-A42D-89A25C10E485}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6878BF06-66AD-44C3-A42D-89A25C10E485}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6878BF06-66AD-44C3-A42D-89A25C10E485}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6878BF06-66AD-44C3-A42D-89A25C10E485}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -12,21 +12,56 @@ namespace Farmtech_WEB.Controllers
         {
             _logger = logger;
         }
-
+        public IActionResult Login()
+        {
+            return View();
+        }
         public IActionResult Index()
         {
             return View();        
         }
-        public IActionResult Privacy()
+        public IActionResult Clientes()
         {
             return View();
         }
-        public IActionResult Usuario()
+        public IActionResult ClientesNovo()
+        {
+            return View();
+        }
+        public IActionResult ClientesAlterar()
+        {
+            return View();
+        }
+        public IActionResult Fornecedores()
+        {
+            return View();
+        }
+        public IActionResult FornecedoresNovo()
+        {
+            return View();
+        }
+        public IActionResult FornecedoresAlterar()
+        {
+            return View();
+        }
+        public IActionResult Produtos()
+        {
+            return View();
+        }
+        public IActionResult Usuarios()
         {
             return View();
         }
 
         public IActionResult Vender()
+        {
+            return View();
+        }
+        public IActionResult Relatorios()
+        {
+            return View();
+        }
+        public IActionResult Producao()
         {
             return View();
         }

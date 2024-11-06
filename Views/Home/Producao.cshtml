@@ -1,0 +1,53 @@
+﻿@{
+    ViewData["Title"] = "Produção";//Substituir molde por nome da tela
+    <link href="~/css/Vender.css" rel="stylesheet" media="all">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/2.11.6/umd/popper.min.js"></script>
+
+}
+<div style="background-color: #99d080;margin-left:0px; width:stretch" class="d-flex flex-row">
+    <img src="~/Imagens/Grandes/Producao.png" style="margin-left: 1rem;width:40px; height:40px; margin: 5px; margin-right: 20px" alt="Alternate Text" /> <h2 style="margin-top:5px">Produção</h2>
+</div>
+
+<div style="margin-left:0px; width:stretch " class="container-fluid border border-left">    
+
+    <!--Segunda fileira-->
+    <div class="row align-items-lg-start mb-0" style="height: 77%; margin-top:0px;background-color:#f6fdf4;">
+
+        <!--Esquerda-->
+
+        <div id="lista-itens" class="m-0 d-flex align-items-start flex-column col-10 flex-fill"
+             style="height: 35rem">
+        </div>
+        
+
+        <!--Direita-->
+        <div class="p-2 border border-top border-left col-2 d-flex flex-row flex-wrap " style="height:36rem; background-color: #ebfce7">
+            <div class ="d-flex flex-row" >  
+            <button id="btnIncluir" class="incluir border border-dark" style="height: 2rem;width: 4rem; margin-right: 1rem"></button>
+            <button class="excluir border border-dark" style="height: 2rem;width: 4rem; margin-left: 2rem"></button>
+            </div>
+
+            <div class="d-flex flex-row flex-wrap align-self-end" style="font-size: 1rem; margin-top: 45%;">
+                
+                <div style="width:100%">Vendedor</div>
+                
+                
+                <div class="d-flex flex-row" style="border: 1px solid black; font-size: 0.5rem; padding: 10px; background-color: white ;width:100%;"><img src="~/Imagens/Grandes/Foto usuario.png" style="height: 35px; width:35px; margin-right: 1rem;"><h5 style="margin-top: 5px; font-size: 1rem" id="usuario"></h5></div>
+               
+                
+                <button class="confirmar" style="height: 40px;width: 45%; margin-top: 10px; margin-right: 8%"></button>
+                <button class="cancelar" style="height: 40px;width: 45%; margin-top: 10px;"></button>
+                
+            </div>
+
+
+        </div>
+    </div>
+</div>
+<script src="~/js/Producao.js" asp-append-version="true"></script>
+
+
+
+
+

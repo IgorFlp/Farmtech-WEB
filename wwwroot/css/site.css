@@ -17,9 +17,6 @@ html {
   min-height: 100%;
 }
 
-body {
-  margin-bottom: 60px;
-}
 button {
     background-size: cover;
     background-repeat: no-repeat;
@@ -34,6 +31,23 @@ button {
 }
 .excluir {
     background-image: url('../Imagens/Grandes/Lixeira.png');    
+}
+.confirmar {
+    background-color: #80ca5d;
+    background-image: url('../Imagens/Grandes/Confirmar.png');
+    background-size: 35px;
+}
+.cancelar {
+    background-color: #ea8686;
+    background-image: url('../Imagens/Grandes/Cancelar.png');    
+    background-size: 30px;
+}
+.alterar {
+    background-image: url('../Imagens/Grandes/Alterar.png');
+}
+.salvar {    
+    background-size: 2rem;
+    background-image: url('../Imagens/Grandes/Salvar.png');    
 }
 .col{
     border: solid;

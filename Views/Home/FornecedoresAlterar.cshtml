@@ -1,0 +1,155 @@
+﻿@{
+    ViewData["Title"] = "Fornecedor";//Substituir molde por nome da tela
+        <link href="~/css/Fornecedor.css" rel="stylesheet" media="all">
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+}
+
+    <div class="container mt-4">
+        <div class="card">
+            <div class="card-header bg-success text-white">
+                <div class="d-flex align-items-center">
+                    <img src="~/Imagens/Grandes/forncedor.png"
+                         alt="Ícone de Cadastro"
+                         width="30"
+                         height="30"
+                         class="me-2" />
+                    <h4 class="mb-0">Alteração de Fornecedor</h4>
+                </div>
+            </div>
+            <div class="card-body">
+                <form>
+                    <div class="row">
+                        <div class="col-md-4 mb-3">
+                            <label for="nome" class="form-label">Razão social</label>
+                            <input type="text"
+                                   class="form-control"
+                                   id="razaoSocial"
+                                   placeholder="Razão social da empresa"
+                                   value="" />
+                        </div>
+                        <div class="col-md-4 mb-3">
+                            <label for="email" class="form-label">Email</label>
+                            <input type="email"
+                                   class="form-control"
+                                   id="email"
+                                   placeholder="email@exemplo.com"
+                                   value="" />
+                        </div>
+                        <div class="col-md-4 mb-3">
+                            <label for="telefone" class="form-label">Telefone</label>
+                            <input type="text"
+                                   class="form-control"
+                                   id="telefone"
+                                   maxlength= "15"
+                                   placeholder="(18) 99735-2165"                               
+                                   value="" />                        
+                        </div>
+                    </div>
+
+                    <div class="row">
+                    <div class="col-md-4 mb-3">
+                        <label for="data-nascimento" class="form-label">Nome fantasia</label>
+                        <input type="text"
+                               class="form-control"
+                               id="nomeFantasia"
+                               placeholder="Nome fantasia da empresa"
+                               value="" />
+                    </div>
+                    <div class="col-md-4 mb-3">
+                            <label class="form-label">CNPJ</label>
+                            <input type="number"
+                                   class="form-control"
+                                   id="cnpj"
+                                   disabled
+                                   maxlength="18"
+                                   placeholder="12.345.678/0001-12"
+                                   value="" />
+                        </div>
+                                             
+                    </div>
+                    <div class="row">
+                        <div class="col-md-8 mb-3">
+                            <label for="rua" class="form-label">Rua</label>
+                            <input type="text"
+                                   class="form-control"
+                                   id="rua"
+                                   placeholder="Rua Barão do rio branco, 786"
+                                   value="" />
+                        </div>
+                        <div class="col-md-4 mb-3">
+                            <label for="bairro" class="form-label">Bairro</label>
+                            <input type="text"
+                                   class="form-control"
+                                   id="bairro"
+                                   placeholder="Centro"
+                                   value="" />
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-4 mb-3">
+                            <label for="estado" class="form-label">Estado</label>
+                            <select class="form-select" id="estado">
+                                <option selected disabled>Selecione o estado</option>
+                            <option value="AC">AC</option>
+                            <option value="AL">AL</option>
+                            <option value="AP">AP</option>
+                            <option value="AM">AM</option>
+                            <option value="BA">BA</option>
+                            <option value="CE">CE</option>
+                            <option value="DF">DF</option>
+                            <option value="ES">ES</option>
+                            <option value="GO">GO</option>
+                            <option value="MA">MA</option>
+                            <option value="MT">MT</option>
+                            <option value="MS">MS</option>
+                            <option value="MG">MG</option>
+                            <option value="PA">PA</option>
+                            <option value="PB">PB</option>
+                            <option value="PR">PR</option>
+                            <option value="PE">PE</option>
+                            <option value="PI">PI</option>
+                            <option value="RJ">RJ</option>
+                            <option value="RN">RN</option>
+                            <option value="RS">RS</option>
+                            <option value="RO">RO</option>
+                            <option value="RR">RR</option>
+                            <option value="SC">SC</option>
+                            <option value="SP">SP</option>
+                            <option value="SE">SE</option>
+                            <option value="TO">TO</option>
+                            </select>
+                        </div>
+                        <div class="col-md-4 mb-3">
+                            <label for="cidade" class="form-label">Cidade</label>
+                            <input type="text"
+                                   class="form-control"
+                                   id="cidade"
+                                   placeholder="Assis"
+                                   value="" />
+                        </div>
+                        <div class="col-md-4 mb-3">
+                            <label for="cep" class="form-label">CEP</label>
+                            <input type="text"
+                                   class="form-control"
+                                   id="cep"
+                                   maxlength="9"
+                                   placeholder="19802-385"
+                                   value="" />
+                        </div>
+                    </div>
+                    <div class="d-flex justify-content-center">
+                        <button id="confirmar" type="submit" class="btn btn-success confirmar me-2">
+                            <i class="bi bi-check-lg"></i>
+                        </button>
+                        <button id="cancelar" type="reset" class="btn cancelar btn-danger">
+                            <i class="bi bi-x-lg"></i>
+                        </button>
+                        
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    <script src ="~/js/Fornecedor.js"></script>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>

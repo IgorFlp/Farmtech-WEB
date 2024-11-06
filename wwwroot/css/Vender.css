@@ -1,0 +1,58 @@
+﻿body {
+}
+/*Quando quiser estilizar algo por ID que definiu no elemento use #, quando for por classe (varios itens) use .   */
+#textoMolde {
+    color: red;
+}
+
+.campos-vender {
+    min-width: 60%;
+    width: 60%;
+    height: 2rem;
+    padding-left: 0;
+    margin-left: 10%;
+}
+
+.campos-itens {
+    font-size: 0.75rem;
+    min-width: 4rem;
+    width: 4rem;
+    height: 2rem;
+    padding-left: 0;
+    margin-left: 0.5rem;
+    margin-right: 1rem;
+}
+
+.centralizar {
+    margin-top: auto;
+    margin-bottom: auto;
+}
+
+.texto-itens {
+    font-size: 0.75rem;
+    width: auto;
+}
+
+.item-span {
+    border-radius: 1rem;
+    border: solid 1px;
+    border-color: black;
+    height: 10%;
+    width: 100%;
+}
+
+.input {
+    padding-left: 5px;
+}
+
+.desconto {
+    color: red;
+}
+
+.container {
+    height: 35rem;
+}
+#lista-itens {
+    min-height: 100%; /* Garante que o elemento preencha pelo menos 100% */
+    overflow-y: scroll; /* Rolagem vertical */
+}

@@ -1,58 +1,72 @@
 ﻿<!DOCTYPE html>
-<html lang="en">
+<html lang="pt-br">
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>@ViewData["Title"] - Farmtech_WEB</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
-    <link rel="stylesheet" href="~/Farmtech_WEB.styles.css" asp-append-version="true" />
+    <!--<link rel="stylesheet" href="~/Farmtech_WEB.styles.css" asp-append-version="true" />-->
 </head>
 <body>
     <div class="d-flex">
         <!-- Barra de Navegação Vertical -->
-        <nav class="navbar navbar-light bg-white border-right box-shadow" style="width: 200px; min-height: 100vh;">
+        <nav class="navbar navbar-light border-right box-shadow" style="width: 200px;background:#5fdc57; min-height: 100vh;">
+
             <div class="container-fluid flex-column">
-                <a class="navbar-brand mb-4" asp-area="" asp-controller="Home" asp-action="Index">Farmtech_WEB</a>
-                <ul class="navbar-nav flex-column"> <!--Ul significa lista não ordenada (sem numero antes do item)-->
+                <!--<a class="navbar-brand mb-4" asp-area="" asp-controller="Home" asp-action="Index">Farmtech_WEB</a>-->
+                <ul class="navbar-nav flex-column">
+                    <!--Ul significa lista não ordenada (sem numero antes do item)-->
+                    <img href="https://localhost:7160/Home" src="~/Imagens/Grandes/Logo farmtech.png" width="100"  height="100">
                     <li class="nav-item">
-                        <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
+                        <b>Cadastro</b>
+                    <li class="nav-item">
+                        <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Clientes"><img src="~/Imagens/Grandes/Clientes.png" style=" width: 29px; height: 29px;margin-right: 10px;">Clientes</a>
+                    </li>
+
+                    <li class="nav-item">
+                        <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Fornecedores"><img src="~/Imagens/Grandes/forncedor.png" style=" width: 29px; height: 29px; margin-right: 10px;">Fornecedores</a>
+                    </li>
+                    <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Produtos"><img src="~/Imagens/Grandes/Produto.png" style=" width: 29px; height: 29px; margin-right: 10px;">Produtos</a>
                     </li>
                     <li class="nav-item">
-                    
-                        <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+                        <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Usuarios"><img src="~/Imagens/Grandes/usuario.png" style=" width: 29px; height: 29px; margin-right: 10px;">Usuarios</a>
+                    </li> <!--li significa list item, item de uma lista ul-->
+                    <li class="nav-item">
+                        <b>Movimentações</b>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Usuario">Usuario</a>
-                    </li> 
-                    <li class="nav-item">
-                        <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Vender">Vender</a>
+                        <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Vender"><img src="~/Imagens/Grandes/Vender.png" style=" width: 29px; height: 29px; margin-right: 10px;">Vender</a>
                     </li>
-                    
-                    <!--li significa list item, item de uma lista ul-->
+                    <li class="nav-item">
+                        <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Relatorios"><img src="~/Imagens/Grandes/Relatorios.png" style=" width: 29px; height: 29px; margin-right: 10px;">Relatórios</a>
+                    </li>
                     <!--Inicio da copia do molde-->
+
                     <li class="nav-item">
-                        <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Molde">Molde</a>
+                        <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Producao"><img src="~/Imagens/Grandes/Producao.png" style=" width: 29px; height: 29px; margin-right: 10px;">Produção</a>
                     </li>
                     <!--Fim da copia do molde-->
-                    
+
                 </ul>
             </div>
         </nav>
 
         <!-- Conteúdo da Página -->
-        <div class="container-fluid" style="flex-grow: 1; padding-left: 20px;">
-            <main role="main" class="pb-3">
+        <div class="container-fluid" style="width:stretch;height:stretch; padding:0px;">
+            <main role="main" style="padding:0px; margin:0px;">
                 @RenderBody()
             </main>
         </div>
     </div>
-
+    <!--
     <footer class="border-top footer text-muted mt-3">
         <div class="container">
             &copy; 2024 - Farmtech_WEB - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
         </div>
     </footer>
+    -->
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>

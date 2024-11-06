@@ -1,0 +1,29 @@
+﻿@{
+    ViewData["Title"] = "Relatorios";//Substituir molde por nome da tela
+    <link href="~/css/Relatorios.css" rel="stylesheet" media="all">
+}
+
+<div style="background-color: #99d080; margin-bottom:1rem; margin-left:0px; width:stretch" class="d-flex flex-row">
+    <img src="~/Imagens/Grandes/Relatorios.png" style="margin-left: 1rem;width:40px; height:40px; margin: 5px; margin-right: 20px" alt="Alternate Text" /> <h2 style="margin-top:5px">Relatórios</h2>
+</div>
+<label class="text-dark" style="margin-left:1.5rem">Tipo de relatório</label>
+<br>
+<select id="slcRelatorio" style="height:3rem;margin-left:1.5rem">
+    <option selected disabled></option>
+    <option>Estoque</option>
+    <option>Produção</option>
+    <option>Vendas</option>
+    <option>Clientes</option>
+    <option>Fornecedores</option>
+    <option>Produtos</option>
+    <option>Usuarios</option>    
+</select>
+<!--<button class="buscar btn btn-light border border-dark" style="margin-left:1.5rem;"></button>-->
+<div id="tbContainer" class="container border border-dark " style="width:auto; margin:1.5rem; padding: 0px; border-radius:10px;">
+</div>  
+
+<script src="~/js/Relatorios.js"></script>
+
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
