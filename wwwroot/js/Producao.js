@@ -121,15 +121,19 @@ class Producao {
     }
     deleteItem() {
         let nodeList = document.querySelectorAll(".check-item");
+        let selecionado = 0
         Array.from(nodeList).forEach(function (el) {
             if (el.checked == true) {
                 console.log("Marcado: " + el)
                 el.parentElement.remove();
-
+                selecionado = 1
             } else {
                 console.log("Desmarcado: " + el)
-            }
-        });        
+            }           
+        }); 
+        if (selecionado == 0) {
+            alert("Selecione um produto para deletar")
+        }
     }
     selecionaProduto(span) {
         
@@ -161,56 +165,59 @@ class Producao {
         let data = new Date().toJSON().slice(0, 10);
         console.log("Data: " + data);
         producao.dataProd = data;
-        const url = "http://localhost:5147/api/Producao";
-        // Faz a requisição POST usando fetch
-        fetch(url, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json', // Define o tipo de conteúdo como JSON
-            },
-            body: JSON.stringify(producao) // Envia o objeto venda como JSON
-            // Verifica os dados que estão sendo enviados
+        if (document.querySelector("#lista-itens").childElementCount <= 0) {
+            alert("Adicione itens a produção");
+        } else {
+            const url = "http://localhost:5147/api/Producao";
+            // Faz a requisição POST usando fetch
+            fetch(url, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json', // Define o tipo de conteúdo como JSON
+                },
+                body: JSON.stringify(producao) // Envia o objeto venda como JSON
+                // Verifica os dados que estão sendo enviados
 
-        })
-            .then(response => {
-                if (response.ok) {
-                    return response.json(); // Se a resposta for OK, converte para JSON
-                } else {
-                    throw new Error('Erro ao enviar a venda.');
-                }
             })
-            .then(data => {
-                console.log('Producao criada com sucesso:', data);
-                const producaoId = data.id;
-                if (producaoId) {
-                    // Agora chama o método para criar os itens na tabela VendaProdutos
-                    producaoProdutos.pdc_id = producaoId;
-
-                    let spans = document.querySelectorAll(".produto-span");
-                    let listaProducaoProdutos = []; // Inicializa uma lista para armazenar os objetos VendaProdutos
-
-                    for (let i = 0; i < spans.length; i++) {
-                        // Cria um objeto VendaProdutos para cada produto selecionado
-                        let producaoProduto = {
-                            pdc_id: producaoId,
-                            pdt_id: parseInt(document.querySelector("#" + CSS.escape(spans[i].id) + " > .produto-select").options[document.querySelector("#" + CSS.escape(spans[i].id) + " > .produto-select").selectedIndex].value),
-                            quant: parseFloat(document.querySelector("#" + CSS.escape(spans[i].id) + " > .quant-input").value)
-                        };
-
-                        // Adiciona o objeto criado à lista de vendaProdutos
-                        listaProducaoProdutos.push(producaoProduto);
+                .then(response => {
+                    if (response.ok) {
+                        return response.json(); // Se a resposta for OK, converte para JSON
+                    } else {
+                        throw new Error('Erro ao enviar a venda.');
                     }
-                    console.log("Producao Produtos Stringfy: " + JSON.stringify(listaProducaoProdutos));
-                    this.criarProdutosProducao(listaProducaoProdutos);
-                } else {
-                    console.error('ID da producao não retornado.');
-                }
-            })
-            .catch(error => {
-                console.error('Erro:', error);
-            });
+                })
+                .then(data => {
+                    console.log('Producao criada com sucesso:', data);
+                    const producaoId = data.id;
+                    if (producaoId) {
+                        // Agora chama o método para criar os itens na tabela VendaProdutos
+                        producaoProdutos.pdc_id = producaoId;
 
+                        let spans = document.querySelectorAll(".produto-span");
+                        let listaProducaoProdutos = []; // Inicializa uma lista para armazenar os objetos VendaProdutos
 
+                        for (let i = 0; i < spans.length; i++) {
+                            // Cria um objeto VendaProdutos para cada produto selecionado
+                            let producaoProduto = {
+                                pdc_id: producaoId,
+                                pdt_id: parseInt(document.querySelector("#" + CSS.escape(spans[i].id) + " > .produto-select").options[document.querySelector("#" + CSS.escape(spans[i].id) + " > .produto-select").selectedIndex].value),
+                                quant: parseFloat(document.querySelector("#" + CSS.escape(spans[i].id) + " > .quant-input").value)
+                            };
+
+                            // Adiciona o objeto criado à lista de vendaProdutos
+                            listaProducaoProdutos.push(producaoProduto);
+                        }
+                        console.log("Producao Produtos Stringfy: " + JSON.stringify(listaProducaoProdutos));
+                        this.criarProdutosProducao(listaProducaoProdutos);
+                    } else {
+                        console.error('ID da producao não retornado.');
+                    }
+                })
+                .catch(error => {
+                    console.error('Erro:', error);
+                });
+
+        }
     }
     criarProdutosProducao(listaProducaoProdutos) {
         let spans = document.querySelectorAll(".produto-span");
@@ -312,6 +319,9 @@ window.addEventListener("load", async function () {
     document.querySelector(".confirmar").addEventListener('click', function () {
         console.log('Confirmar chamado');
         producao.confirmaProducao();  // Chama o método da instância venda
+    });
+    document.querySelector(".cancelar").addEventListener('click', function () {
+        location.reload()  // Chama o método da instância venda
     });
 
     //calcSubtotal();

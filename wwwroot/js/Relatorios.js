@@ -262,7 +262,12 @@ async function montarTabelaCliente() {
         linha.appendChild(tdEmail);
 
         let lblDtNasc = document.createElement('label');
-        lblDtNasc.innerText = c.dataNasc;
+        let [ano, mes, dia] = c.dataNasc.split('-'); // Supondo formato "YYYY-MM-DD"
+        let data = new Date(ano, mes - 1, dia); // Mês é baseado em zero
+
+        let dataFormatada = data.toLocaleDateString('pt-BR');      
+
+        lblDtNasc.innerText = dataFormatada;
         let tdDtNasc = document.createElement('td');
         tdDtNasc.appendChild(lblDtNasc);
         linha.appendChild(tdDtNasc);
@@ -752,12 +757,21 @@ async function montarTabelaProducao() {
         tdMedida.appendChild(lblMedida);
         linha.appendChild(tdMedida);  
 
+        
         let lblData = document.createElement("label");
         lblData.id = "data-" + i;
         lblData.className = "labelData";
-        let data = new Date(p.dataProd)
-        let dataFormatada = data.toLocaleDateString('pt-BR')
+
+        // Corrigir criação da data
+        let [ano, mes, dia] = p.dataProd.split('-'); // Supondo formato "YYYY-MM-DD"
+        let data = new Date(ano, mes - 1, dia); // Mês é baseado em zero
+
+        let dataFormatada = data.toLocaleDateString('pt-BR');
         lblData.innerText = dataFormatada;
+
+        //let data = new Date(p.dataProd)
+        //let dataFormatada = data.toLocaleDateString('pt-BR')
+        //lblData.innerText = dataFormatada;
         let tdData = document.createElement("td");
         tdData.appendChild(lblData);
         linha.appendChild(tdData);  
@@ -1025,9 +1039,15 @@ async function montarTabelaVendas() {
         let lblData = document.createElement("label");
         lblData.id = "data-" + i;
         lblData.className = "labelData";
-        let data = new Date(v.dtVenda)
-        let dataFormatada = data.toLocaleDateString('pt-BR')
+        //let data = new Date(v.dtVenda)
+        //let dataFormatada = data.toLocaleDateString('pt-BR')
+        //lblData.innerText = dataFormatada;
+        let [ano, mes, dia] = v.dtVenda.split('-'); // Supondo formato "YYYY-MM-DD"
+        let data = new Date(ano, mes - 1, dia); // Mês é baseado em zero
+
+        let dataFormatada = data.toLocaleDateString('pt-BR');
         lblData.innerText = dataFormatada;
+
         let tdData = document.createElement("td");
         tdData.appendChild(lblData);
         linha.appendChild(tdData);

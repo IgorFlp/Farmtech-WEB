@@ -38,12 +38,12 @@ class Cupom {
 }
 class Venda {
     
-    constructor(id, produtos, cupom, mtdPagto, entrega, userLogin, clCpf, dtVenda, subtotal, frete, desconto, total,listaClientesDB, listaProdutosDB) {
+    constructor(id, produtos, cupom, mtdPagto, entrega, usr_id, clCpf, dtVenda, subtotal, frete, desconto, total,listaClientesDB, listaProdutosDB) {
         this.id = id;        
         this.cupom = cupom;
         this.mtdPagto = mtdPagto;
         this.entrega = entrega;
-        this.userLogin = userLogin;
+        this.usr_id = usr_id;
         this.clCpf = clCpf;
         this.dtVenda = dtVenda;
         this.subtotal = subtotal;
@@ -163,16 +163,20 @@ class Venda {
     }
     deleteItem() {
         let nodeList = document.querySelectorAll(".check-item");
+        let selecionado = 0
         Array.from(nodeList).forEach(function (el) {
             if (el.checked == true) {
                 console.log("Marcado: " + el)
                 el.parentElement.remove();
-
+                selecionado = 1
             } else {
                 console.log("Desmarcado: " + el)
-            }
-        });
-        calcSubtotal();
+            }            
+        });  
+        if (selecionado == 0) {
+            alert("Selecione um item para retirar da lista")
+        }
+        venda.calcSubtotal();
     }
     selecionaProduto(span) {
         //remover essa parte daqui
@@ -226,85 +230,94 @@ class Venda {
         venda.cupom = document.querySelector("#cupom").value;
         venda.mtdPagto = document.querySelector("#select-pagto").options[document.querySelector("#select-pagto").selectedIndex].text;
         venda.entrega = document.querySelector("#select-frete").options[document.querySelector("#select-frete").selectedIndex].text;
-        venda.userLogin = document.querySelector("#usuario").text;
+        //venda.usr_id = document.querySelector("#usuario").text;
+
 
         var cpf;
         var clienteNome = document.querySelector("#select-cliente").options[document.querySelector("#select-cliente").selectedIndex].text;
-        if (this.listaClientesDB && Array.isArray(this.listaClientesDB)) {
-            // Mapeia os nomes para buscar a posição
-            const pos = this.listaClientesDB.map(e => e.nome).indexOf(clienteNome);
-
-            if (pos !== -1) { // Verifica se o cliente foi encontrado
-                cpf = this.listaClientesDB[pos].cpf;
-                console.log("CPF: " + cpf);
-            } else {
-                console.error("Cliente não encontrado na lista.");
-            }
+        if (clienteNome == "" || clienteNome == "Selecione um cliente" || clienteNome == null) {
+            alert("Selecione um cliente")            
         } else {
-            console.error("listaClientesDB não está definida ou não é um array.");
+            if (this.listaClientesDB && Array.isArray(this.listaClientesDB)) {
+                // Mapeia os nomes para buscar a posição
+                const pos = this.listaClientesDB.map(e => e.nome).indexOf(clienteNome);
+
+                if (pos !== -1) { // Verifica se o cliente foi encontrado
+                    cpf = this.listaClientesDB[pos].cpf;
+                    console.log("CPF: " + cpf);
+                } else {
+                    console.error("Cliente não encontrado na lista.");
+                }
+            } else {
+                console.error("listaClientesDB não está definida ou não é um array.");
+            }
         }
-        
-        venda.clCpf = cpf;
-        venda.dtVenda = Date.now();
-        venda.dtVenda = new Date(venda.dtVenda).toISOString().split('T')[0]
-        venda.subtotal = document.querySelector("#subtotal").value;
-        venda.frete = document.querySelector("#frete").value;
-        venda.desconto = document.querySelector("#desconto").value;
-        venda.total = document.querySelector("#total").value;
-        let user = document.querySelector("#usuario").className;
-        venda.userLogin = parseInt(user.replace("userId-", ""));
-        console.log("Usuario: " + venda.userLogin);
-        
-              
+        if (document.querySelector("#subtotal").value == 0) {
+            alert("Adicione produtos a venda")
+        } else {
+            venda.clCpf = cpf;
+            venda.dtVenda = Date.now();
+            venda.dtVenda = new Date(venda.dtVenda).toISOString().split('T')[0]
+            venda.subtotal = document.querySelector("#subtotal").value;
+            venda.frete = document.querySelector("#frete").value;
+            venda.desconto = document.querySelector("#desconto").value;
+            venda.total = document.querySelector("#total").value;
+            let user = document.querySelector("#usuario").className;
+            venda.usr_id = parseInt(localStorage.getItem("usrId"));
+            console.log("Usuario: " + venda.usr_id);
 
-        const url = '/Vender/Criar';
-        
-        await fetch(url, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify(venda) 
-             
 
-        })
-            .then(response => {
-                if (response.ok) {
-                    return response.json(); // Se a resposta for OK, converte para JSON
-                } else {
-                    throw new Error('Erro ao enviar a venda.');
-                }
+
+            const url = '/Vender/Criar';
+
+            await fetch(url, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(venda)
+
+
             })
-            .then(async data => {
-                console.log('Venda criada com sucesso:', data);
-                const vendaId = data.id;
-                if (vendaId) {
-                    // Agora chama o método para criar os itens na tabela VendaProdutos
-                    vendaProdutos.ven_id = vendaId;
-
-                    let spans = document.querySelectorAll(".produto-span");
-                    let listaVendaProdutos = []; // Inicializa uma lista para armazenar os objetos VendaProdutos
-
-                    for (let i = 0; i < spans.length; i++) {
-                        // Cria um objeto VendaProdutos para cada produto selecionado
-                        let vendaProduto = {
-                            ven_id: vendaId,
-                            pdt_id: parseInt(document.querySelector("#" + CSS.escape(spans[i].id) + " > .produto-select").options[document.querySelector("#" + CSS.escape(spans[i].id) + " > .produto-select").selectedIndex].value),
-                            quant: parseFloat(document.querySelector("#" + CSS.escape(spans[i].id) + " > .quant-input").value)
-                        };
-
-                        // Adiciona o objeto criado à lista de vendaProdutos
-                        listaVendaProdutos.push(vendaProduto);
+                .then(response => {
+                    if (response.ok) {
+                        return response.json(); // Se a resposta for OK, converte para JSON
+                    } else {
+                        throw new Error('Erro ao enviar a venda.');
                     }
-                    console.log("Venda Produtos Stringfy: " + JSON.stringify(listaVendaProdutos));
-                    this.criarProdutosVenda(listaVendaProdutos);                    
-                } else {
-                    console.error('ID da venda não retornado.');
-                }
-            })
-            .catch(error => {
-                console.error('Erro:', error);
-            });
+                })
+                .then(async data => {
+                    console.log('Venda criada com sucesso:', data);
+                    const vendaId = data.id;
+                    if (vendaId) {
+                        // Agora chama o método para criar os itens na tabela VendaProdutos
+                        vendaProdutos.ven_id = vendaId;
+
+                        let spans = document.querySelectorAll(".produto-span");
+                        let listaVendaProdutos = []; // Inicializa uma lista para armazenar os objetos VendaProdutos
+
+                        for (let i = 0; i < spans.length; i++) {
+                            // Cria um objeto VendaProdutos para cada produto selecionado
+                            let vendaProduto = {
+                                ven_id: vendaId,
+                                pdt_id: parseInt(document.querySelector("#" + CSS.escape(spans[i].id) + " > .produto-select").options[document.querySelector("#" + CSS.escape(spans[i].id) + " > .produto-select").selectedIndex].value),
+                                quant: parseFloat(document.querySelector("#" + CSS.escape(spans[i].id) + " > .quant-input").value)
+                            };
+
+                            // Adiciona o objeto criado à lista de vendaProdutos
+                            listaVendaProdutos.push(vendaProduto);
+                        }
+                        console.log("Venda Produtos Stringfy: " + JSON.stringify(listaVendaProdutos));
+                        this.criarProdutosVenda(listaVendaProdutos);
+                    } else {
+                        console.error('ID da venda não retornado.');
+                    }
+                })
+                .catch(error => {
+                    console.error('Erro:', error);
+                });
+        }
+                
     }
     async criarProdutosVenda(listaVendaProdutos) {
         const url = '/Vender/AddProdutosVenda';
@@ -412,7 +425,9 @@ class Venda {
                         return response.json();                       
                         
                         } else {
-                            alert("Cupom invalido");
+                        alert("Cupom invalido");
+                        document.querySelector("#desconto").value = 0;
+                        venda.atualizaTotal()
                         }            
                     
                 })
@@ -426,7 +441,8 @@ class Venda {
                 })
                 .catch(error => {
                     console.error('Erro:', error);
-                });            
+                });  
+            venda.atualizaTotal()
         } else {
             //console.log("Fora do enter");
         }
@@ -558,6 +574,9 @@ window.addEventListener("load", async function () {
         console.log('Confirmar chamado');
         venda.confirmaVenda();  
        
+    });
+    document.querySelector(".cancelar").addEventListener('click', async function () {
+        location.reload()
     });
     
     //calcSubtotal();

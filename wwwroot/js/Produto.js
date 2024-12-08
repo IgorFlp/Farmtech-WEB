@@ -33,104 +33,112 @@
     }
     criarProduto(tipo,idProd) {
         const produto = new Produto();
-        produto.unMedida = document.querySelector("#slcUnidade").value;
-        produto.precoUn = document.querySelector("#txtPreco").value;
-        produto.nome = document.querySelector("#txtNome").value;        
-        
-        if (tipo == "Novo") {
-            console.log("tipo: " + tipo);
-            const url = '/Produto/Criar';
-            
-            return fetch(url, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify(produto)
-                
+        let unMedida= document.querySelector("#slcUnidade").value;
+        let precoUn= document.querySelector("#txtPreco").value;
+        let nome = document.querySelector("#txtNome").value;        
+        produto.unMedida = unMedida;
+        produto.precoUn = precoUn;
+        produto.nome = nome;
+        if (nome != null && nome != "" &&
+            precoUn != null && precoUn != "" &&
+            unMedida != null && unMedida != "") {
+            if (tipo == "Novo") {
+                console.log("tipo: " + tipo);
+                let url = '/Produto/Criar';
 
-            })
-                .then(response => {
-                    if (response.ok) {
-                        return response.json(); 
-                    } else {
-                        throw new Error('Erro ao cadastrar produto.');
-                    }
+                return fetch(url, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(produto)
+
+
                 })
-                .then(data => {
-                    
-                    console.log('Produto cadastrado adicionados:', data);
-                    const url = 'http://localhost:5147/api/Estoque';
-                    let estoque = {
-                        pdt_id: data.id,
-                        quant: 100
-                    }
-                    fetch(url, {
-                        method: 'POST',
-                        headers: {
-                            'Content-Type': 'application/json',
-                        },
-                        body: JSON.stringify(estoque)
+                    .then(response => {
+                        if (response.ok) {
+                            return response.json();
+                        } else {
+                            throw new Error('Erro ao cadastrar produto.');
+                        }
                     })
-                        .then(response => {
-                            if (response.ok) {
-                                return response.json();
-                            } else {
-                                throw new Error('Erro ao cadastrar estoque.');
-                            }
-                        })
-                        .then(data => {
-                            console.log('Estoque cadastrado adicionados:', data);
-                            location.reload();
-                            return data;
-                        })
-                        .catch(error => {
-                            console.error('Erro:', error);
-                            throw error;
-                        });
-                    return data;
-                })
-                .catch(error => {
-                    console.error('Erro:', error);
-                    throw error;
-                });
-        } else if (tipo == "Alterar") { 
-            produto.id = idProd;
-            console.log("tipo: " + tipo);
-            console.log("Produto: "+JSON.stringify(produto));
-            const url = 'http://localhost:5147/api/Produto/' + idProd;
-            
+                    .then(data => {
 
-            return fetch(url, {
-                method: 'PUT',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify(produto),
+                        console.log('Produto cadastrado adicionados:', data);
+                        let url = 'http://localhost:5147/api/Estoque';
+                        let estoque = {
+                            pdt_id: data.id,
+                            quant: 100
+                        }
+                        fetch(url, {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json',
+                            },
+                            body: JSON.stringify(estoque)
+                        })
+                            .then(response => {
+                                if (response.ok) {
+                                    return response.json();
+                                } else {
+                                    throw new Error('Erro ao cadastrar estoque.');
+                                }
+                            })
+                            .then(data => {
+                                console.log('Estoque cadastrado adicionados:', data);
+                                location.reload();
+                                return data;
+                            })
+                            .catch(error => {
+                                console.error('Erro:', error);
+                                throw error;
+                            });
+                        return data;
+                    })
+                    .catch(error => {
+                        console.error('Erro:', error);
+                        throw error;
+                    });
+            } else if (tipo == "Alterar") {
+                produto.id = idProd;
+                console.log("tipo: " + tipo);
+                console.log("Produto: " + JSON.stringify(produto));
+                let url = 'http://localhost:5147/api/Produto/'+idProd;
 
-            })
-                .then(response => {
-                    if (response.ok) {
-                        return response.text().then(text => {
-                            if (text) {
-                                return JSON.parse(text);
-                            } else {
-                                return {};
-                            }
-                        });
-                    } else {
-                        throw new Error('Erro ao cadastrar cliente.');
-                    }
+
+                return fetch(url, {
+                    method: 'PUT',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(produto),
+
                 })
-                .then(data => {
-                    console.log('Produto alterado com sucesso:', data);
-                    location.reload();
-                    return data;
-                })
-                .catch(error => {
-                    console.error('Erro:', error);
-                    throw error;
-                });
+                    .then(response => {
+                        if (response.ok) {
+                            return response.text().then(text => {
+                                if (text) {
+                                    return JSON.parse(text);
+                                } else {
+                                    return {};
+                                }
+                            });
+                        } else {
+                            throw new Error('Erro ao cadastrar produto.');
+                        }
+                    })
+                    .then(data => {
+                        console.log('Produto alterado com sucesso:', data);
+                        location.reload();
+                        return data;
+                    })
+                    .catch(error => {
+                        console.error('Erro:', error);
+                        throw error;
+                    });
+            }
+        } else {
+            alert("Preencha todos os campos!")
         }
     }    
     alterarProduto() {        

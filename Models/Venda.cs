@@ -14,7 +14,7 @@ namespace Farmtech_WEB.Models
     {
         // Construir classe com base no banco
         private int id;
-        private int userId;
+        private int usr_id;
         private string cupom;
         private string mtdPagto;
         private string entrega;        
@@ -29,7 +29,7 @@ namespace Farmtech_WEB.Models
         public string Cupom { get => cupom; set => cupom = value; }
         public string MtdPagto { get => mtdPagto; set => mtdPagto = value; }
         public string Entrega { get => entrega; set => entrega = value; }
-        public int UserId { get => userId; set => userId = value; }
+        public int Usr_id { get => usr_id; set => usr_id = value; }
         public string ClCpf { get => clCpf; set => clCpf = value; }
         public DateTime DtVenda { get => dtVenda; set => dtVenda = value; }
         public decimal Subtotal { get => subtotal; set => subtotal = value; }

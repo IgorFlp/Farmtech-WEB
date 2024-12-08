@@ -32,72 +32,85 @@
             });
         
     }
-    criarUsuario(tipo,idUser) {
+    async criarUsuario(tipo,idUser) {
         const usuario = new Usuario();
-        usuario.login = document.querySelector("#txtUsuario").value;
-        usuario.cargo = document.querySelector("#slcCargo").value;
-        usuario.nome = document.querySelector("#txtNome").value;
-        usuario.senha = document.querySelector("#txtSenha").value;
-        
-        if (tipo == "Novo") {
-            console.log("tipo: " + tipo);
-            const url = '/Usuario/Criar';
-            
-            return fetch(url, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify(usuario)
-                
+        let login = document.querySelector("#txtUsuario").value;
+        let cargo = document.querySelector("#slcCargo").value;
+        let nome = document.querySelector("#txtNome").value;
+        let senha = document.querySelector("#txtSenha").value;
+        usuario.login = login;
+        usuario.cargo = cargo;
+        usuario.nome = nome;
+        usuario.senha = senha;
 
-            })
-                .then(response => {
-                    if (response.ok) {
-                        return response.json(); 
-                    } else {
-                        throw new Error('Erro ao cadastrar usuario.');
-                    }
-                })
-                .then(data => {
-                    console.log('Usuario cadastrado adicionados:', data);
-                    location.reload();
-                    return data;
-                })
-                .catch(error => {
-                    console.error('Erro:', error);
-                    throw error;
-                });
-        } else if (tipo == "Alterar") { 
-            usuario.id = idUser;
-            console.log("tipo: " + tipo);
-            console.log("Usuario: "+JSON.stringify(usuario));
-            const url = '/Usuario/Alterar';
+        if (login != null && login != "" &&
+            cargo != null && cargo != "" &&
+            nome != null && nome != "" &&
+            senha != null && senha != ""
+        ) {
+            if (tipo == "Novo") {
+                console.log("tipo: " + tipo);
+                const url = '/Usuario/Criar';
 
-            return fetch(url, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify(usuario)
+                return await fetch(url, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(usuario)
 
-            })
-                .then(response => {
-                    if (response.ok) {
-                        return response.json();
-                    } else {
-                        throw new Error('Erro ao alterar usuario.');
-                    }
+
                 })
-                .then(data => {
-                    console.log('Usuario alterado com sucesso:', data);
-                    location.reload();
-                    return data;
+                    .then(response => {
+                        if (response.ok) {
+                            return response.json();
+                        } else {
+                            throw new Error('Erro ao cadastrar usuario. Error code: '+response.status +response.json());
+                        }
+                    })
+                    .then(data => {
+                        console.log('Usuario cadastrado adicionados:', data);
+                        location.reload();
+                        return data;
+                    })
+                    .catch(error => {
+                        console.error('Erro:', error);
+                        throw error;
+                    });
+            } else if (tipo == "Alterar") {
+                usuario.id = idUser;
+                console.log("tipo: " + tipo);
+                console.log("Usuario: " + JSON.stringify(usuario));
+                const url = "http://localhost:5147/api/Usuario/" + idUser;
+                //const url = '/Usuario/Alterar';
+
+                return await fetch(url, {
+                    method: 'PUT',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(usuario)
+
                 })
-                .catch(error => {
-                    console.error('Erro:', error);
-                    throw error;
-                });
+                    .then(response => {
+                        if (response.ok) {
+                            return response.ok;
+                        } else {
+                            throw new Error('Erro ao alterar usuario Error code: ' + response.status + response.json());
+                        }
+                    })
+                    .then(data => {
+                        console.log('Usuario alterado com sucesso:', data);
+                        location.reload();
+                        return data;
+                    })
+                    .catch(error => {
+                        console.error('Erro:', error);
+                        throw error;
+                    });
+            }
+        } else {
+            alert("Preencha todos os campos!");
         }
     }
     alterarUsuario() {
@@ -106,31 +119,32 @@
         let cargo = document.querySelector("#slcCargo").value;
         let nome = document.querySelector("#txtNome").value;
         let senha = document.querySelector("#txtSenha").value;
-        let nodeList = document.querySelectorAll(".check-usuario");
-        Array.from(nodeList).forEach(async function (el) {
-            if (el.checked == true) {
-                //console.log("Marcado: " + el.id)
-                let linha = el.parentElement.parentElement;
-                //console.log("Linha: " + linha.id)
-                let idBusca = document.querySelector("#" + CSS.escape(linha.id) + " .labelId").innerText
-                usuario.id = idBusca;
-                console.log("Id usuario: " + usuario.id);             
-                habilitaCampos();
-                let pos = usuarios.findIndex((u) => u.id.toString() === idBusca);                
-                console.log("POS: "+pos+JSON.stringify(usuarios[pos]));
-                document.querySelector("#txtUsuario").value = usuarios[pos].login;
-                let slcCargo = document.querySelector("#slcCargo");
-                for (let i = 0; i < slcCargo.options.length; i++) {
-                    if (slcCargo.options[i].text.toLowerCase() === usuarios[pos].cargo.toLowerCase()) {
-                        slcCargo.selectedIndex = i;
-                        break;
+        let nodeList = document.querySelectorAll(".check-usuario");        
+            Array.from(nodeList).forEach(async function (el) {
+                if (el.checked == true) {
+                    //console.log("Marcado: " + el.id)
+                    let linha = el.parentElement.parentElement;
+                    //console.log("Linha: " + linha.id)
+                    let idBusca = document.querySelector("#" + CSS.escape(linha.id) + " .labelId").innerText
+                    usuario.id = idBusca;
+                    console.log("Id usuario: " + usuario.id);
+                    habilitaCampos();
+                    let pos = usuarios.findIndex((u) => u.id.toString() === idBusca);
+                    console.log("POS: " + pos + JSON.stringify(usuarios[pos]));
+                    document.querySelector("#txtUsuario").value = usuarios[pos].login;
+                    let slcCargo = document.querySelector("#slcCargo");
+                    for (let i = 0; i < slcCargo.options.length; i++) {
+                        if (slcCargo.options[i].text.toLowerCase() === usuarios[pos].cargo.toLowerCase()) {
+                            slcCargo.selectedIndex = i;
+                            break;
+                        }
                     }
-                }                
-                document.querySelector("#txtNome").value = usuarios[pos].nome;        
-                document.querySelector("#txtSenha").value = usuarios[pos].senha;
+                    document.querySelector("#txtNome").value = usuarios[pos].nome;
+                    document.querySelector("#txtSenha").value = usuarios[pos].senha;
+                }
             }
-        }
-        )
+            )
+        
     }
     async excluirUsuario() {
         let nodeList = document.querySelectorAll(".check-usuario");
@@ -276,7 +290,7 @@ window.addEventListener("load", async () => {
     document.querySelector(".alterar").addEventListener("click", async () => {        
         let res = await usuario.alterarUsuario();   
         console.log("ID USER: " + usuario.id);
-        document.querySelector(".salvar").addEventListener('click', async () => {
+        document.querySelector(".salvar").addEventListener('click', async () => {            
             console.log("ID USER: " + usuario.id);
             let idUser = usuario.id;
             usuario.criarUsuario("Alterar",idUser);
